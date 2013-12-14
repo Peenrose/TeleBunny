@@ -1,0 +1,3 @@
+settings = {
+	physicsMeter = 64
+}

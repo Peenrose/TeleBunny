@@ -4,11 +4,13 @@ function love.load()
 	settings = require "settings"
 
 	love.physics.setMeter(settings.physicsMeter)
+	love.window.setMode(settings.windowSize.width, settings.windowSize.height, settings.displayFlags)
 
+	activeLevel = "menu"
 end
 
 function love.update(dt)
-
+	--levels[activeLevel]:update()
 end
 
 function love.draw()

@@ -1,9 +1,9 @@
 levels = {}
 
-levels[menu] = {}
-levels[menu][objects] = {}
+levels["menu"] = {}
+levels["menu"].objects = {}
 
-
+return levels
 --[[
 template
 

@@ -1,16 +1,15 @@
 function love.load()
 
-	levels = require "levels"
 	settings = require "settings"
 
 	love.physics.setMeter(settings.physicsMeter)
 	love.window.setMode(settings.windowSize.width, settings.windowSize.height, settings.displayFlags)
 
-	activeLevel = "menu"
+	loadWorld("menu")
 end
 
 function love.update(dt)
-	--levels[activeLevel]:update()
+	if world then world:update() end
 end
 
 function love.draw()
@@ -24,4 +23,10 @@ end
 
 function love.mouseclick(x, y, button)
 	--detect if any object was clicked
+end
+
+function loadWorld(name)
+	load = require ("levels/"..name)
+	load()
+	load = nil
 end

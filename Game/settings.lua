@@ -5,7 +5,7 @@ settings = {
 		height = 600,
 		width = 800,
 	},
-	
+
 	displayFlags = {
 		fullscreen = false,
 		fullscreentype = "normal",

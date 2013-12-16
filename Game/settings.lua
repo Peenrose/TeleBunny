@@ -1,9 +1,10 @@
 settings = {
 	physicsMeter = 64,
 
-	windowSize = {
+	window = {
 		width = 925,
 		height = 500,
+		title = "Tele Bunny"
 	},
 
 	displayFlags = {

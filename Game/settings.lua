@@ -2,8 +2,8 @@ settings = {
 	physicsMeter = 64,
 
 	windowSize = {
-		height = 600,
-		width = 800,
+		width = 925,
+		height = 500,
 	},
 
 	displayFlags = {

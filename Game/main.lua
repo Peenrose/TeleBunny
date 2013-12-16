@@ -9,7 +9,7 @@ function love.load()
 end
 
 function love.update(dt)
-	if world then world:update() end
+	if world then world:update(dt) end
 end
 
 function love.draw()

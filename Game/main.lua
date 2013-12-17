@@ -57,7 +57,7 @@ function love.mousepressed(x, y, button)
 		else
 			if warnings.noShape[k] == nil then
 				warning("Method '"..k.."' has no shape")
-				warnings.noShape[v] = true
+				warnings.noShape[k] = true
 			end
 		end
 	end

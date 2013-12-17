@@ -3,7 +3,7 @@ function love.load()
 	settings = require "settings"
 
 	playtime = 0
-	
+
 	warnings = {}
 	warnings.noDraw = {}
 
@@ -17,6 +17,7 @@ function love.load()
 	love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)
 
 	loadLevel("menu")
+	print("Loaded")
 end
 
 function love.update(dt)
@@ -33,7 +34,7 @@ function love.draw()
 			v.draw()
 		else
 			if warnings.noDraw[v] == nil then
-				warning("Method "..k.." has no draw function")
+				warning("Method '"..k.."' has no draw function")
 				warnings.noDraw[v] = true
 			end
 		end
@@ -46,7 +47,8 @@ function love.keypressed(key)
 	--set up key bind api
 end
 
-function love.mouseclick(x, y, button)
+function love.mousepressed(x, y, button)
+	print("click at: ("..x..", "..y..")")
 	--detect if any object was clicked
 	for k, v in pairs(objects) do
 		--k is the name v is its table
@@ -57,17 +59,26 @@ function love.mouseclick(x, y, button)
 	end
 end
 
-function loadLevel(name)
-	load = require ("levels/"..name)
+function loadLevelRaw()
+	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil
 end
 
+function loadLevel(name)
+	levelToLoad = name
+	if not pcall(loadLevelRaw) then warning("Failed to load level: "..name) else levelToLoad = nil end
+end
+
 function warning(text)
 	fill = ""
-	for i = 1, #text+9 do fill = fill.."-" end
+	for i = 1, (#text/2)-4 do fill = fill.."-" end
+	fill = fill.." Error! "
+	for i = 1, (#text/2)-4 do fill = fill.."-" end
 	print(fill)
-	print("Warning: "..text)
+	print(text)
+	fill = ""
+	for i = 1, #text do fill = fill.."-" end	
 	print(fill)
 end
 

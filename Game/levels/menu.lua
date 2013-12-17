@@ -5,6 +5,9 @@ function load()
 	objects = {}
 
 	objects.background = {}
+	objects.background.body = love.physics.newBody(world, settings.window.width, settings.window.height, "static")
+	objects.background.shape = love.physics.newRectangleShape(settings.window.width, settings.window.height)
+	objects.background.fixture = love.physics.newFixture(objects.background.body, objects.background.shape)
 	objects.background.draw = backgroundDraw
 	objects.background.click = backgroundClick
 

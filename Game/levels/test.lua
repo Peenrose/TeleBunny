@@ -4,7 +4,7 @@ function load()
 	objects = {}
 
 	objects.ground = {}
-	
+	--objects.ground.draw = 
 end
 
 return load

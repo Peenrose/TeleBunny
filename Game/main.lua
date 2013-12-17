@@ -6,6 +6,7 @@ function love.load()
 
 	warnings = {}
 	warnings.noDraw = {}
+	warnings.noShape = {}
 
 	cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 	love.mouse.setCursor(cursor)
@@ -50,8 +51,15 @@ end
 function love.mousepressed(x, y, button)
 	print("click at: ("..x..", "..y..")")
 	for k, v in pairs(objects) do
-		hit = objects[k].shape:testPoint(0, 0, 0, x, y)
-		if hit then objects[k].click() end
+		if objects[k].shape ~= nil then
+			hit = objects[k].shape:testPoint(0, 0, 0, x, y)
+			if hit then objects[k].click() end
+		else
+			if warnings.noShape[k] == nil then
+				warning("Method '"..k.."' has no shape")
+				warnings.noShape[v] = true
+			end
+		end
 	end
 end
 

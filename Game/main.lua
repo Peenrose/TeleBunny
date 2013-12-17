@@ -71,7 +71,7 @@ function love.mousepressed(x, y, button)
 			end
 		end
 	end
-
+	if clickedon == "" then clickedon = " on nothing" end
 	print("click at: ("..x..", "..y..")"..clickedon)
 end
 

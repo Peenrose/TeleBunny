@@ -49,13 +49,9 @@ end
 
 function love.mousepressed(x, y, button)
 	print("click at: ("..x..", "..y..")")
-	--detect if any object was clicked
 	for k, v in pairs(objects) do
-		--k is the name v is its table
-		if wasclicked then
-			objects[k].click()
-		end
-		--iterate through corners and compare
+		hit = objects[k].shape:testPoint(0, 0, 0, x, y)
+		if hit then objects[k].click() end
 	end
 end
 

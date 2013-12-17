@@ -23,7 +23,7 @@ function backgroundDraw()
 end
 
 function backgroundClick()
-	loadWorld("test")
+	loadLevel("test")
 end
 
 return load

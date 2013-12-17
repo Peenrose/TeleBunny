@@ -49,11 +49,21 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button)
-	print("click at: ("..x..", "..y..")")
+	clickedon = ""
+	clickedamount = 0
 	for k, v in pairs(objects) do
 		if objects[k].shape ~= nil then
 			hit = objects[k].shape:testPoint(0, 0, 0, x, y)
-			if hit then objects[k].click() end
+			if hit then 
+				objects[k].click()
+				if clickedamount == 0 then
+					clickedon = " on "..k
+					clickedamount = clickedamount + 1
+				else
+					clickedon = clickedon.." and "..k
+					clickedamount = clickedamount + 1
+				end
+			end
 		else
 			if warnings.noShape[k] == nil then
 				warning("Method '"..k.."' has no shape")
@@ -61,6 +71,8 @@ function love.mousepressed(x, y, button)
 			end
 		end
 	end
+
+	print("click at: ("..x..", "..y..")"..clickedon)
 end
 
 function loadLevelRaw()

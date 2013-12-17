@@ -16,7 +16,7 @@ function backgroundDraw()
 
 	love.graphics.setColor(0,0,0)
 	line = "Click to begin!"
-	love.graphics.print(line, (settings.window.width/2)-(font:getWidth(line)/2), (settings.window.height/2)-(font:getHeight(line)/2))
+	love.graphics.print(line, getCenterCoords(line, "x"), getCenterCoords(line, "y"))
 end
 
 function backgroundClick()

@@ -2,9 +2,13 @@ function love.load()
 
 	settings = require "settings"
 
-
+	playtime = 0
+	
 	warnings = {}
 	warnings.noDraw = {}
+
+	cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
+	love.mouse.setCursor(cursor)
 
 	font = love.graphics.newFont(14)
 	love.graphics.setFont(font)
@@ -16,8 +20,11 @@ function love.load()
 end
 
 function love.update(dt)
+	playtime = playtime + dt
+	lastdt = dt
 	lastfps = 1/dt
-	if world then world:update(dt) end
+
+	if world ~= nil then world:update(dt) end
 end
 
 function love.draw()
@@ -62,4 +69,13 @@ function warning(text)
 	print(fill)
 	print("Warning: "..text)
 	print(fill)
+end
+
+function getCenterCoords(text, xory) --returns cordinates of start point
+	x, y = 0, 0
+	if xory == "x" then
+		return (settings.window.width/2)-(font:getWidth(line)/2)
+	elseif xory == "y" then
+		return (settings.window.height/2)-(font:getHeight(line)/2)
+	end
 end

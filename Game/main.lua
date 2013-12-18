@@ -18,7 +18,6 @@ function love.load()
 	love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)
 
 	loadLevel("menu")
-	print("Loaded")
 end
 
 function love.update(dt)
@@ -30,13 +29,15 @@ function love.update(dt)
 end
 
 function love.draw()
-	for k, v in pairs(objects) do
-		if v.draw ~= nil and type(v.draw) == "function" then
-			v.draw()
-		else
-			if warnings.noDraw[v] == nil then
-				warning("Method '"..k.."' has no draw function")
-				warnings.noDraw[v] = true
+	if objects ~= nil then
+		for k, v in pairs(objects) do
+			if v.draw ~= nil and type(v.draw) == "function" then
+				v.draw()
+			else
+				if warnings.noDraw[v] == nil then
+					warning("Method '"..k.."' has no draw function")
+					warnings.noDraw[v] = true
+				end
 			end
 		end
 	end
@@ -53,7 +54,8 @@ function love.mousepressed(x, y, button)
 	clickedamount = 0
 	for k, v in pairs(objects) do
 		if objects[k].shape ~= nil then
-			hit = objects[k].shape:testPoint(0, 0, 0, x, y)
+			localx, localy = objects[k].body:getLocalPoint(x, y)
+			hit = objects[k].shape:testPoint(0, 0, 0, localx, localy)
 			if hit then 
 				objects[k].click()
 				if clickedamount == 0 then
@@ -79,11 +81,19 @@ function loadLevelRaw()
 	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil
+	return true
 end
 
 function loadLevel(name)
 	levelToLoad = name
-	if not pcall(loadLevelRaw) then warning("Failed to load level: "..name) else levelToLoad = nil end
+	result, err = pcall(loadLevelRaw)
+	if not result then 
+		warning("Failed to load level: "..name)
+		print(err)
+	else 
+		levelToLoad = nil 
+		print("Level Loaded: "..name) 
+	end
 end
 
 function warning(text)

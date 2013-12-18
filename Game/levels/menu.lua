@@ -62,7 +62,7 @@ function movePromptDown(dt)
 	if liney < (settings.window.height/2-font:getHeight(liney)) then
 		liney = liney + dt*200
 	else
-		if titletime < 14 then titletime = 14 end
+		if titletime < 20 then titletime = 20 end
 		titletime = titletime + dt*5
 		font = love.graphics.newFont(titletime)
 		love.graphics.setFont(font)

@@ -22,7 +22,7 @@ settings = {
 
 	bunny = {
 		width = 65,
-		height = 50
+		height = 50,
 	}
 }
 

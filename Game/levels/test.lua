@@ -1,4 +1,7 @@
 function load()
+	font = love.graphics.newFont(14)
+	love.graphics.setFont(font)
+
 	world = love.physics.newWorld(0, 9.81*64, true)
 	
 	bunnySprite = love.graphics.newImage("images/bunny_alpha_off.png")
@@ -59,14 +62,20 @@ end
 function updateLevel(dt)
 	objects.bunny.xpos, objects.bunny.ypos = objects.bunny.body:getPosition()
 
-	if love.keyboard.isDown("right") then --press the right arrow key to push the ball to the right
+	if love.keyboard.isDown("d") then
 		objects.bunny.body:applyForce(400, 0)
 		objects.bunny.invertx = 1
 		objects.bunny.lessx = 0
-	elseif love.keyboard.isDown("left") then --press the left arrow key to push the ball to the left
+	elseif love.keyboard.isDown("a") then
 		objects.bunny.body:applyForce(-400, 0)
 		objects.bunny.invertx = -1
 		objects.bunny.lessx = settings.bunny.width
+	end
+
+	if love.keyboard.isDown("w") and objects.bunny.ypos > 413 then
+		print("jump")
+		x, y = objects.bunny.body:getLinearVelocity()
+		objects.bunny.body:setLinearVelocity(x, y-350)
 	end
 
 end

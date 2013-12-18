@@ -21,13 +21,13 @@ function love.load()
 	warnings = {}
 	warnings.noDraw = {}
 	warnings.noShape = {}
-
+	warnings.noClick = {}
 
 	cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 	love.mouse.setCursor(cursor)
-
-	font = love.graphics.newFont(14)
+font = love.graphics.newFont(20)
 	love.graphics.setFont(font)
+	
 	love.physics.setMeter(settings.physicsMeter)
 	love.window.setTitle(settings.window.title)
 	love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)
@@ -57,6 +57,11 @@ function love.draw()
 	dps = (0.20*(1/lastdps))+(0.80*dps)
 	love.graphics.print("DPS: "..math.ceil(dps), 0, 16)
 
+	if objects.bunny ~= nil then
+		x, y = objects.bunny.body:getLinearVelocity()
+		love.graphics.print("Bunny Y Velocity: "..y, 0, 32) 
+	end
+
 	love.graphics.setColor(0,0,0)
 	if objects ~= nil then
 		for k, v in pairs(objects) do
@@ -84,15 +89,21 @@ function love.mousepressed(x, y, button)
 	for k, v in pairs(objects) do
 		if objects[k].shape ~= nil then
 			localx, localy = objects[k].body:getLocalPoint(x, y)
-			hit = objects[k].shape:testPoint(0, 0, 0, localx, localy)
-			if hit then 
-				objects[k].click()
-				if clickedamount == 0 then
-					clickedon = " on "..k
-					clickedamount = clickedamount + 1
+			if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
+				if objects[k].click ~= nil and type(objects[k].click) == "function" then
+					objects[k].click()
+					if clickedamount == 0 then
+						clickedon = " on "..k
+						clickedamount = clickedamount + 1
+					else
+						clickedon = clickedon.." and "..k
+						clickedamount = clickedamount + 1
+					end
 				else
-					clickedon = clickedon.." and "..k
-					clickedamount = clickedamount + 1
+					if warnings.noClick[v] == nil then
+						warning("Method '"..k.."' has no click function")
+						warnings.noClick[v] = true
+					end
 				end
 			end
 		else

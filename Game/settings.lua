@@ -18,6 +18,11 @@ settings = {
 		display = 1,
 		minwidth = 100,
 		minheight = 100
+	},
+
+	bunny = {
+		width = 65,
+		height = 50
 	}
 }
 

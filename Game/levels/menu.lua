@@ -1,5 +1,5 @@
 function load()
-	love.window.setIcon(love.image.newImageData("images/icon.png"))
+	
 	world = love.physics.newWorld(0, 9.81*64, true)
 
 	objects = {}

@@ -2,11 +2,17 @@ function love.load()
 
 	settings = require "settings"
 
-	playtime = 0
+	times = {
+		dt = 0,
+		playtime = 0
+	}
+
+	fps = 0
 
 	warnings = {}
 	warnings.noDraw = {}
 	warnings.noShape = {}
+
 
 	cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 	love.mouse.setCursor(cursor)
@@ -16,12 +22,14 @@ function love.load()
 	love.physics.setMeter(settings.physicsMeter)
 	love.window.setTitle(settings.window.title)
 	love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)
+	love.window.setIcon(love.image.newImageData("images/icon.png"))
 
 	loadLevel("menu")
 end
 
 function love.update(dt)
-	playtime = playtime + dt
+	times.dt = dt
+	times.playtime = times.playtime + dt
 	lastdt = dt
 	lastfps = 1/dt
 
@@ -30,6 +38,11 @@ function love.update(dt)
 end
 
 function love.draw()
+	love.graphics.setColor(255,255,255)
+	fps = (0.40*lastfps)+(0.60*fps)
+	love.graphics.print("FPS: "..math.ceil(fps), 0, 0)
+
+	love.graphics.setColor(0,0,0)
 	if objects ~= nil then
 		for k, v in pairs(objects) do
 			if v.draw ~= nil and type(v.draw) == "function" then

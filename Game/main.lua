@@ -1,13 +1,22 @@
+--incomplete title when alisdhalkd
+--error when no click function
+--almost no frictionasda
+--no right wall
+--windows 7 title center
+--mysterious third object
+
 function love.load()
 
 	settings = require "settings"
 
-	times = {
-		dt = 0,
-		playtime = 0
-	}
+	deltatime = 0
+	playtime = 0
 
 	fps = 0
+	lastdps = 0
+	dps = 0
+	playtime = 0
+	dpstemp = 0
 
 	warnings = {}
 	warnings.noDraw = {}
@@ -28,8 +37,8 @@ function love.load()
 end
 
 function love.update(dt)
-	times.dt = dt
-	times.playtime = times.playtime + dt
+	deltatime = dt
+	playtime = playtime + dt
 	lastdt = dt
 	lastfps = 1/dt
 
@@ -38,9 +47,15 @@ function love.update(dt)
 end
 
 function love.draw()
+	lastdps = playtime - dpstemp
+	dpstemp = playtime
+
 	love.graphics.setColor(255,255,255)
-	fps = (0.40*lastfps)+(0.60*fps)
+	fps = (0.20*lastfps)+(0.80*fps)
 	love.graphics.print("FPS: "..math.ceil(fps), 0, 0)
+
+	dps = (0.20*(1/lastdps))+(0.80*dps)
+	love.graphics.print("DPS: "..math.ceil(dps), 0, 16)
 
 	love.graphics.setColor(0,0,0)
 	if objects ~= nil then

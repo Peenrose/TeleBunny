@@ -4,7 +4,7 @@ settings = {
 	window = {
 		width = 925,
 		height = 500,
-		title = "Tele Bunny"
+		title = " "
 	},
 
 	displayFlags = {

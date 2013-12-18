@@ -5,7 +5,7 @@ function load()
 	objects = {}
 
 	objects.background = {}
-	objects.background.body = love.physics.newBody(world, settings.window.width/2, settings.window.height/2, "static")
+	objects.background.body = love.physics.newBody(world, settings.window.width/2, (settings.window.height/2), "static")
 	objects.background.shape = love.physics.newRectangleShape(settings.window.width, settings.window.height)
 	objects.background.fixture = love.physics.newFixture(objects.background.body, objects.background.shape)
 	objects.background.draw = backgroundDraw
@@ -17,12 +17,16 @@ function backgroundDraw()
 	love.graphics.polygon("fill", objects.background.body:getWorldPoints(objects.background.shape:getPoints()))
 
 	love.graphics.setColor(0,0,0)
-	line = "Click to begin!"
-	love.graphics.print(line, getCenterCoords(line, "x"), getCenterCoords(line, "y"))
+	line = "Telekinetic Bunny!"
+	love.graphics.print(line, getCenterCoords(line, settings.window.width/2, settings.window.width*1.5, "x"), 20)
 end
 
 function backgroundClick()
 	loadLevel("test")
+end
+
+function updateLevel()
+
 end
 
 return load

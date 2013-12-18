@@ -26,6 +26,7 @@ function love.update(dt)
 	lastfps = 1/dt
 
 	if world ~= nil then world:update(dt) end
+	if updateLevel ~= nil then updateLevel() end
 end
 
 function love.draw()
@@ -108,11 +109,11 @@ function warning(text)
 	print(fill)
 end
 
-function getCenterCoords(text, xory) --returns cordinates of start point
+function getCenterCoords(text, ori, max, xory) --returns cordinates of start point
 	x, y = 0, 0
 	if xory == "x" then
-		return (settings.window.width/2)-(font:getWidth(line)/2)
+		return ((max-ori)/2)-(font:getWidth(line)/2)
 	elseif xory == "y" then
-		return (settings.window.height/2)-(font:getHeight(line)/2)
+		return ((max-ori)/2)-(font:getHeight(line)/2)
 	end
 end

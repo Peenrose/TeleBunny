@@ -26,7 +26,7 @@ function love.update(dt)
 	lastfps = 1/dt
 
 	if world ~= nil then world:update(dt) end
-	if updateLevel ~= nil then updateLevel() end
+	if updateLevel ~= nil then updateLevel(dt) end
 end
 
 function love.draw()

@@ -17,7 +17,7 @@ function groundDraw()
 	love.graphics.rectangle("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
 end
 
-function updateLevel()
+function updateLevel(dt)
 
 end
 

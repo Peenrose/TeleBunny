@@ -10,16 +10,17 @@ function load()
 	objects.ground.shape = love.physics.newRectangleShape(settings.window.width, 40)
 	objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 	objects.ground.draw = groundDraw
+	objects.ground.fixture:setFriction(1.2)
 
 	objects.leftwall = {}
 	objects.leftwall.body = love.physics.newBody(world, 0, settings.window.height/2, "static")
-	objects.leftwall.shape = love.physics.newRectangleShape(1, settings.window.height)
+	objects.leftwall.shape = love.physics.newRectangleShape(0, settings.window.height)
 	objects.leftwall.fixture = love.physics.newFixture(objects.leftwall.body, objects.leftwall.shape)
 
 	objects.rightwall = {}
 	objects.rightwall.body = love.physics.newBody(world, settings.window.width, settings.window.height/2, "static")
-	objects.rightwall.shape = love.physics.newRectangleShape(1, settings.window.height)
-	objects.rightwall.fixture = love.physics.newFixture(objects.leftwall.body, objects.rightwall.shape)
+	objects.rightwall.shape = love.physics.newRectangleShape(0, settings.window.height)
+	objects.rightwall.fixture = love.physics.newFixture(objects.rightwall.body, objects.rightwall.shape)
 
 	objects.bunny = {}
 	objects.bunny.body = love.physics.newBody(world, 100, 0, "dynamic")

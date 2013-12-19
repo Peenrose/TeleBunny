@@ -4,7 +4,12 @@ function load()
 
 	world = love.physics.newWorld(0, 9.81*64, true)
 	
-	bunnySprite = love.graphics.newImage("images/bunny_alpha_off.png")
+	bunnyOff = love.graphics.newImage("images/bunny_alpha_off.png")
+	bunnyOn = love.graphics.newImage("images/bunny_alpha_on.png")
+
+	bunnySprite = bunnyOff
+
+	carrotSprite = love.graphics.newImage("images/carrot.png")
 
 	objects = {}
 
@@ -40,6 +45,30 @@ function load()
 	tlx, tly, brx, bry = objects.bunny.fixture:getBoundingBox()
 	objects.bunny.sx = (brx-tlx)/bunnySprite:getWidth()
 	objects.bunny.sy = (bry-tly)/bunnySprite:getHeight()
+
+	objects.carrot = {}
+	objects.carrot.body = love.physics.newBody(world, 600, 0, "dynamic")
+	objects.carrot.shape = love.physics.newRectangleShape(settings.carrot.width, settings.carrot.height)
+	objects.carrot.fixture = love.physics.newFixture(objects.carrot.body, objects.carrot.shape)
+	objects.carrot.draw = carrotDraw
+	objects.carrot.click = carrotClick
+
+	objects.carrot.xpos = 0
+	objects.carrot.ypos = 0
+
+	tlx, tly, brx, bry = objects.carrot.fixture:getBoundingBox()
+	objects.carrot.sx = (brx-tlx)/carrotSprite:getWidth()
+	objects.carrot.sy = (bry-tly)/carrotSprite:getHeight()
+end
+
+function carrotDraw()
+	love.graphics.setColor(255,255,255)
+	love.graphics.polygon("fill", objects.carrot.body:getWorldPoints(objects.carrot.shape:getPoints()))
+	love.graphics.draw(carrotSprite, objects.carrot.xpos-(settings.carrot.width/2), objects.carrot.ypos-(settings.carrot.height/2), 0, objects.carrot.sx, objects.carrot.sy)
+end
+
+function carrotClick()
+
 end
 
 function groundDraw()
@@ -61,6 +90,7 @@ end
 
 function updateLevel(dt)
 	objects.bunny.xpos, objects.bunny.ypos = objects.bunny.body:getPosition()
+	objects.carrot.xpos, objects.carrot.ypos = objects.carrot.body:getPosition()
 
 	if love.keyboard.isDown("d") then
 		objects.bunny.body:applyForce(400, 0)

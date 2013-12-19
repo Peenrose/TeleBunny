@@ -1,9 +1,8 @@
 --incomplete title when alisdhalkd
---error when no click function
---almost no frictionasda
---no right wall
 --windows 7 title center
 --mysterious third object
+--draw carrot 
+--multiple jumps
 
 function love.load()
 
@@ -56,11 +55,6 @@ function love.draw()
 
 	dps = (0.20*(1/lastdps))+(0.80*dps)
 	love.graphics.print("DPS: "..math.ceil(dps), 0, 16)
-
-	if objects.bunny ~= nil then
-		x, y = objects.bunny.body:getLinearVelocity()
-		love.graphics.print("Bunny Y Velocity: "..y, 0, 32) 
-	end
 
 	love.graphics.setColor(0,0,0)
 	if objects ~= nil then

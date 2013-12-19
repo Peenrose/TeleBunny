@@ -23,6 +23,11 @@ settings = {
 	bunny = {
 		width = 65,
 		height = 50,
+	},
+
+	carrot = {
+		width = 80,
+		height = 157
 	}
 }
 

@@ -12,53 +12,56 @@ function load()
 
 	carrotSprite = love.graphics.newImage("images/carrot.png")
 
-	objects = {}
+	objects = {
+		ground = {
+			body = love.physics.newBody(world, settings.window.width/2, 460, "static"),
+			shape = love.physics.newRectangleShape(settings.window.width, 40),
+			draw = groundDraw
+		},
+		leftwall = {
+			body = love.physics.newBody(world, 0, settings.window.height/2, "static"),
+			shape = love.physics.newRectangleShape(0, settings.window.height),
+		},
+		rightwall = {
+			body = love.physics.newBody(world, settings.window.width, settings.window.height/2, "static"),
+			shape = love.physics.newRectangleShape(0, settings.window.height),
+		},
+		bunny = {
+			body = love.physics.newBody(world, 100, 0, "dynamic"),
+			shape = love.physics.newRectangleShape(settings.bunny.width, settings.bunny.height),
+			draw = bunnyDraw,
+			click = bunnyClick,
 
-	objects.ground = {}
-	objects.ground.body = love.physics.newBody(world, settings.window.width/2, 460, "static")
-	objects.ground.shape = love.physics.newRectangleShape(settings.window.width, 40)
+			invertx = 1,
+			lessx = 0,
+			xpos = 0,
+			ypos = 0
+
+		},
+		carrot = {
+			body = love.physics.newBody(world, 600, 0, "dynamic"),
+			shape = love.physics.newRectangleShape(settings.carrot.width, settings.carrot.height),
+			draw = carrotDraw,
+			click = carrotClick,
+
+			xpos = 0,
+			ypos = 0,
+			rotation = 0
+		}
+	}
+
 	objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
-	objects.ground.draw = groundDraw
 	objects.ground.fixture:setFriction(1.2)
-
-	objects.leftwall = {}
-	objects.leftwall.body = love.physics.newBody(world, 0, settings.window.height/2, "static")
-	objects.leftwall.shape = love.physics.newRectangleShape(0, settings.window.height)
 	objects.leftwall.fixture = love.physics.newFixture(objects.leftwall.body, objects.leftwall.shape)
-
-	objects.rightwall = {}
-	objects.rightwall.body = love.physics.newBody(world, settings.window.width, settings.window.height/2, "static")
-	objects.rightwall.shape = love.physics.newRectangleShape(0, settings.window.height)
 	objects.rightwall.fixture = love.physics.newFixture(objects.rightwall.body, objects.rightwall.shape)
-
-	objects.bunny = {}
-	objects.bunny.body = love.physics.newBody(world, 100, 0, "dynamic")
-	objects.bunny.shape = love.physics.newRectangleShape(settings.bunny.width, settings.bunny.height)
-	objects.bunny.fixture = love.physics.newFixture(objects.bunny.body, objects.bunny.shape)
-	objects.bunny.draw = bunnyDraw
-	objects.bunny.click = bunnyClick
-
-	objects.bunny.invertx = 1
-	objects.bunny.lessx = 0
-	objects.bunny.xpos = 0
-	objects.bunny.ypos = 0
+	objects.carrot.fixture = love.physics.newFixture(objects.carrot.body, objects.carrot.shape)
+	objects.bunny.fixture = love.physics.newFixture(objects.bunny.body, objects.bunny.shape),
 
 	objects.bunny.body:setFixedRotation(true)
 
 	tlx, tly, brx, bry = objects.bunny.fixture:getBoundingBox()
 	objects.bunny.sx = (brx-tlx)/bunnySprite:getWidth()
 	objects.bunny.sy = (bry-tly)/bunnySprite:getHeight()
-
-	objects.carrot = {}
-	objects.carrot.body = love.physics.newBody(world, 600, 0, "dynamic")
-	objects.carrot.shape = love.physics.newRectangleShape(settings.carrot.width, settings.carrot.height)
-	objects.carrot.fixture = love.physics.newFixture(objects.carrot.body, objects.carrot.shape)
-	objects.carrot.draw = carrotDraw
-	objects.carrot.click = carrotClick
-
-	objects.carrot.xpos = 0
-	objects.carrot.ypos = 0
-	objects.carrot.rotation = 0
 
 	tlx, tly, brx, bry = objects.carrot.fixture:getBoundingBox()
 	objects.carrot.sx = (brx-tlx)/carrotSprite:getWidth()

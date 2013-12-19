@@ -1,4 +1,5 @@
 function load()
+	love.window.setTitle("Telekinetic Bunny")
 	font = love.graphics.newFont(14)
 	love.graphics.setFont(font)
 
@@ -42,6 +43,8 @@ function load()
 	objects.bunny.xpos = 0
 	objects.bunny.ypos = 0
 
+	objects.bunny.body:setFixedRotation(true)
+
 	tlx, tly, brx, bry = objects.bunny.fixture:getBoundingBox()
 	objects.bunny.sx = (brx-tlx)/bunnySprite:getWidth()
 	objects.bunny.sy = (bry-tly)/bunnySprite:getHeight()
@@ -55,6 +58,7 @@ function load()
 
 	objects.carrot.xpos = 0
 	objects.carrot.ypos = 0
+	objects.carrot.rotation = 0
 
 	tlx, tly, brx, bry = objects.carrot.fixture:getBoundingBox()
 	objects.carrot.sx = (brx-tlx)/carrotSprite:getWidth()
@@ -64,7 +68,8 @@ end
 function carrotDraw()
 	love.graphics.setColor(255,255,255)
 	love.graphics.polygon("fill", objects.carrot.body:getWorldPoints(objects.carrot.shape:getPoints()))
-	love.graphics.draw(carrotSprite, objects.carrot.xpos-(settings.carrot.width/2), objects.carrot.ypos-(settings.carrot.height/2), 0, objects.carrot.sx, objects.carrot.sy)
+	love.graphics.draw(carrotSprite, objects.carrot.xpos-(settings.carrot.width/2), objects.carrot.ypos-(settings.carrot.height/2), objects.carrot.rotation, objects.carrot.sx, objects.carrot.sy)
+	love.graphics.print(height, 0, 48)
 end
 
 function carrotClick()
@@ -79,7 +84,7 @@ end
 function bunnyDraw()
 	love.graphics.setColor(255,255,255)
 
-	--love.graphics.polygon("fill", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
+	love.graphics.polygon("fill", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 
 	love.graphics.draw(bunnySprite, objects.bunny.xpos-(settings.bunny.width/2)+objects.bunny.lessx, objects.bunny.ypos-(settings.bunny.height/2), 0, objects.bunny.invertx*objects.bunny.sx, objects.bunny.sy)
 end
@@ -103,11 +108,15 @@ function updateLevel(dt)
 	end
 
 	if love.keyboard.isDown("w") and objects.bunny.ypos > 413 then
-		print("jump")
 		x, y = objects.bunny.body:getLinearVelocity()
 		objects.bunny.body:setLinearVelocity(x, y-350)
 	end
 
+	tlx, tly, brx, bry = objects.carrot.fixture:getBoundingBox()
+
+	
+	height = tly-bry
+	objects.carrot.rotation = (-height/60)
 end
 
 return load

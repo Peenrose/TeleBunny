@@ -1,8 +1,6 @@
---incomplete title when alisdhalkd
---windows 7 title center
---mysterious third object
 --draw carrot 
 --multiple jumps
+--stop bunny rotation
 
 function love.load()
 
@@ -24,7 +22,7 @@ function love.load()
 
 	cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 	love.mouse.setCursor(cursor)
-font = love.graphics.newFont(20)
+	font = love.graphics.newFont(20)
 	love.graphics.setFont(font)
 	
 	love.physics.setMeter(settings.physicsMeter)

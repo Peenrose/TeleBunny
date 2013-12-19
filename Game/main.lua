@@ -86,18 +86,20 @@ function love.mousepressed(x, y, button)
 			if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
 				if objects[k].click ~= nil and type(objects[k].click) == "function" then
 					objects[k].click()
-					if clickedamount == 0 then
-						clickedon = " on "..k
-						clickedamount = clickedamount + 1
-					else
-						clickedon = clickedon.." and "..k
-						clickedamount = clickedamount + 1
-					end
+					
 				else
 					if warnings.noClick[v] == nil then
 						warning("Method '"..k.."' has no click function")
 						warnings.noClick[v] = true
 					end
+
+				end
+				if clickedamount == 0 then
+					clickedon = " on "..k
+					clickedamount = clickedamount + 1
+				else
+					clickedon = clickedon.." and "..k
+					clickedamount = clickedamount + 1
 				end
 			end
 		else

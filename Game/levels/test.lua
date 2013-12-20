@@ -11,8 +11,8 @@ function load()
 	carrotSprite = love.graphics.newImage("images/carrot.png")
 
 
-	bunnyx = 400
-	bunnyy = 200
+	bunnyx = settings.window.width-200
+	bunnyy = settings.window.height-210
 
 	objects = {
 		ground = {
@@ -40,8 +40,7 @@ function load()
 			click = carrotClick,
 
 			xpos = 0,
-			ypos = 0,
-			rotation = 0
+			ypos = 0
 		}
 	}
 
@@ -82,7 +81,7 @@ function bunnyDraw()
 
 	love.graphics.polygon("fill", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 
-	love.graphics.draw(bunnySprite, bunnyx-((bunnySprite:getWidth()*objects.bunny.sx)/2), bunnyy-((bunnySprite:getHeight()*objects.bunny.sy)/2), 0, objects.bunny.sx, objects.bunny.sy)
+	love.graphics.draw(bunnySprite, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), objects.bunny.sx, objects.bunny.sy, bunnySprite:getWidth()/2, bunnySprite:getHeight()/2)
 end
 
 function bunnyClick()
@@ -90,9 +89,7 @@ function bunnyClick()
 end
 
 function updateLevel(dt)
-
-	objects.carrot.xpos, objects.carrot.ypos = objects.carrot.body:getPosition()
-
+	--objects.carrot.xpos, objects.carrot.ypos = objects.carrot.body:getPosition()
 end
 
 return load

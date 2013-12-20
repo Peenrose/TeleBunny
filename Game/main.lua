@@ -30,17 +30,17 @@ function love.load()
 end
 
 function love.update(dt)
-	if not love.mouse.isDown() then grabbed = {} end
 
 	----[[
 	if objects ~= nil then
 		for k, v in pairs(objects) do
-			if grabbed[k] == true then
+			if grabbed[k] == v then
 				mx, my = love.mouse:getPosition()
 				bx, by = v.body:getPosition()
 
 				--local coords of click
-				v.body:applyForce()
+				v.body:applyForce(0, -10000)
+				print("applied force")
 			end
 		end
 	end
@@ -84,6 +84,10 @@ function love.keypressed(key)
 	--set up key bind api
 end
 
+function love.mousereleased()
+	grabbed = {}
+end
+
 function love.mousepressed(x, y, button)
 	clickedon = ""
 	clickedamount = 0
@@ -91,7 +95,7 @@ function love.mousepressed(x, y, button)
 		if objects[k].shape ~= nil then
 			localx, localy = objects[k].body:getLocalPoint(x, y)
 			if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
-				grabbed[k] = true
+				grabbed[k] = v
 				if objects[k].click ~= nil and type(objects[k].click) == "function" then
 					objects[k].click()
 				else

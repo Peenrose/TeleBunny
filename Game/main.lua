@@ -31,20 +31,20 @@ end
 
 function love.update(dt)
 
-	----[[
 	if objects ~= nil then
 		for k, v in pairs(objects) do
-			if grabbed[k] == v then
+			if grabbed[k] ~= nil then
 				mx, my = love.mouse:getPosition()
 				bx, by = v.body:getPosition()
-
+				xdif = mx-bx
+				ydif = my-by
 				--local coords of click
-				v.body:applyForce(0, -10000)
+				lx, ly = v.body:getLocalPoint(mx, my)
+				v.body:applyForce(xdif*25, ydif*25, lx, ly)
 				print("applied force")
 			end
 		end
 	end
-	----]]
 
 	deltatime = dt
 	playtime = playtime + dt
@@ -95,7 +95,8 @@ function love.mousepressed(x, y, button)
 		if objects[k].shape ~= nil then
 			localx, localy = objects[k].body:getLocalPoint(x, y)
 			if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
-				grabbed[k] = v
+				grabbed[k] = {}
+				grabbed[k].x, grabbed[k].y = localx, localy
 				if objects[k].click ~= nil and type(objects[k].click) == "function" then
 					objects[k].click()
 				else

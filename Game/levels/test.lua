@@ -12,7 +12,7 @@ function load()
 
 
 	bunnyx = settings.window.width-200
-	bunnyy = settings.window.height-210
+	bunnyy = settings.window.height-205
 
 	objects = {
 		ground = {

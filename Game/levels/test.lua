@@ -28,13 +28,17 @@ function load()
 			body = love.physics.newBody(world, settings.window.width, settings.window.height/2, "static"),
 			shape = love.physics.newRectangleShape(0, settings.window.height),
 		},
+		topwall = {
+			body = love.physics.newBody(world, 0,0, "static"),
+			shape = love.physics.newRectangleShape(settings.window.width, 0),
+		},
 		bunny = {
 			body = love.physics.newBody(world, bunnyx, bunnyy, "static"),
 			shape = love.physics.newRectangleShape(200, 200),
 			draw = bunnyDraw,
 		},
 		carrot = {
-			body = love.physics.newBody(world, 500, 0, "dynamic"),
+			body = love.physics.newBody(world, 500, 1, "dynamic"),
 			shape = love.physics.newRectangleShape(settings.carrot.width, settings.carrot.height),
 			draw = carrotDraw,
 			click = carrotClick,
@@ -48,6 +52,8 @@ function load()
 	objects.ground.fixture:setFriction(1.2)
 	objects.leftwall.fixture = love.physics.newFixture(objects.leftwall.body, objects.leftwall.shape)
 	objects.rightwall.fixture = love.physics.newFixture(objects.rightwall.body, objects.rightwall.shape)
+	objects.topwall.fixture = love.physics.newFixture(objects.topwall.body, objects.topwall.shape)
+
 	objects.carrot.fixture = love.physics.newFixture(objects.carrot.body, objects.carrot.shape)
 	objects.bunny.fixture = love.physics.newFixture(objects.bunny.body, objects.bunny.shape)
 
@@ -77,9 +83,9 @@ function groundDraw()
 end
 
 function bunnyDraw()
-	--love.graphics.setColor(255,0,255)
+	love.graphics.setColor(255,255,255)
 
-	love.graphics.polygon("fill", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
+	--love.graphics.polygon("fill", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 
 	love.graphics.draw(bunnySprite, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), objects.bunny.sx, objects.bunny.sy, bunnySprite:getWidth()/2, bunnySprite:getHeight()/2)
 end

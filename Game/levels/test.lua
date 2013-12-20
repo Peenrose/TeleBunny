@@ -34,7 +34,7 @@ function load()
 			draw = bunnyDraw,
 		},
 		carrot = {
-			body = love.physics.newBody(world, 600, 0, "dynamic"),
+			body = love.physics.newBody(world, 500, 0, "dynamic"),
 			shape = love.physics.newRectangleShape(settings.carrot.width, settings.carrot.height),
 			draw = carrotDraw,
 			click = carrotClick,
@@ -65,8 +65,7 @@ end
 function carrotDraw()
 	love.graphics.setColor(255,255,255)
 	love.graphics.polygon("fill", objects.carrot.body:getWorldPoints(objects.carrot.shape:getPoints()))
-	love.graphics.draw(carrotSprite, objects.carrot.xpos-(settings.carrot.width/2), objects.carrot.ypos-(settings.carrot.height/2), objects.carrot.rotation, objects.carrot.sx, objects.carrot.sy)
-	love.graphics.print(height, 0, 48)
+	love.graphics.draw(carrotSprite, objects.carrot.body:getX(), objects.carrot.body:getY(), objects.carrot.body:getAngle(), objects.carrot.sx, objects.carrot.sy, carrotSprite:getWidth()/2, carrotSprite:getHeight()/2)
 end
 
 function carrotClick()
@@ -91,12 +90,9 @@ function bunnyClick()
 end
 
 function updateLevel(dt)
+
 	objects.carrot.xpos, objects.carrot.ypos = objects.carrot.body:getPosition()
 
-	tlx, tly, brx, bry = objects.carrot.fixture:getBoundingBox()
-
-	height = tly-bry
-	objects.carrot.rotation = (math.sin(playtime)*5)
 end
 
 return load

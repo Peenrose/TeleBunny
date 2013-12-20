@@ -26,7 +26,7 @@ function backgroundDraw()
 			love.graphics.print("Click To Start", getCenterCoords("Click To Start", 0, settings.window.width, "x"), liney)
 		end
 	else
-		love.graphics.print(line, 398.5, (settings.window.height/2)-50)
+		love.graphics.print(line, getCenterCoords(line, 0, settings.window.width, "x"), (settings.window.height/2)-50)
 	end
 end
 
@@ -53,7 +53,7 @@ function updateLevel(dt)
 	if not titledone then 
 		updateTitle(dt) 
 	else
-		if titletime >= 1 then
+		if titletime >= 0.5 then
 			movePromptDown(dt)
 		end
 	end
@@ -64,7 +64,7 @@ function movePromptDown(dt)
 		liney = liney + dt*200
 	else
 		if titletime < 20 then titletime = 20 end
-		titletime = titletime + dt*5
+		titletime = titletime + dt*10
 		font = love.graphics.newFont(titletime)
 		love.graphics.setFont(font)
 	end
@@ -89,7 +89,7 @@ function updateTitle(dt)
 			progress = progress + 1
 		end
 	end
-	if titletime >= 2 and progress >= 19 then prompt = true titledone = true title = "Telekinetic Bunny" titletime = 0 liney = 0-font:getHeight("Click To Start") end
+	if titletime >= 2 and progress >= 19 then prompt = true titledone = true title = "Telekinetic Bunny!" titletime = 0 liney = 0-font:getHeight("Click To Start") end
 	love.window.setTitle(title)
 end
 

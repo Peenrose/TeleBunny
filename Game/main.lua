@@ -1,7 +1,3 @@
---draw carrot 
---multiple jumps
---stop bunny rotation
-
 function love.load()
 
 	settings = require "settings"
@@ -11,14 +7,14 @@ function love.load()
 
 	fps = 0
 	lastdps = 0
-	dps = 0
 	playtime = 0
-	dpstemp = 0
 
 	warnings = {}
 	warnings.noDraw = {}
 	warnings.noShape = {}
 	warnings.noClick = {}
+
+	grabbed = {}
 
 	cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 	love.mouse.setCursor(cursor)
@@ -34,25 +30,38 @@ function love.load()
 end
 
 function love.update(dt)
+	if not love.mouse.isDown() then grabbed = {} end
+
+	----[[
+	if objects ~= nil then
+		for k, v in pairs(objects) do
+			if grabbed[k] == true then
+				mx, my = love.mouse:getPosition()
+				bx, by = v.body:getPosition()
+
+				--local coords of click
+				v.body:applyForce()
+			end
+		end
+	end
+	----]]
+
 	deltatime = dt
 	playtime = playtime + dt
 	lastdt = dt
 	lastfps = 1/dt
+
+	dt = math.min(dt, 0.05)
 
 	if world ~= nil then world:update(dt) end
 	if updateLevel ~= nil then updateLevel(dt) end
 end
 
 function love.draw()
-	lastdps = playtime - dpstemp
-	dpstemp = playtime
 
 	love.graphics.setColor(255,255,255)
 	fps = (0.20*lastfps)+(0.80*fps)
 	love.graphics.print("FPS: "..math.ceil(fps), 0, 0)
-
-	dps = (0.20*(1/lastdps))+(0.80*dps)
-	love.graphics.print("DPS: "..math.ceil(dps), 0, 16)
 
 	love.graphics.setColor(0,0,0)
 	if objects ~= nil then
@@ -82,9 +91,9 @@ function love.mousepressed(x, y, button)
 		if objects[k].shape ~= nil then
 			localx, localy = objects[k].body:getLocalPoint(x, y)
 			if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
+				grabbed[k] = true
 				if objects[k].click ~= nil and type(objects[k].click) == "function" then
 					objects[k].click()
-					
 				else
 					if warnings.noClick[v] == nil then
 						warning("Method '"..k.."' has no click function")

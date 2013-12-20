@@ -2,8 +2,8 @@ settings = {
 	physicsMeter = 64,
 
 	window = {
-		width = 925,
-		height = 500,
+		width = 1920,
+		height = 1080,
 		title = " "
 	},
 
@@ -20,14 +20,9 @@ settings = {
 		minheight = 100
 	},
 
-	bunny = {
-		width = 65,
-		height = 50,
-	},
-
 	carrot = {
-		width = 80,
-		height = 157
+		width = 160,
+		height = 314
 	}
 }
 

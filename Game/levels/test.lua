@@ -5,17 +5,19 @@ function load()
 
 	world = love.physics.newWorld(0, 9.81*64, true)
 	
-	bunnyOff = love.graphics.newImage("images/bunny_alpha_off.png")
-	bunnyOn = love.graphics.newImage("images/bunny_alpha_on.png")
+	bunnySprite = love.graphics.newImage("images/bunny.png")
 
-	bunnySprite = bunnyOff
 
 	carrotSprite = love.graphics.newImage("images/carrot.png")
 
+
+	bunnyx = 400
+	bunnyy = 200
+
 	objects = {
 		ground = {
-			body = love.physics.newBody(world, settings.window.width/2, 460, "static"),
-			shape = love.physics.newRectangleShape(settings.window.width, 40),
+			body = love.physics.newBody(world, settings.window.width/2, settings.window.height-100, "static"),
+			shape = love.physics.newRectangleShape(settings.window.width, 10),
 			draw = groundDraw
 		},
 		leftwall = {
@@ -27,16 +29,9 @@ function load()
 			shape = love.physics.newRectangleShape(0, settings.window.height),
 		},
 		bunny = {
-			body = love.physics.newBody(world, 100, 0, "dynamic"),
-			shape = love.physics.newRectangleShape(settings.bunny.width, settings.bunny.height),
+			body = love.physics.newBody(world, bunnyx, bunnyy, "static"),
+			shape = love.physics.newRectangleShape(200, 200),
 			draw = bunnyDraw,
-			click = bunnyClick,
-
-			invertx = 1,
-			lessx = 0,
-			xpos = 0,
-			ypos = 0
-
 		},
 		carrot = {
 			body = love.physics.newBody(world, 600, 0, "dynamic"),
@@ -55,17 +50,16 @@ function load()
 	objects.leftwall.fixture = love.physics.newFixture(objects.leftwall.body, objects.leftwall.shape)
 	objects.rightwall.fixture = love.physics.newFixture(objects.rightwall.body, objects.rightwall.shape)
 	objects.carrot.fixture = love.physics.newFixture(objects.carrot.body, objects.carrot.shape)
-	objects.bunny.fixture = love.physics.newFixture(objects.bunny.body, objects.bunny.shape),
+	objects.bunny.fixture = love.physics.newFixture(objects.bunny.body, objects.bunny.shape)
 
-	objects.bunny.body:setFixedRotation(true)
+	tlx, tly, brx, bry = objects.carrot.fixture:getBoundingBox()
+	objects.carrot.sx = (brx-tlx)/carrotSprite:getWidth()
+	objects.carrot.sy = (bry-tly)/carrotSprite:getHeight()
 
 	tlx, tly, brx, bry = objects.bunny.fixture:getBoundingBox()
 	objects.bunny.sx = (brx-tlx)/bunnySprite:getWidth()
 	objects.bunny.sy = (bry-tly)/bunnySprite:getHeight()
 
-	tlx, tly, brx, bry = objects.carrot.fixture:getBoundingBox()
-	objects.carrot.sx = (brx-tlx)/carrotSprite:getWidth()
-	objects.carrot.sy = (bry-tly)/carrotSprite:getHeight()
 end
 
 function carrotDraw()
@@ -85,11 +79,11 @@ function groundDraw()
 end
 
 function bunnyDraw()
-	love.graphics.setColor(255,255,255)
+	--love.graphics.setColor(255,0,255)
 
 	love.graphics.polygon("fill", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 
-	love.graphics.draw(bunnySprite, objects.bunny.xpos-(settings.bunny.width/2)+objects.bunny.lessx, objects.bunny.ypos-(settings.bunny.height/2), 0, objects.bunny.invertx*objects.bunny.sx, objects.bunny.sy)
+	love.graphics.draw(bunnySprite, bunnyx-((bunnySprite:getWidth()*objects.bunny.sx)/2), bunnyy-((bunnySprite:getHeight()*objects.bunny.sy)/2), 0, objects.bunny.sx, objects.bunny.sy)
 end
 
 function bunnyClick()
@@ -97,29 +91,12 @@ function bunnyClick()
 end
 
 function updateLevel(dt)
-	objects.bunny.xpos, objects.bunny.ypos = objects.bunny.body:getPosition()
 	objects.carrot.xpos, objects.carrot.ypos = objects.carrot.body:getPosition()
-
-	if love.keyboard.isDown("d") then
-		objects.bunny.body:applyForce(400, 0)
-		objects.bunny.invertx = 1
-		objects.bunny.lessx = 0
-	elseif love.keyboard.isDown("a") then
-		objects.bunny.body:applyForce(-400, 0)
-		objects.bunny.invertx = -1
-		objects.bunny.lessx = settings.bunny.width
-	end
-
-	if love.keyboard.isDown("w") and objects.bunny.ypos > 413 then
-		x, y = objects.bunny.body:getLinearVelocity()
-		objects.bunny.body:setLinearVelocity(x, y-350)
-	end
 
 	tlx, tly, brx, bry = objects.carrot.fixture:getBoundingBox()
 
-	
 	height = tly-bry
-	objects.carrot.rotation = (-height/60)
+	objects.carrot.rotation = (math.sin(playtime)*5)
 end
 
 return load

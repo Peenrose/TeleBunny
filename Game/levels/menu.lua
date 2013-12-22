@@ -40,12 +40,10 @@ prompt = false
 titledone = false
 liney = (settings.window.height/2)
 donewithliney = false
-
 title = " "
 titleLetters = {"T", "e", "l", "e", "k", "i", "n", "e", "t", "i", "c", " ", "B", "u", "n", "n", "y", "!", ""}
 titleLetters[0] = ""
 line = "Telekinetic Bunny!"
-
 
 function updateLevel(dt)
 	titletime = titletime + dt

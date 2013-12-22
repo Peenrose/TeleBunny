@@ -1,81 +1,39 @@
 function love.load()
-
 	settings = require "settings"
-
-	deltatime = 0
-	playtime = 0
-
-	fps = 0
-	lastdps = 0
-	playtime = 0
-
-	warnings = {}
-	warnings.noDraw = {}
-	warnings.noShape = {}
-	warnings.noClick = {}
-
-	grabbed = {}
-
-	cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
-	love.mouse.setCursor(cursor)
-	font = love.graphics.newFont(20)
-	love.graphics.setFont(font)
-	
-	love.physics.setMeter(settings.physicsMeter)
-	love.window.setTitle(settings.window.title)
-	love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)
-	love.window.setIcon(love.image.newImageData("images/icon.png"))
 
 	loadLevel("menu")
 end
 
 function love.update(dt)
+	updateFPS(dt)
+	info = {}
 
 	if objects ~= nil then
 		for k, v in pairs(objects) do
 			if grabbed[k] ~= nil then
 				mx, my = love.mouse:getPosition()
-				bx, by = v.body:getPosition()
+				bx, by = v.body:getWorldPoint(grabbed[k].x, grabbed[k].y)
 				xdif = mx-bx
 				ydif = my-by
 				--local coords of click
 				lx, ly = v.body:getLocalPoint(mx, my)
+				if xdif<0 then invx=-1 else invx=1 end
+				if ydif<0 then invy=-1 else invy=1 end
 				v.body:applyForce(xdif*25, ydif*25, lx, ly)
-				print("applied force")
 			end
 		end
 	end
 
-	deltatime = dt
-	playtime = playtime + dt
-	lastdt = dt
-	lastfps = 1/dt
-
 	dt = math.min(dt, 0.05)
+	addInfo("FPS: "..math.ceil(fps))
 
 	if world ~= nil then world:update(dt) end
 	if updateLevel ~= nil then updateLevel(dt) end
 end
 
 function love.draw()
-
-	love.graphics.setColor(255,255,255)
-	fps = (0.20*lastfps)+(0.80*fps)
-	love.graphics.print("FPS: "..math.ceil(fps), 0, 0)
-
-	love.graphics.setColor(0,0,0)
-	if objects ~= nil then
-		for k, v in pairs(objects) do
-			if v.draw ~= nil and type(v.draw) == "function" then
-				v.draw()
-			else
-				if warnings.noDraw[v] == nil then
-					warning("Method '"..k.."' has no draw function")
-					warnings.noDraw[v] = true
-				end
-			end
-		end
-	end
+	drawAll()
+	drawInfo({"FPS: "..math.ceil(fps)})
 end
 
 function love.keypressed(key)
@@ -84,9 +42,7 @@ function love.keypressed(key)
 	--set up key bind api
 end
 
-function love.mousereleased()
-	grabbed = {}
-end
+function love.mousereleased() grabbed = {} end
 
 function love.mousepressed(x, y, button)
 	clickedon = ""
@@ -95,8 +51,10 @@ function love.mousepressed(x, y, button)
 		if objects[k].shape ~= nil then
 			localx, localy = objects[k].body:getLocalPoint(x, y)
 			if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
-				grabbed[k] = {}
-				grabbed[k].x, grabbed[k].y = localx, localy
+				if objects[k].body:getType() ~= "static" then
+					grabbed[k] = {}
+					grabbed[k].x, grabbed[k].y = localx, localy
+				end
 				if objects[k].click ~= nil and type(objects[k].click) == "function" then
 					objects[k].click()
 				else
@@ -156,11 +114,54 @@ function warning(text)
 	print(fill)
 end
 
-function getCenterCoords(text, ori, max, xory) --returns cordinates of start point
+function getCenterCoords(text, ori, max, xory)
 	x, y = 0, 0
 	if xory == "x" then
 		return ((max-ori)/2)-(font:getWidth(line)/2)
 	elseif xory == "y" then
 		return ((max-ori)/2)-(font:getHeight(line)/2)
 	end
+end
+
+function drawAll()
+	love.graphics.setColor(0,0,0)
+	if objects ~= nil then
+		for k, v in pairs(objects) do
+			if v.draw ~= nil and type(v.draw) == "function" then
+				v.draw()
+			else
+				if warnings.noDraw[v] == nil then
+					warning("Method '"..k.."' has no draw function")
+					warnings.noDraw[v] = true
+				end
+			end
+		end
+	end
+end
+
+function addInfo(toAdd)
+	table.insert(info, toAdd)
+end
+
+function getInfo()
+	return info
+end
+
+function drawInfo()
+	info = getInfo()
+	love.graphics.setColor(255,255,255)
+
+	if info ~= nil and type(info) == "table" then
+		for k, v in pairs(info) do
+			love.graphics.print(v, 0, (k*12)-12)
+		end
+	end
+end
+
+function updateFPS(dt)
+	fps = (0.20*lastfps)+(0.80*fps)
+	deltatime = dt
+	playtime = playtime + dt
+	lastdt = dt
+	lastfps = 1/dt
 end

@@ -7,9 +7,7 @@ function load()
 	
 	bunnySprite = love.graphics.newImage("images/bunny.png")
 
-
 	carrotSprite = love.graphics.newImage("images/carrot.png")
-
 
 	bunnyx = settings.window.width-200
 	bunnyy = settings.window.height-205
@@ -30,7 +28,7 @@ function load()
 		},
 		topwall = {
 			body = love.physics.newBody(world, 0,0, "static"),
-			shape = love.physics.newRectangleShape(settings.window.width, 0),
+			shape = love.physics.newRectangleShape(settings.window.width*2, 0),
 		},
 		bunny = {
 			body = love.physics.newBody(world, bunnyx, bunnyy, "static"),
@@ -69,7 +67,7 @@ end
 
 function carrotDraw()
 	love.graphics.setColor(255,255,255)
-	love.graphics.polygon("fill", objects.carrot.body:getWorldPoints(objects.carrot.shape:getPoints()))
+	love.graphics.polygon("line", objects.carrot.body:getWorldPoints(objects.carrot.shape:getPoints()))
 	love.graphics.draw(carrotSprite, objects.carrot.body:getX(), objects.carrot.body:getY(), objects.carrot.body:getAngle(), objects.carrot.sx, objects.carrot.sy, carrotSprite:getWidth()/2, carrotSprite:getHeight()/2)
 end
 
@@ -85,13 +83,13 @@ end
 function bunnyDraw()
 	love.graphics.setColor(255,255,255)
 
-	--love.graphics.polygon("fill", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
+	love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 
 	love.graphics.draw(bunnySprite, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), objects.bunny.sx, objects.bunny.sy, bunnySprite:getWidth()/2, bunnySprite:getHeight()/2)
 end
 
 function bunnyClick()
-
+	--
 end
 
 function updateLevel(dt)

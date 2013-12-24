@@ -15,11 +15,12 @@ function love.update(dt)
 				bx, by = v.body:getWorldPoint(grabbed[k].x, grabbed[k].y)
 				xdif = mx-bx
 				ydif = my-by
-				--local coords of click
 				lx, ly = v.body:getLocalPoint(mx, my)
 				if xdif<0 then invx=-1 else invx=1 end
 				if ydif<0 then invy=-1 else invy=1 end
-				v.body:applyForce(xdif*25, ydif*25, lx, ly)
+				v.body:setLinearVelocity(0, 0)
+				v.body:applyLinearImpulse(xdif*80, ydif*80, lx, ly)
+				v.body:setAngularVelocity(0.5)
 			end
 		end
 	end

@@ -62,9 +62,11 @@ function movePromptDown(dt)
 		liney = liney + dt*200
 	else
 		if titletime < 20 then titletime = 20 end
-		titletime = titletime + dt*10
-		font = love.graphics.newFont(titletime)
-		love.graphics.setFont(font)
+		titletime = titletime + dt*6
+		if titletime < 100 then
+			font = love.graphics.newFont(titletime)
+			love.graphics.setFont(font)
+		end
 	end
 end
 

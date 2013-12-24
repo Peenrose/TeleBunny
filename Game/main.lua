@@ -9,7 +9,7 @@ function love.update(dt)
 	
 	updateFPS(dt)
 	info = {}
-	
+
 	addInfo("FPS: "..math.ceil(fps))
 	addMessages(dt)
 
@@ -21,16 +21,13 @@ function love.update(dt)
 				xdif = mx-bx
 				ydif = my-by
 				lx, ly = v.body:getLocalPoint(mx, my)
-				if xdif<0 then invx=-1 else invx=1 end
-				if ydif<0 then invy=-1 else invy=1 end
+
 				v.body:setLinearVelocity(0, 0)
-				v.body:applyLinearImpulse(xdif*80, ydif*80, lx, ly)
-				v.body:setAngularVelocity(0.5)
+				v.body:applyLinearImpulse(xdif*75, ydif*75, lx, ly)
+				v.body:setAngularVelocity(0)
 			end
 		end
 	end
-
-	
 
 	if world ~= nil then world:update(dt) end
 	if updateLevel ~= nil then updateLevel(dt) end
@@ -38,7 +35,7 @@ end
 
 function love.draw()
 	drawAll()
-	drawInfo({"FPS: "..math.ceil(fps)})
+	drawInfo()
 end
 
 function love.keypressed(key)
@@ -100,10 +97,10 @@ function loadLevel(name)
 	result, err = pcall(loadLevelRaw)
 	if not result then 
 		warning("Failed to load level: "..name)
-		showMessage(err, 1)
+		addInfo(err, 3)
 	else 
 		levelToLoad = nil 
-		showMessage("Level Loaded: "..name, 2) 
+		addInfo("Level Loaded: "..name, 3) 
 	end
 end
 
@@ -144,8 +141,13 @@ function drawAll()
 	end
 end
 
-function addInfo(toAdd) table.insert(info, toAdd) end
-function getInfo() return info end
+function addInfo(toAdd, time) 
+	if time == nil then
+		table.insert(info, toAdd)
+	else
+		table.insert(infoMessages, {message=toAdd, time=time})
+	end
+end
 
 function addMessages(dt)
 	for k, v in pairs(infoMessages) do
@@ -157,15 +159,7 @@ function addMessages(dt)
 	end
 end
 
-function showMessage(message, time)
-	local messagetable = {}
-	messagetable.message = message
-	messagetable.time = time
-	table.insert(infoMessages, messagetable)
-end
-
 function drawInfo()
-	info = getInfo()
 	love.graphics.setColor(255,255,255)
 
 	if info ~= nil and type(info) == "table" then

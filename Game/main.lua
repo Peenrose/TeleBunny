@@ -5,8 +5,13 @@ function love.load()
 end
 
 function love.update(dt)
+	dt = math.min(dt, 0.05)
+	
 	updateFPS(dt)
 	info = {}
+	
+	addInfo("FPS: "..math.ceil(fps))
+	addMessages(dt)
 
 	if objects ~= nil then
 		for k, v in pairs(objects) do
@@ -25,8 +30,7 @@ function love.update(dt)
 		end
 	end
 
-	dt = math.min(dt, 0.05)
-	addInfo("FPS: "..math.ceil(fps))
+	
 
 	if world ~= nil then world:update(dt) end
 	if updateLevel ~= nil then updateLevel(dt) end
@@ -96,10 +100,10 @@ function loadLevel(name)
 	result, err = pcall(loadLevelRaw)
 	if not result then 
 		warning("Failed to load level: "..name)
-		print(err)
+		showMessage(err, 1)
 	else 
 		levelToLoad = nil 
-		print("Level Loaded: "..name) 
+		showMessage("Level Loaded: "..name, 2) 
 	end
 end
 
@@ -140,12 +144,24 @@ function drawAll()
 	end
 end
 
-function addInfo(toAdd)
-	table.insert(info, toAdd)
+function addInfo(toAdd) table.insert(info, toAdd) end
+function getInfo() return info end
+
+function addMessages(dt)
+	for k, v in pairs(infoMessages) do
+		addInfo(v.message)
+		v.time = v.time - dt
+		if v.time <= 0 then
+			table.remove(infoMessages, k)
+		end
+	end
 end
 
-function getInfo()
-	return info
+function showMessage(message, time)
+	local messagetable = {}
+	messagetable.message = message
+	messagetable.time = time
+	table.insert(infoMessages, messagetable)
 end
 
 function drawInfo()

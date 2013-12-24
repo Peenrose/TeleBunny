@@ -39,6 +39,8 @@ warnings.noDraw = {}
 warnings.noShape = {}
 warnings.noClick = {}
 
+infoMessages = {}
+
 grabbed = {}
 
 cursor = love.mouse.newCursor("images/cursor.png", 0, 0)

@@ -29,7 +29,7 @@ function love.keypressed(key)
 	if key == "rctrl" then debug.debug() end
 end
 
-function love.mousereleased() grabbed = {} end
+function love.mousereleased() grabbed = {}; grabbed.grabbed = "none" end
 
 function love.mousepressed(x, y, button)
 	clickedon = ""
@@ -40,6 +40,7 @@ function love.mousepressed(x, y, button)
 			if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
 				if objects[k].body:getType() ~= "static" then
 					grabbed[k] = {}
+					grabbed.grabbed = k
 					grabbed[k].x, grabbed[k].y = localx, localy
 				end
 				if objects[k].click ~= nil and type(objects[k].click) == "function" then 
@@ -169,3 +170,8 @@ function updateFPS(dt)
 	lastdt = dt
 	lastfps = 1/dt
 end
+
+function getImageQuad(name)
+
+	return 
+end	

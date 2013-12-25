@@ -5,12 +5,15 @@ function load()
 
 	world = love.physics.newWorld(0, 9.81*64, true)
 	
-	bunnySprite = love.graphics.newImage("images/bunny.png")
+	bunnySheet = love.graphics.newImage("images/Bunny Frames/bunny_sheet.png")
+	bunnyQuad = imageQuad.bunny_off
 
 	carrotSprite = love.graphics.newImage("images/carrot.png")
 
 	bunnyx = settings.window.width-200
 	bunnyy = settings.window.height-205
+
+	grabbedTime = 0
 
 	objects = {
 		ground = {
@@ -60,10 +63,6 @@ function load()
 	objects.carrot.sx = (brx-tlx)/carrotSprite:getWidth()
 	objects.carrot.sy = (bry-tly)/carrotSprite:getHeight()
 
-	tlx, tly, brx, bry = objects.bunny.fixture:getBoundingBox()
-	objects.bunny.sx = (brx-tlx)/bunnySprite:getWidth()
-	objects.bunny.sy = (bry-tly)/bunnySprite:getHeight()
-
 end
 
 function carrotDraw()
@@ -86,16 +85,34 @@ function bunnyDraw()
 
 	love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 
-	love.graphics.draw(bunnySprite, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), objects.bunny.sx, objects.bunny.sy, bunnySprite:getWidth()/2, bunnySprite:getHeight()/2)
+	love.graphics.draw(bunnySheet, bunnyQuad, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.139616, 0.152788, 730, 660)
 end
 
 function bunnyClick()
 	--
-	loadLevel("1")
 end
 
 function updateLevel(dt)
-	--objects.carrot.xpos, objects.carrot.ypos = objects.carrot.body:getPosition()
+	--calculate what bunny sprite to do
+	if grabbed.grabbed ~= "none" then
+		grabbedTime = grabbedTime + dt
+	else
+		if grabbedTime > 0 then
+			grabbedTime = grabbedTime - dt
+		end
+	end
+	if grabbedTime > 0.15 then grabbedTime = 0.15 end
+	if grabbedTime < 0 then grabbedTime = 0 end
+
+	if grabbedTime == 0 then
+		bunnyQuad = imageQuad.bunny_off
+	elseif grabbedTime <= 0.05 then
+		bunnyQuad = imageQuad.bunny_on1
+	elseif grabbedTime <= 0.1 then
+		bunnyQuad = imageQuad.bunny_on2
+	elseif grabbedTime <= 0.15 then
+		bunnyQuad = imageQuad.bunny_on3
+	end
 end
 
 return load

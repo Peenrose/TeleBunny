@@ -26,6 +26,13 @@ settings = {
 	}
 }
 
+imageQuad = {
+	bunny_off = love.graphics.newQuad(0,0, 1432,1309, 5730,1309),
+	bunny_on1 = love.graphics.newQuad(1432,0, 2864,1309, 5730,1309),
+	bunny_on2 = love.graphics.newQuad(2864,0, 4296,1309, 5730,1309),
+	bunny_on3 = love.graphics.newQuad(4296,0, 5730,1309, 5730,1309)
+}
+
 deltatime = 0
 playtime = 0
 
@@ -42,7 +49,7 @@ warnings.noClick = {}
 infoMessages = {}
 
 grabbed = {}
-
+ 
 cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 love.mouse.setCursor(cursor)
 font = love.graphics.newFont(20)

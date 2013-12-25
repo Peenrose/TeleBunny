@@ -8,8 +8,8 @@ settings = {
 	},
 
 	displayFlags = {
-		fullscreen = false,
-		fullscreentype = "normal",
+		fullscreen = true,
+		fullscreentype = "desktop",
 		vsync = true,
 		fsaa = 0,
 		resizable = false,

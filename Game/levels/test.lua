@@ -34,10 +34,11 @@ function load()
 			body = love.physics.newBody(world, bunnyx, bunnyy, "static"),
 			shape = love.physics.newRectangleShape(200, 200),
 			draw = bunnyDraw,
+			click = bunnyClick
 		},
 		carrot = {
 			body = love.physics.newBody(world, 500, 1, "dynamic"),
-			shape = love.physics.newRectangleShape(settings.carrot.width, settings.carrot.height),
+			shape = love.physics.newPolygonShape(118,0, 80,50, 37,127, -8,320, 8,330, 145,163, 160,40, 158,38),
 			draw = carrotDraw,
 			click = carrotClick,
 
@@ -68,7 +69,7 @@ end
 function carrotDraw()
 	love.graphics.setColor(255,255,255)
 	love.graphics.polygon("line", objects.carrot.body:getWorldPoints(objects.carrot.shape:getPoints()))
-	love.graphics.draw(carrotSprite, objects.carrot.body:getX(), objects.carrot.body:getY(), objects.carrot.body:getAngle(), objects.carrot.sx, objects.carrot.sy, carrotSprite:getWidth()/2, carrotSprite:getHeight()/2)
+	love.graphics.draw(carrotSprite, objects.carrot.body:getX(), objects.carrot.body:getY(), objects.carrot.body:getAngle(), objects.carrot.sx, objects.carrot.sy)
 end
 
 function carrotClick()
@@ -90,6 +91,7 @@ end
 
 function bunnyClick()
 	--
+	loadLevel("1")
 end
 
 function updateLevel(dt)

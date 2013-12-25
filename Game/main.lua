@@ -1,6 +1,5 @@
 function love.load()
 	settings = require "settings"
-
 	loadLevel("menu")
 end
 
@@ -8,25 +7,12 @@ function love.update(dt)
 	dt = math.min(dt, 0.05)
 	
 	updateFPS(dt)
+	updateGrabbed()
+
 	info = {}
 
-	addInfo("FPS: "..math.ceil(fps))
-	addMessages(dt)
-
-	if objects ~= nil then
-		for k, v in pairs(objects) do
-			if grabbed[k] ~= nil then
-				mx, my = love.mouse:getPosition()
-				bx, by = v.body:getWorldPoint(grabbed[k].x, grabbed[k].y)
-				xdif = mx-bx
-				ydif = my-by
-				lx, ly = v.body:getLocalPoint(mx, my)
-
-				v.body:setLinearVelocity(0, 0)
-				v.body:applyLinearImpulse(xdif*75, ydif*75, lx, ly)
-				v.body:setAngularVelocity(0)
-			end
-		end
+	if currentLevel ~= "menu" then
+		addInfo("FPS: "..math.ceil(fps))
 	end
 
 	if world ~= nil then world:update(dt) end
@@ -35,13 +21,12 @@ end
 
 function love.draw()
 	drawAll()
-	drawInfo()
+	drawInfo(deltatime)
 end
 
 function love.keypressed(key)
 	if key == "escape" then love.event.push("quit") end
 	if key == "rctrl" then debug.debug() end
-	--set up key bind api
 end
 
 function love.mousereleased() grabbed = {} end
@@ -57,14 +42,13 @@ function love.mousepressed(x, y, button)
 					grabbed[k] = {}
 					grabbed[k].x, grabbed[k].y = localx, localy
 				end
-				if objects[k].click ~= nil and type(objects[k].click) == "function" then
+				if objects[k].click ~= nil and type(objects[k].click) == "function" then 
 					objects[k].click()
 				else
 					if warnings.noClick[v] == nil then
-						warning("Method '"..k.."' has no click function")
+						addInfo("Method '"..k.."' has no click function!", 5)
 						warnings.noClick[v] = true
 					end
-
 				end
 				if clickedamount == 0 then
 					clickedon = " on "..k
@@ -76,7 +60,7 @@ function love.mousepressed(x, y, button)
 			end
 		else
 			if warnings.noShape[k] == nil then
-				warning("Method '"..k.."' has no shape")
+				addInfo("Method '"..k.."' has no shape!", 5)
 				warnings.noShape[k] = true
 			end
 		end
@@ -96,24 +80,29 @@ function loadLevel(name)
 	levelToLoad = name
 	result, err = pcall(loadLevelRaw)
 	if not result then 
-		warning("Failed to load level: "..name)
-		addInfo(err, 3)
+		addInfo(err, 10)
 	else 
 		levelToLoad = nil 
-		addInfo("Level Loaded: "..name, 3) 
+		addInfo("Level Loaded: "..name, 5)
+		currentLevel = name
 	end
 end
 
-function warning(text)
-	fill = ""
-	for i = 1, (#text/2)-4 do fill = fill.."-" end
-	fill = fill.." Error! "
-	for i = 1, (#text/2)-4 do fill = fill.."-" end
-	print(fill)
-	print(text)
-	fill = ""
-	for i = 1, #text do fill = fill.."-" end	
-	print(fill)
+function updateGrabbed()
+	if objects ~= nil then
+		for k, v in pairs(objects) do
+			if grabbed[k] ~= nil then
+				mx, my = love.mouse:getPosition()
+				bx, by = v.body:getWorldPoint(grabbed[k].x, grabbed[k].y)
+				xdif = mx-bx
+				ydif = my-by
+				lx, ly = v.body:getLocalPoint(mx, my)
+				v.body:setLinearVelocity(0, 0)
+				v.body:applyLinearImpulse(xdif*75, ydif*75, lx, ly)
+				v.body:setAngularVelocity(0)
+			end
+		end
+	end
 end
 
 function getCenterCoords(text, ori, max, xory)
@@ -133,7 +122,7 @@ function drawAll()
 				v.draw()
 			else
 				if warnings.noDraw[v] == nil then
-					warning("Method '"..k.."' has no draw function")
+					addInfo("Method '"..k.."' has no draw function!", 5)
 					warnings.noDraw[v] = true
 				end
 			end
@@ -149,7 +138,10 @@ function addInfo(toAdd, time)
 	end
 end
 
-function addMessages(dt)
+function drawInfo(dt)
+	font = love.graphics.newFont(14)
+	love.graphics.setFont(font)
+
 	for k, v in pairs(infoMessages) do
 		addInfo(v.message)
 		v.time = v.time - dt
@@ -157,15 +149,16 @@ function addMessages(dt)
 			table.remove(infoMessages, k)
 		end
 	end
-end
-
-function drawInfo()
+	x, y = "", 0
+	for k, v in pairs(info) do
+		if #v > #x then x = v end
+		y = k*16
+	end
+	love.graphics.setColor(0,0,0)
+	love.graphics.rectangle("fill", 0, 0, font:getWidth(x), y)
 	love.graphics.setColor(255,255,255)
-
-	if info ~= nil and type(info) == "table" then
-		for k, v in pairs(info) do
-			love.graphics.print(v, 0, (k*12)-12)
-		end
+	for k, v in pairs(info) do
+		love.graphics.print(v, 0, (k*16)-16)
 	end
 end
 

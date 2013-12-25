@@ -1,7 +1,6 @@
 function load()
-	
+	fontSize = 20
 	world = love.physics.newWorld(0, 9.81*64, true)
-
 	objects = {
 		background = {
 			body = love.physics.newBody(world, settings.window.width/2, (settings.window.height/2), "static"),
@@ -48,6 +47,9 @@ line = "Telekinetic Bunny!"
 function updateLevel(dt)
 	titletime = titletime + dt
 
+	font = love.graphics.newFont(fontSize)
+	love.graphics.setFont(font)
+
 	if not titledone then 
 		updateTitle(dt) 
 	else
@@ -64,8 +66,7 @@ function movePromptDown(dt)
 		if titletime < 20 then titletime = 20 end
 		titletime = titletime + dt*6
 		if titletime < 100 then
-			font = love.graphics.newFont(titletime)
-			love.graphics.setFont(font)
+			fontSize = titletime
 		end
 	end
 end

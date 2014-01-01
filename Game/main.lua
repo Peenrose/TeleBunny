@@ -170,8 +170,3 @@ function updateFPS(dt)
 	lastdt = dt
 	lastfps = 1/dt
 end
-
-function getImageQuad(name)
-
-	return 
-end	

@@ -4,17 +4,17 @@ function load()
 	love.graphics.setFont(font)
 
 	world = love.physics.newWorld(0, 9.81*64, true)
+	world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 	
 	bunnySheet = love.graphics.newImage("images/Bunny Frames/bunny_sheet.png")
 	bunnyQuad = imageQuad.bunny_off
 
+	bunnySprite = love.graphics.newImage("images/bunny.png")
 	carrotSprite = love.graphics.newImage("images/carrot.png")
 	scientistSprite = love.graphics.newImage("images/scientist.png")
 
 	bunnyx = settings.window.width-200
 	bunnyy = settings.window.height-205
-
-	grabbedTime = 0
 
 	objects = {
 		ground = {
@@ -25,14 +25,17 @@ function load()
 		leftwall = {
 			body = love.physics.newBody(world, 0, settings.window.height/2, "static"),
 			shape = love.physics.newRectangleShape(0, settings.window.height),
+			draw = function() end,
 		},
 		rightwall = {
 			body = love.physics.newBody(world, settings.window.width, settings.window.height/2, "static"),
 			shape = love.physics.newRectangleShape(0, settings.window.height),
+			draw = function() end,
 		},
 		topwall = {
 			body = love.physics.newBody(world, 0,0, "static"),
 			shape = love.physics.newRectangleShape(settings.window.width*2, 0),
+			draw = function() end,
 		},
 		bunny = {
 			body = love.physics.newBody(world, bunnyx, bunnyy, "static"),
@@ -44,7 +47,7 @@ function load()
 			body = love.physics.newBody(world, 500, 1, "dynamic"),
 			shape = love.physics.newPolygonShape(118,0, 80,50, 37,127, -8,320, 8,330, 145,163, 160,40, 158,38),
 			draw = carrotDraw,
-
+			click = function() end,
 			xpos = 0,
 			ypos = 0
 		},
@@ -52,9 +55,15 @@ function load()
 			body = love.physics.newBody(world, 300, settings.window.height-200, "dynamic"),
 			shape = love.physics.newRectangleShape(0,0, 69,190),
 			draw = scientistDraw,
+			click = function() end,
 		}
 	}
-
+	for k, v in pairs(objects) do
+		v.remove = function()
+			objects[k].body:destroy()
+			objects[k] = nil
+		end
+	end
 	objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 	objects.ground.fixture:setFriction(1.2)
 	objects.leftwall.fixture = love.physics.newFixture(objects.leftwall.body, objects.leftwall.shape)
@@ -89,18 +98,14 @@ end
 
 function bunnyDraw()
 	love.graphics.setColor(255,255,255)
-
 	love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
-
-	love.graphics.draw(bunnySheet, bunnyQuad, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.139616, 0.152788, 730, 660)
+	--love.graphics.draw(bunnySheet, bunnyQuad, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.139616, 0.152788, 730, 660)
+	love.graphics.draw(bunnySprite, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.18148820, 0.16286644, bunnySprite:getWidth()/2, bunnySprite:getHeight()/2)
 end
 
-function bunnyClick()
-	--
-end
+function bunnyClick() end
 
-function updateLevel(dt)
-	--calculate what bunny sprite to do
+function updateBunnyFrame()
 	if grabbedTime == nil then grabbedTime = 0 end
 	if grabbed.grabbed ~= "none" then
 		grabbedTime = grabbedTime + dt
@@ -109,18 +114,37 @@ function updateLevel(dt)
 			grabbedTime = grabbedTime - dt
 		end
 	end
-	if grabbedTime > 0.15 then grabbedTime = 0.15 end
+	if grabbedTime > 0.09 then grabbedTime = 0.09 end
 	if grabbedTime < 0 then grabbedTime = 0 end
-
 	if grabbedTime == 0 then
 		bunnyQuad = imageQuad.bunny_off
-	elseif grabbedTime <= 0.05 then
+	elseif grabbedTime <= 0.03 then
 		bunnyQuad = imageQuad.bunny_on1
-	elseif grabbedTime <= 0.1 then
+	elseif grabbedTime <= 0.06 then
 		bunnyQuad = imageQuad.bunny_on2
-	elseif grabbedTime <= 0.15 then
+	elseif grabbedTime <= 0.09 then
 		bunnyQuad = imageQuad.bunny_on3
 	end
 end
+
+function updateLevel(dt)
+	--updateBunnyFrame()
+end
+
+function beginContact(a, b, coll)
+	avel = math.abs(a:getBody():getLinearVelocity())
+	bvel = math.abs(b:getBody():getLinearVelocity())
+
+	--addInfo("Collision! Velocity: "..a:getBody():getLinearVelocity().. " and "..b:getBody():getLinearVelocity(), 1)
+	if objects.scientist ~= nil then
+		if a == objects.scientist.fixture or b == objects.scientist.fixture then
+			if avel > 500 or bvel > 500 then objects.scientist.remove() addInfo("[Scientist:] AAAAAAA!!!!!", 10) end
+		end
+	end
+end
+
+function endContact(a, b, coll) end
+function preSolve(a, b, coll) end
+function postSolve(a, b, coll) end
 
 return load

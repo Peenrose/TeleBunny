@@ -5,16 +5,13 @@ end
 
 function love.update(dt)
 	dt = math.min(dt, 0.05)
-	
 	updateFPS(dt)
 	updateGrabbed()
-
 	info = {}
-
 	if currentLevel ~= "menu" then
 		addInfo("FPS: "..math.ceil(fps))
+		--addInfo("RAM Usage: "..(collectgarbage("count")/1024).."MB")
 	end
-
 	if world ~= nil then world:update(dt) end
 	if updateLevel ~= nil then updateLevel(dt) end
 end
@@ -35,39 +32,41 @@ function love.mousepressed(x, y, button)
 	clickedon = ""
 	clickedamount = 0
 	for k, v in pairs(objects) do
-		if objects[k].shape ~= nil then
-			localx, localy = objects[k].body:getLocalPoint(x, y)
-			if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
-				if objects[k].body:getType() ~= "static" then
-					grabbed[k] = {}
-					grabbed.grabbed = k
-					grabbed[k].x, grabbed[k].y = localx, localy
-				end
-				if objects[k].click ~= nil and type(objects[k].click) == "function" then 
-					objects[k].click()
-				else
-					if warnings.noClick[v] == nil then
-						addInfo("Method '"..k.."' has no click function!", 5)
-						warnings.noClick[v] = true
+		if objects[k].body:isActive() == true then
+			if objects[k].shape ~= nil and objects[k].body ~= nil then
+				localx, localy = objects[k].body:getLocalPoint(x, y)
+				if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
+					if objects[k].body:getType() ~= "static" then
+						grabbed[k] = {}
+						grabbed.grabbed = k
+						grabbed[k].x, grabbed[k].y = localx, localy
+					end
+					if objects[k].click ~= nil and type(objects[k].click) == "function" then 
+						objects[k].click()
+					else
+						if warnings.noClick[v] == nil then
+							addInfo("Method '"..k.."' has no click function!", 5)
+							warnings.noClick[v] = true
+						end
+					end
+					if clickedamount == 0 then
+						clickedon = " on "..k
+						clickedamount = clickedamount + 1
+					else
+						clickedon = clickedon.." and "..k
+						clickedamount = clickedamount + 1
 					end
 				end
-				if clickedamount == 0 then
-					clickedon = " on "..k
-					clickedamount = clickedamount + 1
-				else
-					clickedon = clickedon.." and "..k
-					clickedamount = clickedamount + 1
+			else
+				if warnings.noShape[k] == nil then
+					addInfo("Method '"..k.."' has no shape!", 5)
+					warnings.noShape[k] = true
 				end
-			end
-		else
-			if warnings.noShape[k] == nil then
-				addInfo("Method '"..k.."' has no shape!", 5)
-				warnings.noShape[k] = true
 			end
 		end
 	end
 	if clickedon == "" then clickedon = " on nothing" end
-	print("click at: ("..x..", "..y..")"..clickedon)
+	addInfo("click at: ("..x..", "..y..")"..clickedon, 3)
 end
 
 function loadLevelRaw()
@@ -83,7 +82,7 @@ function loadLevel(name)
 	if not result then 
 		addInfo(err, 10)
 	else 
-		levelToLoad = nil 
+		levelToLoad = nil
 		addInfo("Level Loaded: "..name, 5)
 		currentLevel = name
 	end
@@ -119,12 +118,14 @@ function drawAll()
 	love.graphics.setColor(0,0,0)
 	if objects ~= nil then
 		for k, v in pairs(objects) do
-			if v.draw ~= nil and type(v.draw) == "function" then
-				v.draw()
-			else
-				if warnings.noDraw[v] == nil then
-					addInfo("Method '"..k.."' has no draw function!", 5)
-					warnings.noDraw[v] = true
+			if k ~= nil and v.body then
+				if v.draw ~= nil and type(v.draw) == "function" then
+					v.draw()
+				else
+					if warnings.noDraw[v] == nil then
+						addInfo("Method '"..k.."' has no draw function!", 5)
+						warnings.noDraw[v] = true
+					end
 				end
 			end
 		end

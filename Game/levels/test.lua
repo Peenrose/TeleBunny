@@ -9,6 +9,7 @@ function load()
 	bunnyQuad = imageQuad.bunny_off
 
 	carrotSprite = love.graphics.newImage("images/carrot.png")
+	scientistSprite = love.graphics.newImage("images/scientist.png")
 
 	bunnyx = settings.window.width-200
 	bunnyy = settings.window.height-205
@@ -43,10 +44,14 @@ function load()
 			body = love.physics.newBody(world, 500, 1, "dynamic"),
 			shape = love.physics.newPolygonShape(118,0, 80,50, 37,127, -8,320, 8,330, 145,163, 160,40, 158,38),
 			draw = carrotDraw,
-			click = carrotClick,
 
 			xpos = 0,
 			ypos = 0
+		},
+		scientist = {
+			body = love.physics.newBody(world, 300, settings.window.height-200, "dynamic"),
+			shape = love.physics.newRectangleShape(0,0, 69,190),
+			draw = scientistDraw,
 		}
 	}
 
@@ -58,6 +63,7 @@ function load()
 
 	objects.carrot.fixture = love.physics.newFixture(objects.carrot.body, objects.carrot.shape)
 	objects.bunny.fixture = love.physics.newFixture(objects.bunny.body, objects.bunny.shape)
+	objects.scientist.fixture = love.physics.newFixture(objects.scientist.body, objects.scientist.shape)
 
 	tlx, tly, brx, bry = objects.carrot.fixture:getBoundingBox()
 	objects.carrot.sx = (brx-tlx)/carrotSprite:getWidth()
@@ -65,14 +71,15 @@ function load()
 
 end
 
+function scientistDraw()
+	love.graphics.draw(scientistSprite, objects.scientist.body:getX(), objects.scientist.body:getY(), objects.scientist.body:getAngle(), 1, 1, 35, 95)
+	love.graphics.polygon("line", objects.scientist.body:getWorldPoints(objects.scientist.shape:getPoints()))
+end
+
 function carrotDraw()
 	love.graphics.setColor(255,255,255)
 	love.graphics.polygon("line", objects.carrot.body:getWorldPoints(objects.carrot.shape:getPoints()))
 	love.graphics.draw(carrotSprite, objects.carrot.body:getX(), objects.carrot.body:getY(), objects.carrot.body:getAngle(), objects.carrot.sx, objects.carrot.sy)
-end
-
-function carrotClick()
-
 end
 
 function groundDraw()
@@ -94,6 +101,7 @@ end
 
 function updateLevel(dt)
 	--calculate what bunny sprite to do
+	if grabbedTime == nil then grabbedTime = 0 end
 	if grabbed.grabbed ~= "none" then
 		grabbedTime = grabbedTime + dt
 	else

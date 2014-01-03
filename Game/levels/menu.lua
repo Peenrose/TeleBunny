@@ -20,12 +20,12 @@ function backgroundDraw()
 	if prompt then
 		if liney == settings.window.height/2 then donewithliney = true end
 		if donewithliney then
-			love.graphics.print("Click To Start", getCenterCoords("Click To Start", 0, settings.window.width, "x"), getCenterCoords("Click To Start", 0, settings.window.height, "y"))
+			love.graphics.printf("Click To Start", 0, settings.window.height/2, settings.window.width, "center")
 		else
-			love.graphics.print("Click To Start", getCenterCoords("Click To Start", 0, settings.window.width, "x"), liney)
+			love.graphics.printf("Click To Start", 0, liney, settings.window.width, "center")
 		end
 	else
-		love.graphics.print(line, getCenterCoords(line, 0, settings.window.width, "x"), (settings.window.height/2)-50)
+		love.graphics.printf(line, 0, settings.window.height/2, settings.window.width, "center")
 	end
 end
 

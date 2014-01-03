@@ -36,6 +36,8 @@ imageQuad = {
 deltatime = 0
 playtime = 0
 
+paused = false
+
 fps = 0
 lastdps = 0
 lastfps = 0
@@ -55,6 +57,7 @@ love.mouse.setCursor(cursor)
 font = love.graphics.newFont(20)
 love.graphics.setFont(font)
 
+pausebackground = love.graphics.newImage("images/cyanpause.png")
 love.physics.setMeter(settings.physicsMeter)
 love.window.setTitle(settings.window.title)
 love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)

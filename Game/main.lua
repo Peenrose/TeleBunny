@@ -9,26 +9,49 @@ function love.load()
 end
 
 function love.update(dt)
-	dt = math.min(dt, 0.05)
-	updateFPS(dt)
-	updateGrabbed()
-	info = {}
-	if currentLevel ~= "menu" then
-		addInfo("FPS: "..math.ceil(fps))
-		--addInfo("RAM Usage: "..(collectgarbage("count")/1024).."MB")
+	if not paused then
+		dt = math.min(dt, 0.05)
+		updateFPS(dt)
+		updateGrabbed()
+		info = {}
+		if currentLevel ~= "menu" then
+			addInfo("FPS: "..math.ceil(fps))
+			--addInfo("RAM Usage: "..(collectgarbage("count")/1024).."MB")
+		end
+		if world ~= nil then world:update(dt) end
+		if updateLevel ~= nil then updateLevel(dt) end
 	end
-	if world ~= nil then world:update(dt) end
-	if updateLevel ~= nil then updateLevel(dt) end
 end
 
 function love.draw()
-	drawAll()
-	drawInfo(deltatime)
+	if paused == false then
+		drawAll()
+		drawInfo(deltatime)
+	elseif paused == true then
+		drawAll()
+		love.graphics.draw(pausebackground)
+
+		
+		love.graphics.printf("Paused", 0,settings.window.height/2,1920,"center")
+	end
 end
 
 function love.keypressed(key)
 	if key == "escape" then love.event.push("quit") end
 	if key == "rctrl" then debug.debug() end
+	if key == "p" then 
+		if paused == true then 
+			paused = false
+			font = oldfont
+			love.graphics.setFont(font)
+		elseif paused == false then 
+			paused = true
+			oldfont = font
+			font = love.graphics.newFont(80)
+			love.graphics.setFont(font)
+		end
+
+	end
 end
 
 function love.mousereleased() grabbed = {}; grabbed.grabbed = "none" end
@@ -111,15 +134,6 @@ function updateGrabbed()
 				v.body:setAngularVelocity(0)
 			end
 		end
-	end
-end
-
-function getCenterCoords(text, ori, max, xory)
-	x, y = 0, 0
-	if xory == "x" then
-		return ((max-ori)/2)-(font:getWidth(line)/2)
-	elseif xory == "y" then
-		return ((max-ori)/2)-(font:getHeight(line)/2)
 	end
 end
 

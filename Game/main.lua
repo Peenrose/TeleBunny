@@ -1,5 +1,10 @@
 function love.load()
 	settings = require "settings"
+
+	if not love.graphics.isSupported("npot") then addInfo("Warning: your display adapter is susceptible to PO2 Syndrome", 20) end
+	assert(love.graphics.isSupported("shader"), "your display adapter does not support shaders")
+	assert(love.graphics.isSupported("canvas"), "your display adapter does not support canvases")
+
 	loadLevel("menu")
 end
 
@@ -67,6 +72,10 @@ function love.mousepressed(x, y, button)
 	end
 	if clickedon == "" then clickedon = " on nothing" end
 	addInfo("click at: ("..x..", "..y..")"..clickedon, 3)
+end
+
+function love.quit()
+
 end
 
 function loadLevelRaw()

@@ -32,7 +32,7 @@ function love.draw()
 		love.graphics.draw(pausebackground)
 
 		
-		love.graphics.printf("Paused", 0,settings.window.height/2,1920,"center")
+		love.graphics.printf("Paused", 0, settings.window.height/2-font:getHeight("Paused")/2, 1920, "center")
 	end
 end
 

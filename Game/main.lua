@@ -18,6 +18,13 @@ function love.update(dt)
 			addInfo("FPS: "..math.ceil(fps))
 			--addInfo("RAM Usage: "..(collectgarbage("count")/1024).."MB")
 		end
+		
+		for k, v in pairs(fadeOut) do
+			if fadeOut[k] > 0 then
+				--fadeOut[k].cur = fadeOut[k].cur - 255/fadeOut[k].dur | sdecrease fadeout
+			end
+		end
+
 		if world ~= nil then world:update(dt) end
 		if updateLevel ~= nil then updateLevel(dt) end
 	end
@@ -31,70 +38,81 @@ function love.draw()
 		drawAll()
 		love.graphics.draw(pausebackground)
 
-		
-		love.graphics.printf("Paused", 0, settings.window.height/2-font:getHeight("Paused")/2, 1920, "center")
+		setFontSize(80)
+		love.graphics.printf("Paused", 0, 100, 1920, "center")
+		y = 200
+		setFontSize(40)
+		for k, v in pairs(pauseItems) do
+			y = y + 100
+			love.graphics.printf(k, 0, y, 1920, "center")
+			x, y, mx, my = ((settings.window.width/2)-font:getWidth(k)/2)-10, y-10, font:getWidth(k)+20, font:getHeight(k)+20
+			love.graphics.rectangle("line", x, y, mx, my)
+			pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
+		end
+		love.graphics.point(lastclickx, lastclicky)
 	end
 end
 
 function love.keypressed(key)
 	if key == "escape" then love.event.push("quit") end
 	if key == "rctrl" then debug.debug() end
-	if key == "p" then 
-		if paused == true then 
-			paused = false
-			font = oldfont
-			love.graphics.setFont(font)
-		elseif paused == false then 
-			paused = true
-			oldfont = font
-			font = love.graphics.newFont(80)
-			love.graphics.setFont(font)
-		end
-
+	if key == "p" then
+		paused = not paused
 	end
 end
 
 function love.mousereleased() grabbed = {}; grabbed.grabbed = "none" end
 
 function love.mousepressed(x, y, button)
-	clickedon = ""
-	clickedamount = 0
-	for k, v in pairs(objects) do
-		if objects[k].body:isActive() == true then
-			if objects[k].shape ~= nil and objects[k].body ~= nil then
-				localx, localy = objects[k].body:getLocalPoint(x, y)
-				if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
-					if objects[k].body:getType() ~= "static" then
-						grabbed[k] = {}
-						grabbed.grabbed = k
-						grabbed[k].x, grabbed[k].y = localx, localy
-					end
-					if objects[k].click ~= nil and type(objects[k].click) == "function" then 
-						objects[k].click()
-					else
-						if warnings.noClick[v] == nil then
-							addInfo("Method '"..k.."' has no click function!", 5)
-							warnings.noClick[v] = true
+	if paused == false then
+		clickedon = ""
+		clickedamount = 0
+		for k, v in pairs(objects) do
+			if objects[k].body:isActive() == true then
+				if objects[k].shape ~= nil and objects[k].body ~= nil then
+					localx, localy = objects[k].body:getLocalPoint(x, y)
+					if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
+						if objects[k].body:getType() ~= "static" then
+							grabbed[k] = {}
+							grabbed.grabbed = k
+							grabbed[k].x, grabbed[k].y = localx, localy
+						end
+						if objects[k].click ~= nil and type(objects[k].click) == "function" then 
+							objects[k].click()
+						else
+							if warnings.noClick[v] == nil then
+								addInfo("Method '"..k.."' has no click function!", 5)
+								warnings.noClick[v] = true
+							end
+						end
+						if clickedamount == 0 then
+							clickedon = " on "..k
+							clickedamount = clickedamount + 1
+						else
+							clickedon = clickedon.." and "..k
+							clickedamount = clickedamount + 1
 						end
 					end
-					if clickedamount == 0 then
-						clickedon = " on "..k
-						clickedamount = clickedamount + 1
-					else
-						clickedon = clickedon.." and "..k
-						clickedamount = clickedamount + 1
+				else
+					if warnings.noShape[k] == nil then
+						addInfo("Method '"..k.."' has no shape!", 5)
+						warnings.noShape[k] = true
 					end
 				end
-			else
-				if warnings.noShape[k] == nil then
-					addInfo("Method '"..k.."' has no shape!", 5)
-					warnings.noShape[k] = true
+			end
+		end
+		if clickedon == "" then clickedon = " on nothing" end
+		addInfo("click at: ("..x..", "..y..")"..clickedon, 3)
+	elseif paused == true then
+		lastclickx, lastclicky = x, y
+		if button == "l" then
+			for k, v in pairs(pauseHitboxes) do
+				if x > v.x and x < v.mx and y > v.y and y < v.my then
+					pauseItems[k]()
 				end
 			end
 		end
 	end
-	if clickedon == "" then clickedon = " on nothing" end
-	addInfo("click at: ("..x..", "..y..")"..clickedon, 3)
 end
 
 function love.quit()
@@ -138,11 +156,12 @@ function updateGrabbed()
 end
 
 function drawAll()
-	love.graphics.setColor(0,0,0)
+	love.graphics.setColor(255,255,255)
 	if objects ~= nil then
 		for k, v in pairs(objects) do
 			if k ~= nil and v.body then
 				if v.draw ~= nil and type(v.draw) == "function" then
+					love.graphics.setColor(255,255,255, fadeOut[k] or 255)
 					v.draw()
 				else
 					if warnings.noDraw[v] == nil then
@@ -164,8 +183,7 @@ function addInfo(toAdd, time)
 end
 
 function drawInfo(dt)
-	font = love.graphics.newFont(14)
-	love.graphics.setFont(font)
+	setFontSize(14)
 
 	for k, v in pairs(infoMessages) do
 		addInfo(v.message)
@@ -193,4 +211,9 @@ function updateFPS(dt)
 	playtime = playtime + dt
 	lastdt = dt
 	lastfps = 1/dt
+end
+
+function setFontSize(size)
+	font = love.graphics.newFont(size)
+	love.graphics.setFont(font)
 end

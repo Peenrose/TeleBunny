@@ -1,7 +1,6 @@
 function load()
 	love.window.setTitle("Telekinetic Bunny")
-	font = love.graphics.newFont(14)
-	love.graphics.setFont(font)
+	setFontSize(14)
 
 	world = love.physics.newWorld(0, 9.81*64, true)
 	world:setCallbacks(beginContact, endContact, preSolve, postSolve)
@@ -64,6 +63,11 @@ function load()
 			objects[k] = nil
 		end
 	end
+		for k, v in pairs(objects) do
+		v.fadeout = function(seconds)
+			
+		end
+	end
 	objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 	objects.ground.fixture:setFriction(1.2)
 	objects.leftwall.fixture = love.physics.newFixture(objects.leftwall.body, objects.leftwall.shape)
@@ -81,6 +85,7 @@ function load()
 end
 
 function scientistDraw()
+	love.graphics.setColor(255,255,255)
 	love.graphics.draw(scientistSprite, objects.scientist.body:getX(), objects.scientist.body:getY(), objects.scientist.body:getAngle(), 1, 1, 35, 95)
 	love.graphics.polygon("line", objects.scientist.body:getWorldPoints(objects.scientist.shape:getPoints()))
 end

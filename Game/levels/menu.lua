@@ -47,8 +47,7 @@ line = "Telekinetic Bunny!"
 function updateLevel(dt)
 	titletime = titletime + dt
 
-	font = love.graphics.newFont(fontSize)
-	love.graphics.setFont(font)
+	setFontSize(fontSize)
 
 	if not titledone then 
 		updateTitle(dt) 

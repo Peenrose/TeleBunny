@@ -33,6 +33,12 @@ imageQuad = {
 	bunny_on3 = love.graphics.newQuad(4296,0, 5730,1309, 5730,1309)
 }
 
+pauseItems = {
+	resume = function() paused = false end,
+	exit = function() love.event.push("quit") end
+}
+pauseHitboxes = {}
+
 deltatime = 0
 playtime = 0
 
@@ -42,6 +48,7 @@ fps = 0
 lastdps = 0
 lastfps = 0
 playtime = 0
+lastclickx, lastclicky = 0, 0
 
 warnings = {}
 warnings.noDraw = {}
@@ -51,7 +58,9 @@ warnings.noClick = {}
 infoMessages = {}
 
 grabbed = {}
- 
+
+fadeOut = {}
+
 cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 love.mouse.setCursor(cursor)
 font = love.graphics.newFont(20)

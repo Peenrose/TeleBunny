@@ -10,6 +10,7 @@ end
 
 function love.update(dt)
 	if not paused then
+
 		dt = math.min(dt, 0.05)
 		updateFPS(dt)
 		updateGrabbed()
@@ -54,14 +55,17 @@ function love.draw()
 end
 
 function love.keypressed(key)
-	if key == "escape" then love.event.push("quit") end
+	if key == "escape" then paused = not paused end
 	if key == "rctrl" then debug.debug() end
-	if key == "p" then
-		paused = not paused
-	end
 end
 
-function love.mousereleased() grabbed = {}; grabbed.grabbed = "none" end
+function love.mousereleased() 
+	--grabbed = {}; grabbed.grabbed = "none"
+	if mouseJoint ~= nil then
+		mouseJoint:destroy()
+		mouseJoint = nil
+	end
+end
 
 function love.mousepressed(x, y, button)
 	if paused == false then
@@ -73,9 +77,11 @@ function love.mousepressed(x, y, button)
 					localx, localy = objects[k].body:getLocalPoint(x, y)
 					if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
 						if objects[k].body:getType() ~= "static" then
-							grabbed[k] = {}
-							grabbed.grabbed = k
-							grabbed[k].x, grabbed[k].y = localx, localy
+							if mouseJoint ~= nil then
+								mouseJoint:destroy()
+								mouseJoint = nil
+							end
+							mouseJoint = love.physics.newMouseJoint(objects[k].body, love.mouse.getPosition())
 						end
 						if objects[k].click ~= nil and type(objects[k].click) == "function" then 
 							objects[k].click()
@@ -139,19 +145,8 @@ function loadLevel(name)
 end
 
 function updateGrabbed()
-	if objects ~= nil then
-		for k, v in pairs(objects) do
-			if grabbed[k] ~= nil then
-				mx, my = love.mouse:getPosition()
-				bx, by = v.body:getWorldPoint(grabbed[k].x, grabbed[k].y)
-				xdif = mx-bx
-				ydif = my-by
-				lx, ly = v.body:getLocalPoint(mx, my)
-				v.body:setLinearVelocity(0, 0)
-				v.body:applyLinearImpulse(xdif*75, ydif*75, lx, ly)
-				v.body:setAngularVelocity(0)
-			end
-		end
+	if mouseJoint ~= nil then 
+		mouseJoint.setTarget(mouseJoint, love.mouse.getPosition())
 	end
 end
 
@@ -216,4 +211,9 @@ end
 function setFontSize(size)
 	font = love.graphics.newFont(size)
 	love.graphics.setFont(font)
+end
+
+function changeWeldMode()
+	--change weldmode var
+	--change pause menu item name
 end

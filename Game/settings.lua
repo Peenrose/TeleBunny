@@ -33,10 +33,12 @@ imageQuad = {
 	bunny_on3 = love.graphics.newQuad(4296,0, 5730,1309, 5730,1309)
 }
 
-pauseItems = {
-	resume = function() paused = false end,
-	exit = function() love.event.push("quit") end
-}
+pauseItems = {}
+pauseItems["Resume Game"] = function() paused = false end
+pauseItems["Exit Game"] = function() love.event.push("quit") end
+pauseItems["Weld Mode = Off"] = function() changeWeldMode() end
+
+
 pauseHitboxes = {}
 
 deltatime = 0
@@ -56,8 +58,6 @@ warnings.noShape = {}
 warnings.noClick = {}
 
 infoMessages = {}
-
-grabbed = {}
 
 fadeOut = {}
 

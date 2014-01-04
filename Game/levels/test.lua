@@ -60,6 +60,7 @@ function load()
 	for k, v in pairs(objects) do
 		v.remove = function()
 			objects[k].body:destroy()
+			--if joint is attached to body, destroy joint and set to nil
 			objects[k] = nil
 		end
 	end

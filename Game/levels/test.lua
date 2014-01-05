@@ -57,18 +57,7 @@ function load()
 			click = function() end,
 		}
 	}
-	for k, v in pairs(objects) do
-		v.remove = function()
-			objects[k].body:destroy()
-			--if joint is attached to body, destroy joint and set to nil
-			objects[k] = nil
-		end
-	end
-		for k, v in pairs(objects) do
-		v.fadeout = function(seconds)
-			
-		end
-	end
+
 	objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 	objects.ground.fixture:setFriction(1.2)
 	objects.leftwall.fixture = love.physics.newFixture(objects.leftwall.body, objects.leftwall.shape)
@@ -86,13 +75,11 @@ function load()
 end
 
 function scientistDraw()
-	love.graphics.setColor(255,255,255)
 	love.graphics.draw(scientistSprite, objects.scientist.body:getX(), objects.scientist.body:getY(), objects.scientist.body:getAngle(), 1, 1, 35, 95)
 	love.graphics.polygon("line", objects.scientist.body:getWorldPoints(objects.scientist.shape:getPoints()))
 end
 
 function carrotDraw()
-	love.graphics.setColor(255,255,255)
 	love.graphics.polygon("line", objects.carrot.body:getWorldPoints(objects.carrot.shape:getPoints()))
 	love.graphics.draw(carrotSprite, objects.carrot.body:getX(), objects.carrot.body:getY(), objects.carrot.body:getAngle(), objects.carrot.sx, objects.carrot.sy)
 end
@@ -103,7 +90,6 @@ function groundDraw()
 end
 
 function bunnyDraw()
-	love.graphics.setColor(255,255,255)
 	love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 	--love.graphics.draw(bunnySheet, bunnyQuad, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.139616, 0.152788, 730, 660)
 	love.graphics.draw(bunnySprite, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.18148820, 0.16286644, bunnySprite:getWidth()/2, bunnySprite:getHeight()/2)
@@ -144,7 +130,7 @@ function beginContact(a, b, coll)
 	--addInfo("Collision! Velocity: "..a:getBody():getLinearVelocity().. " and "..b:getBody():getLinearVelocity(), 1)
 	if objects.scientist ~= nil then
 		if a == objects.scientist.fixture or b == objects.scientist.fixture then
-			if avel > 500 or bvel > 500 then objects.scientist.remove() addInfo("[Scientist:] AAAAAAA!!!!!", 10) end
+			if avel > 500 or bvel > 500 then objects.scientist.fadeout(100) addInfo("[Scientist:] AAAAAAA!!!!!", 10) end
 		end
 	end
 end

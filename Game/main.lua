@@ -21,8 +21,12 @@ function love.update(dt)
 		end
 		
 		for k, v in pairs(fadeOut) do
-			if fadeOut[k] > 0 then
-				--fadeOut[k].cur = fadeOut[k].cur - 255/fadeOut[k].dur | sdecrease fadeout
+			if fadeOut[k].cur < 0 then fadeOut[k].cur = 0 end
+			if fadeOut[k].cur > 0 then
+				fadeOut[k].cur = fadeOut[k].cur - fadeOut[k].aps*dt
+			elseif fadeOut[k].cur == 0 then 
+				objects[k].remove()
+				fadeOut[k] = nil
 			end
 		end
 
@@ -60,7 +64,6 @@ function love.keypressed(key)
 end
 
 function love.mousereleased() 
-	--grabbed = {}; grabbed.grabbed = "none"
 	if mouseJoint ~= nil then
 		mouseJoint:destroy()
 		mouseJoint = nil
@@ -129,6 +132,16 @@ function loadLevelRaw()
 	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil
+	for k, v in pairs(objects) do
+		v.remove = function()
+			objects[k].body:destroy()
+			--if joint is attached to body, destroy joint and set to nil
+			objects[k] = nil
+		end
+		v.fadeout = function(aps) --alpha value per second
+			fadeOut[k] = {cur=255,aps=aps}
+		end
+	end
 	return true
 end
 
@@ -156,8 +169,14 @@ function drawAll()
 		for k, v in pairs(objects) do
 			if k ~= nil and v.body then
 				if v.draw ~= nil and type(v.draw) == "function" then
-					love.graphics.setColor(255,255,255, fadeOut[k] or 255)
-					v.draw()
+					if fadeOut[k] ~= nil then
+						if fadeOut[k].cur < 0 then fadeOut[k].cur = 0 end
+						love.graphics.setColor(255,255,255, fadeOut[k].cur)
+						v.draw()
+					else
+						love.graphics.setColor(255,255,255)
+						v.draw()
+					end
 				else
 					if warnings.noDraw[v] == nil then
 						addInfo("Method '"..k.."' has no draw function!", 5)

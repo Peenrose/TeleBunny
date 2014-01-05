@@ -1,3 +1,6 @@
+--crash when destroyed body has weld joint attached
+--error when destroyed body has mouse joint attached
+
 function love.load()
 	settings = require "settings"
 
@@ -10,7 +13,6 @@ end
 
 function love.update(dt)
 	if not paused then
-
 		dt = math.min(dt, 0.05)
 		updateFPS(dt)
 		updateGrabbed()
@@ -29,7 +31,18 @@ function love.update(dt)
 				fadeOut[k] = nil
 			end
 		end
-
+		for k, v in pairs(scheduled) do
+			v.time = v.time - dt
+			if v.time >= 0 then
+				v.action()
+				table.remove(k, scheduler)
+			end
+		end
+		for k, v in pairs(toWeld) do
+			weld = love.physics.newWeldJoint(v.a, v.b, v.x, v.y, v.coll)
+			table.insert(welds, weld)
+		end
+		addInfo("Current Level: "..currentLevel)
 		if world ~= nil then world:update(dt) end
 		if updateLevel ~= nil then updateLevel(dt) end
 	end
@@ -49,12 +62,11 @@ function love.draw()
 		setFontSize(40)
 		for k, v in pairs(pauseItems) do
 			y = y + 100
-			love.graphics.printf(k, 0, y, 1920, "center")
-			x, y, mx, my = ((settings.window.width/2)-font:getWidth(k)/2)-10, y-10, font:getWidth(k)+20, font:getHeight(k)+20
+			love.graphics.printf(v.title, 0, y, 1920, "center")
+			x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
 			love.graphics.rectangle("line", x, y, mx, my)
 			pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
 		end
-		love.graphics.point(lastclickx, lastclicky)
 	end
 end
 
@@ -63,7 +75,7 @@ function love.keypressed(key)
 	if key == "rctrl" then debug.debug() end
 end
 
-function love.mousereleased() 
+function love.mousereleased()
 	if mouseJoint ~= nil then
 		mouseJoint:destroy()
 		mouseJoint = nil
@@ -117,7 +129,7 @@ function love.mousepressed(x, y, button)
 		if button == "l" then
 			for k, v in pairs(pauseHitboxes) do
 				if x > v.x and x < v.mx and y > v.y and y < v.my then
-					pauseItems[k]()
+					pauseItems[k].action()
 				end
 			end
 		end
@@ -128,7 +140,17 @@ function love.quit()
 
 end
 
-function loadLevelRaw()
+function schedule(func, time)
+	table.insert(scheduled, {time=time, func=func})
+end
+
+function loadLevelRaw(levelToLoad)
+	if objects ~= nil then
+		for k, v in pairs(objects) do
+		v.remove()
+		end
+		objects = nil
+	end
 	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil
@@ -142,17 +164,18 @@ function loadLevelRaw()
 			fadeOut[k] = {cur=255,aps=aps}
 		end
 	end
+	world:setCallbacks(beginContactMain, endContactMain, preSolveMain, postSolveMain)
+	currentLevel = name
 	return true
 end
 
 function loadLevel(name)
-	levelToLoad = name
-	result, err = pcall(loadLevelRaw)
+	result, err = pcall(loadLevelRaw, name)
 	if not result then 
-		addInfo(err, 10)
+		addInfo(err, 60)
 	else 
 		levelToLoad = nil
-		addInfo("Level Loaded: "..name, 5)
+		addInfo("Level Loaded: "..name, 10)
 		currentLevel = name
 	end
 end
@@ -188,7 +211,7 @@ function drawAll()
 	end
 end
 
-function addInfo(toAdd, time) 
+function addInfo(toAdd, time)
 	if time == nil then
 		table.insert(info, toAdd)
 	else
@@ -233,6 +256,42 @@ function setFontSize(size)
 end
 
 function changeWeldMode()
-	--change weldmode var
-	--change pause menu item name
+	if weldmode == false then
+		weldmode = true
+		pauseItems[4].title = "Weld Mode = On"
+	elseif weldmode == true then
+		weldmode = false
+		for k, v in pairs(welds) do
+
+		end
+		welds = {}
+		pauseItems[4].title = "Weld Mode = Off"
+	end
+end
+
+function beginContactMain(a, b, coll)
+	if weldmode == true then
+		x1, y1, x2, y2 = coll:getPositions()
+		weldJoint(a:getBody(), b:getBody(), x1, y1, true)
+		addInfo("weld added", 5)
+	end
+
+	if beginContact ~= nil then beginContact(a, b, coll) end
+end
+
+function weldJoint(a, b, x, y, coll)
+	table.insert(toWeld, {a=a, b=b, x=x, y=y, coll=coll})
+	
+end
+
+function endContactMain(a, b, coll) 
+	if endContact ~= nil then endContact(a, b, coll) end
+end
+
+function preSolveMain(a, b, coll) 
+	if preSolve ~= nil then preSolve(a, b, coll) end
+end
+
+function postSolveMain(a, b, coll) 
+	if postSolve ~= nil then postSolve(a, b, coll) end
 end

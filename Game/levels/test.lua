@@ -3,7 +3,6 @@ function load()
 	setFontSize(14)
 
 	world = love.physics.newWorld(0, 9.81*64, true)
-	world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 	
 	bunnySheet = love.graphics.newImage("images/Bunny Frames/bunny_sheet.png")
 	bunnyQuad = imageQuad.bunny_off
@@ -130,7 +129,12 @@ function beginContact(a, b, coll)
 	--addInfo("Collision! Velocity: "..a:getBody():getLinearVelocity().. " and "..b:getBody():getLinearVelocity(), 1)
 	if objects.scientist ~= nil then
 		if a == objects.scientist.fixture or b == objects.scientist.fixture then
-			if avel > 500 or bvel > 500 then objects.scientist.fadeout(100) addInfo("[Scientist:] AAAAAAA!!!!!", 10) end
+			if avel > 500 or bvel > 500 then
+				if fadeOut["scientist"] == nil then
+					objects.scientist.fadeout(100)
+				end
+				addInfo("[Scientist:] AAAAAAA!!!!!", 10) 
+			end
 		end
 	end
 end

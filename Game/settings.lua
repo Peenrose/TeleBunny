@@ -33,11 +33,12 @@ imageQuad = {
 	bunny_on3 = love.graphics.newQuad(4296,0, 5730,1309, 5730,1309)
 }
 
-pauseItems = {}
-pauseItems["Resume Game"] = function() paused = false end
-pauseItems["Exit Game"] = function() love.event.push("quit") end
-pauseItems["Weld Mode = Off"] = function() changeWeldMode() end
-
+pauseItems = {
+	{title = "Resume Game", action = function() paused = false end},
+	{title = "Quit Game", action = function() love.event.push("quit") end},
+	{title = "Reset Level", action = function() loadLevel(currentLevel) end},
+	{title = "Weld Mode = Off", action = function() changeWeldMode() end}
+}
 
 pauseHitboxes = {}
 
@@ -45,12 +46,17 @@ deltatime = 0
 playtime = 0
 
 paused = false
+weldmode = false
+welds = {}
+toWeld = {}
 
 fps = 0
 lastdps = 0
 lastfps = 0
 playtime = 0
 lastclickx, lastclicky = 0, 0
+
+currentlevel = ""
 
 warnings = {}
 warnings.noDraw = {}
@@ -60,6 +66,8 @@ warnings.noClick = {}
 infoMessages = {}
 
 fadeOut = {}
+
+scheduled = {}
 
 cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 love.mouse.setCursor(cursor)

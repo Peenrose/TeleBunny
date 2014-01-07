@@ -18,7 +18,7 @@ function love.update(dt)
 		updateGrabbed()
 		info = {}
 		if currentLevel ~= "menu" then
-			addInfo("FPS: "..math.ceil(fps))
+			addInfo("FPS: "..math.floor(fps))
 			--addInfo("RAM Usage: "..(collectgarbage("count")/1024).."MB")
 		end
 		
@@ -27,7 +27,7 @@ function love.update(dt)
 			if fadeOut[k].cur > 0 then
 				fadeOut[k].cur = fadeOut[k].cur - fadeOut[k].aps*dt
 			elseif fadeOut[k].cur == 0 then 
-				objects[k].remove()
+				objects[k].remove(k)
 				fadeOut[k] = nil
 			end
 		end
@@ -83,6 +83,7 @@ function love.mousereleased()
 end
 
 function love.mousepressed(x, y, button)
+	if button == "r" then objects.scientist:remove() end
 	if paused == false then
 		clickedon = ""
 		clickedamount = 0
@@ -145,20 +146,16 @@ function schedule(func, time)
 end
 
 function loadLevelRaw(levelToLoad)
-	if objects ~= nil then
-		for k, v in pairs(objects) do
-		v.remove()
-		end
-		objects = nil
-	end
+	if world ~= nil then world:destroy() world = nil end
+	objects = nil
 	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil
 	for k, v in pairs(objects) do
-		v.remove = function()
-			objects[k].body:destroy()
-			--if joint is attached to body, destroy joint and set to nil
-			objects[k] = nil
+		v.remove = function(self)
+			objects[self].body:destroy()
+			objects[self] = nil
+			table.remove(objects, tonumber(k))
 		end
 		v.fadeout = function(aps) --alpha value per second
 			fadeOut[k] = {cur=255,aps=aps}
@@ -181,7 +178,7 @@ function loadLevel(name)
 end
 
 function updateGrabbed()
-	if mouseJoint ~= nil then 
+	if mouseJoint ~= nil then
 		mouseJoint.setTarget(mouseJoint, love.mouse.getPosition())
 	end
 end
@@ -191,7 +188,7 @@ function drawAll()
 	if objects ~= nil then
 		for k, v in pairs(objects) do
 			if k ~= nil and v.body then
-				if v.draw ~= nil and type(v.draw) == "function" then
+				if v.draw ~= nil and type(v.draw) == "function" then 
 					if fadeOut[k] ~= nil then
 						if fadeOut[k].cur < 0 then fadeOut[k].cur = 0 end
 						love.graphics.setColor(255,255,255, fadeOut[k].cur)
@@ -272,8 +269,8 @@ end
 function beginContactMain(a, b, coll)
 	if weldmode == true then
 		x1, y1, x2, y2 = coll:getPositions()
-		weldJoint(a:getBody(), b:getBody(), x1, y1, true)
-		addInfo("weld added", 5)
+		weld = weldJoint(a:getBody(), b:getBody(), x1, y1, true)
+		table.insert(welds, weld)
 	end
 
 	if beginContact ~= nil then beginContact(a, b, coll) end

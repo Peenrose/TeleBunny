@@ -64,10 +64,9 @@ warnings.noShape = {}
 warnings.noClick = {}
 
 infoMessages = {}
-
 fadeOut = {}
-
 scheduled = {}
+removals = {}
 
 cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 love.mouse.setCursor(cursor)

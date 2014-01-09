@@ -17,7 +17,7 @@ function load()
 	objects = {
 		ground = {
 			body = love.physics.newBody(world, settings.window.width/2, settings.window.height-100, "static"),
-			shape = love.physics.newRectangleShape(settings.window.width, 10),
+			shape = love.physics.newRectangleShape(settings.window.width, 100),
 			draw = groundDraw
 		},
 		leftwall = {

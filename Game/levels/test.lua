@@ -54,8 +54,27 @@ function load()
 			shape = love.physics.newRectangleShape(0,0, 69,190),
 			draw = scientistDraw,
 			click = function() end,
+		},
+		box1 = {
+			body = love.physics.newBody(world, 25, 25, "dynamic"),
+			shape = love.physics.newRectangleShape(0,0, 50,50),
+			draw = function() 
+				love.graphics.polygon("fill", objects.box1.body:getWorldPoints(objects.box1.shape:getPoints()))
+			end,
+			click = function() end,
+		},
+		box2 = {
+			body = love.physics.newBody(world, 25, 25, "dynamic"),
+			shape = love.physics.newRectangleShape(0,0, 50,50),
+			draw = function()
+				love.graphics.polygon("fill", objects.box2.body:getWorldPoints(objects.box2.shape:getPoints()))
+			end,
+			click = function() end,
 		}
 	}
+	objects.box1.fixture = love.physics.newFixture(objects.box1.body, objects.box1.shape)
+	objects.box2.fixture = love.physics.newFixture(objects.box2.body, objects.box2.shape)
+	boxjoint = love.physics.newRevoluteJoint(objects.box1.body, objects.box2.body, 50,50, false)
 
 	objects.ground.fixture = love.physics.newFixture(objects.ground.body, objects.ground.shape)
 	objects.ground.fixture:setFriction(1.2)

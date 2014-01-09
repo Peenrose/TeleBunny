@@ -54,6 +54,7 @@ function love.draw()
 		drawInfo(deltatime)
 	elseif paused == true then
 		drawAll()
+		love.graphics.setColor(255,255,255,255)
 		love.graphics.draw(pausebackground)
 
 		setFontSize(80)

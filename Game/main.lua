@@ -152,9 +152,8 @@ function loadLevelRaw(levelToLoad)
 	load = nil
 	for k, v in pairs(objects) do
 		v.remove = function(self)
-			objects[self].body:destroy()
-			objects[self] = nil
-			table.remove(objects, tonumber(k))
+			objects[self].body:setActive(false)
+			objects[self].draw = nil
 		end
 		v.fadeout = function(aps) --alpha value per second
 			fadeOut[k] = {cur=255,aps=aps}

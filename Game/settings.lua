@@ -37,7 +37,6 @@ pauseItems = {
 	{title = "Resume Game", action = function() paused = false end},
 	{title = "Quit Game", action = function() love.event.push("quit") end},
 	{title = "Reset Level", action = function() loadLevel(currentLevel) end},
-	{title = "Weld Mode = Off", action = function() changeWeldMode() end}
 }
 
 pauseHitboxes = {}

@@ -83,7 +83,6 @@ function love.mousereleased()
 end
 
 function love.mousepressed(x, y, button)
-	if button == "r" then objects.scientist:remove() end
 	if paused == false then
 		clickedon = ""
 		clickedamount = 0
@@ -252,27 +251,7 @@ function setFontSize(size)
 	love.graphics.setFont(font)
 end
 
-function changeWeldMode()
-	if weldmode == false then
-		weldmode = true
-		pauseItems[4].title = "Weld Mode = On"
-	elseif weldmode == true then
-		weldmode = false
-		for k, v in pairs(welds) do
-
-		end
-		welds = {}
-		pauseItems[4].title = "Weld Mode = Off"
-	end
-end
-
 function beginContactMain(a, b, coll)
-	if weldmode == true then
-		x1, y1, x2, y2 = coll:getPositions()
-		weld = weldJoint(a:getBody(), b:getBody(), x1, y1, true)
-		table.insert(welds, weld)
-	end
-
 	if beginContact ~= nil then beginContact(a, b, coll) end
 end
 

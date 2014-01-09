@@ -42,7 +42,7 @@ function love.update(dt)
 			weld = love.physics.newWeldJoint(v.a, v.b, v.x, v.y, v.coll)
 			table.insert(welds, weld)
 		end
-		addInfo("Current Level: "..currentLevel)
+		--addInfo("Current Level: "..currentLevel)
 		if world ~= nil then world:update(dt) end
 		if updateLevel ~= nil then updateLevel(dt) end
 	end
@@ -159,6 +159,14 @@ function loadLevelRaw(levelToLoad)
 		v.fadeout = function(aps) --alpha value per second
 			fadeOut[k] = {cur=255,aps=aps}
 		end
+		if v.fixture == nil then
+			v.fixture = love.physics.newFixture(objects[k].body, objects[k].shape)
+		end
+	end
+	for k, v in pairs(objects) do
+		if v.afterload ~= nil then
+			loadstring(v.afterload)()
+		end
 	end
 	world:setCallbacks(beginContactMain, endContactMain, preSolveMain, postSolveMain)
 	currentLevel = name
@@ -196,11 +204,13 @@ function drawAll()
 						love.graphics.setColor(255,255,255)
 						v.draw()
 					end
+				--[[
 				else
 					if warnings.noDraw[v] == nil then
 						addInfo("Method '"..k.."' has no draw function!", 5)
 						warnings.noDraw[v] = true
 					end
+				]]--
 				end
 			end
 		end

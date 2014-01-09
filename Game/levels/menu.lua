@@ -9,7 +9,6 @@ function load()
 			click = backgroundClick
 		}
 	}
-	objects.background.fixture = love.physics.newFixture(objects.background.body, objects.background.shape)
 end
 
 function backgroundDraw()

@@ -97,11 +97,6 @@ function load()
 			]]
 		}
 	}
-
-
-
-
-
 end
 
 function updateBunnyFrame()
@@ -141,7 +136,14 @@ function beginContact(a, b, coll)
 				if fadeOut["scientist"] == nil then
 					objects.scientist.fadeout(100)
 				end
-				addInfo("[Scientist:] AAAAAAA!!!!!", 10) 
+				yell = "[Scientist:] "
+				force = math.max(avel, bvel)
+				repeat
+					yell = yell.."A"
+					force = force - 150
+				until force <= 0
+				yell = yell.."!"
+				addInfo(yell, 5)
 			end
 		end
 	end

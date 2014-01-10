@@ -1,6 +1,6 @@
 function love.conf(game)
   game.identity = "TeleBunny"
-  game.author = "Simon Hoke | Andrew Visser"
+  game.author = "Simon Hoke | Andrew Visser | Max Townsend"
   game.version = "0.9.0"
 
   game.modules.joystick = false

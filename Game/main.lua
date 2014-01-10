@@ -12,7 +12,7 @@ function love.load()
 end
 
 function love.update(dt)
-	if not paused then
+	if not pausedScreen then
 		dt = math.min(dt, 0.05)
 		updateFPS(dt)
 		updateGrabbed()
@@ -49,30 +49,46 @@ function love.update(dt)
 end
 
 function love.draw()
-	if paused == false then
+	if pausedScreen == false then
 		drawAll()
 		drawInfo(deltatime)
-	elseif paused == true then
+	elseif pausedScreen == true then
 		drawAll()
 		love.graphics.setColor(255,255,255,255)
 		love.graphics.draw(pausebackground)
 
-		setFontSize(80)
-		love.graphics.printf("Paused", 0, 100, 1920, "center")
-		y = 200
-		setFontSize(40)
-		for k, v in pairs(pauseItems) do
-			y = y + 100
-			love.graphics.printf(v.title, 0, y, 1920, "center")
-			x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
-			love.graphics.rectangle("line", x, y, mx, my)
-			pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
+		if settingsScreen == true then
+			setFontSize(80)
+			love.graphics.printf("Paused", 0, 100, 1920, "center")
+			setFontSize(30)
+			love.graphics.printf("Settings", 0, 175, 1920, "center")
+			y = 200
+			setFontSize(40)
+			for k, v in pairs(settingsItems) do
+				y = y + 100
+				love.graphics.printf(v.title, 0, y, 1920, "center")
+				x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
+				love.graphics.rectangle("line", x, y, mx, my)
+				settingsHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
+			end
+		elseif settingsScreen == false then
+			setFontSize(80)
+			love.graphics.printf("Paused", 0, 100, 1920, "center")
+			y = 200
+			setFontSize(40)
+			for k, v in pairs(pauseItems) do
+				y = y + 100
+				love.graphics.printf(v.title, 0, y, 1920, "center")
+				x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
+				love.graphics.rectangle("line", x, y, mx, my)
+				pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
+			end
 		end
 	end
 end
 
 function love.keypressed(key)
-	if key == "escape" then paused = not paused end
+	if key == "escape" then pausedScreen = not pausedScreen; settingsScreen = false end
 	if key == "rctrl" then debug.debug() end
 end
 
@@ -84,7 +100,7 @@ function love.mousereleased()
 end
 
 function love.mousepressed(x, y, button)
-	if paused == false then
+	if pausedScreen == false then
 		clickedon = ""
 		clickedamount = 0
 		for k, v in pairs(objects) do
@@ -98,6 +114,7 @@ function love.mousepressed(x, y, button)
 								mouseJoint = nil
 							end
 							mouseJoint = love.physics.newMouseJoint(objects[k].body, love.mouse.getPosition())
+							--mouseJoint:setMaxForce(15000)
 						end
 						if objects[k].click ~= nil and type(objects[k].click) == "function" then 
 							objects[k].click()
@@ -125,12 +142,18 @@ function love.mousepressed(x, y, button)
 		end
 		if clickedon == "" then clickedon = " on nothing" end
 		addInfo("click at: ("..x..", "..y..")"..clickedon, 3)
-	elseif paused == true then
+	elseif pausedScreen == true then
 		lastclickx, lastclicky = x, y
-		if button == "l" then
+		if settingsScreen == false then
 			for k, v in pairs(pauseHitboxes) do
 				if x > v.x and x < v.mx and y > v.y and y < v.my then
-					pauseItems[k].action()
+					pauseItems[k].action(button)
+				end
+			end
+		elseif settingsScreen == true then
+			for k, v in pairs(settingsHitboxes) do
+				if x > v.x and x < v.mx and y > v.y and y < v.my then
+					settingsItems[k].action(button)
 				end
 			end
 		end

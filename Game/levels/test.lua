@@ -2,6 +2,12 @@ function load()
 	love.window.setTitle("Telekinetic Bunny")
 	setFontSize(14)
 
+	bunnyheight = 200
+	bunnywidth = 200
+	bunnyx = settings.window.width-200
+	bunnyy = settings.window.height-205
+
+
 	world = love.physics.newWorld(0, 9.81*64, true)
 	
 	bunnySheet = love.graphics.newImage("images/Bunny Frames/bunny_sheet.png")
@@ -11,8 +17,7 @@ function load()
 	carrotSprite = love.graphics.newImage("images/carrot.png")
 	scientistSprite = love.graphics.newImage("images/scientist.png")
 
-	bunnyx = settings.window.width-200
-	bunnyy = settings.window.height-205
+	bunnysx, bunnysy = bunnywidth/bunnySprite:getWidth(), bunnyheight/bunnySprite:getHeight()
 
 	objects = {
 		ground = {
@@ -43,11 +48,11 @@ function load()
 		},
 		bunny = {
 			body = love.physics.newBody(world, bunnyx, bunnyy, "static"),
-			shape = love.physics.newRectangleShape(200, 200),
+			shape = love.physics.newRectangleShape(bunnywidth, bunnyheight),
 			draw = function()
 				love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 				--love.graphics.draw(bunnySheet, bunnyQuad, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.139616, 0.152788, 730, 660)
-				love.graphics.draw(bunnySprite, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.18148820, 0.16286644, bunnySprite:getWidth()/2, bunnySprite:getHeight()/2)
+				love.graphics.draw(bunnySprite, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), bunnysx, bunnysy, bunnySprite:getWidth()/2, bunnySprite:getHeight()/2)
 			end,
 			click = function() end
 		},
@@ -121,8 +126,27 @@ function updateBunnyFrame()
 	end
 end
 
+stime = 0
+function scientistAI(dt)
+	stime = stime + dt
+	if stime > 2 then
+		rotation = objects.scientist.body:getAngle()*57.2957795 --radians to degrees
+		while rotation > 360 do rotation = rotation - 360 end
+		while rotation < -360 do rotation = rotation + 360 end
+		if round(rotation, 0) == 90 then
+			objects.scientist.body:setAngularVelocity(-10.4)
+		elseif round(rotation, 0) == -90 then
+			objects.scientist.body:setAngularVelocity(10.4)
+		else
+			objects.scientist.body:applyLinearImpulse(math.random(-400, 400), math.random(-400, -200))
+		end
+		stime = 0
+	end
+end
+
 function updateLevel(dt)
 	--updateBunnyFrame()
+	scientistAI(dt)
 end
 
 function beginContact(a, b, coll)
@@ -132,7 +156,7 @@ function beginContact(a, b, coll)
 	--addInfo("Collision! Velocity: "..a:getBody():getLinearVelocity().. " and "..b:getBody():getLinearVelocity(), 1)
 	if objects.scientist ~= nil then
 		if a == objects.scientist.fixture or b == objects.scientist.fixture then
-			if avel > 500 or bvel > 500 then
+			if avel > 600 or bvel > 600 then
 				if fadeOut["scientist"] == nil then
 					objects.scientist.fadeout(100)
 				end

@@ -103,39 +103,41 @@ function love.mousepressed(x, y, button)
 	if pausedScreen == false then
 		clickedon = ""
 		clickedamount = 0
-		for k, v in pairs(objects) do
-			if objects[k].body:isActive() == true then
-				if objects[k].shape ~= nil and objects[k].body ~= nil then
-					localx, localy = objects[k].body:getLocalPoint(x, y)
-					if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
-						if objects[k].body:getType() ~= "static" then
-							if mouseJoint ~= nil then
-								mouseJoint:destroy()
-								mouseJoint = nil
+		if objects ~= nil then
+			for k, v in pairs(objects) do
+				if objects[k].body:isActive() == true then
+					if objects[k].shape ~= nil and objects[k].body ~= nil then
+						localx, localy = objects[k].body:getLocalPoint(x, y)
+						if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
+							if objects[k].body:getType() ~= "static" then
+								if mouseJoint ~= nil then
+									mouseJoint:destroy()
+									mouseJoint = nil
+								end
+								mouseJoint = love.physics.newMouseJoint(objects[k].body, love.mouse.getPosition())
+								--mouseJoint:setMaxForce(15000)
 							end
-							mouseJoint = love.physics.newMouseJoint(objects[k].body, love.mouse.getPosition())
-							--mouseJoint:setMaxForce(15000)
-						end
-						if objects[k].click ~= nil and type(objects[k].click) == "function" then 
-							objects[k].click()
-						else
-							if warnings.noClick[v] == nil then
-								addInfo("Method '"..k.."' has no click function!", 5)
-								warnings.noClick[v] = true
+							if objects[k].click ~= nil and type(objects[k].click) == "function" then 
+								objects[k].click()
+							else
+								if warnings.noClick[v] == nil then
+									addInfo("Method '"..k.."' has no click function!", 5)
+									warnings.noClick[v] = true
+								end
+							end
+							if clickedamount == 0 then
+								clickedon = " on "..k
+								clickedamount = clickedamount + 1
+							else
+								clickedon = clickedon.." and "..k
+								clickedamount = clickedamount + 1
 							end
 						end
-						if clickedamount == 0 then
-							clickedon = " on "..k
-							clickedamount = clickedamount + 1
-						else
-							clickedon = clickedon.." and "..k
-							clickedamount = clickedamount + 1
+					else
+						if warnings.noShape[k] == nil then
+							addInfo("Method '"..k.."' has no shape!", 5)
+							warnings.noShape[k] = true
 						end
-					end
-				else
-					if warnings.noShape[k] == nil then
-						addInfo("Method '"..k.."' has no shape!", 5)
-						warnings.noShape[k] = true
 					end
 				end
 			end
@@ -260,6 +262,7 @@ function drawInfo(dt)
 	end
 	x, y = "", 0
 	for k, v in pairs(info) do
+		v = tostring(v)
 		if #v > #x then x = v end
 		y = k*16
 	end
@@ -303,4 +306,9 @@ end
 
 function postSolveMain(a, b, coll) 
 	if postSolve ~= nil then postSolve(a, b, coll) end
+end
+
+function round(num, idp)
+  local mult = 10^(idp or 0)
+  return math.floor(num * mult + 0.5) / mult
 end

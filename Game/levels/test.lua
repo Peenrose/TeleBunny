@@ -21,8 +21,8 @@ function load()
 
 	objects = {
 		ground = {
-			body = love.physics.newBody(world, settings.window.width/2, settings.window.height-100, "static"),
-			shape = love.physics.newRectangleShape(settings.window.width, 10),
+			body = love.physics.newBody(world, settings.window.width/2*scalex, settings.window.height-100*scaley, "static"),
+			shape = love.physics.newRectangleShape(settings.window.width*scalex, 10*scaley),
 			draw = function()
 				love.graphics.setColor(50,205,50)
 				love.graphics.rectangle("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
@@ -32,23 +32,23 @@ function load()
 			]]
 		},
 		leftwall = {
-			body = love.physics.newBody(world, 0, settings.window.height/2, "static"),
-			shape = love.physics.newRectangleShape(0, settings.window.height),
+			body = love.physics.newBody(world, 0, settings.window.height/2*scaley, "static"),
+			shape = love.physics.newRectangleShape(0, settings.window.height*scaley),
 			draw = function() end,
 		},
 		rightwall = {
-			body = love.physics.newBody(world, settings.window.width, settings.window.height/2, "static"),
-			shape = love.physics.newRectangleShape(0, settings.window.height),
+			body = love.physics.newBody(world, settings.window.width*scalex, settings.window.height/2*scaley, "static"),
+			shape = love.physics.newRectangleShape(0, settings.window.height*scaley),
 			draw = function() end,
 		},
 		topwall = {
 			body = love.physics.newBody(world, 0,0, "static"),
-			shape = love.physics.newRectangleShape(settings.window.width*2, 0),
+			shape = love.physics.newRectangleShape(settings.window.width*2*scalex, 0),
 			draw = function() end,
 		},
 		bunny = {
-			body = love.physics.newBody(world, bunnyx, bunnyy, "static"),
-			shape = love.physics.newRectangleShape(bunnywidth, bunnyheight),
+			body = love.physics.newBody(world, bunnyx*scalex, bunnyy*scaley, "static"),
+			shape = love.physics.newRectangleShape(bunnywidth*scalex, bunnyheight*scaley),
 			draw = function()
 				love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 				--love.graphics.draw(bunnySheet, bunnyQuad, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.139616, 0.152788, 730, 660)
@@ -57,8 +57,8 @@ function load()
 			click = function() end
 		},
 		carrot = {
-			body = love.physics.newBody(world, 500, 1, "dynamic"),
-			shape = love.physics.newPolygonShape(118,0, 80,50, 37,127, -8,320, 8,330, 145,163, 160,40, 158,38),
+			body = love.physics.newBody(world, 500*scalex, 1*scaley, "dynamic"),
+			shape = love.physics.newPolygonShape(118*scalex,0, 80*scalex,50*scaley, 37*scalex,127*scaley, -8*scalex,320*scaley, 8*scalex,330*scaley, 145*scalex,163*scaley, 160*scalex,40*scaley, 158*scalex,38*scaley),
 			draw = function()
 				love.graphics.polygon("line", objects.carrot.body:getWorldPoints(objects.carrot.shape:getPoints()))
 				love.graphics.draw(carrotSprite, objects.carrot.body:getX(), objects.carrot.body:getY(), objects.carrot.body:getAngle(), objects.carrot.sx, objects.carrot.sy)
@@ -74,8 +74,8 @@ function load()
 			]]
 		},
 		scientist = {
-			body = love.physics.newBody(world, 300, settings.window.height-200, "dynamic"),
-			shape = love.physics.newRectangleShape(0,0, 69,190),
+			body = love.physics.newBody(world, 300*scalex, settings.window.height-200*scaley, "dynamic"),
+			shape = love.physics.newRectangleShape(0,0, 69*scalex,190*scaley),
 			draw = function()
 				love.graphics.draw(scientistSprite, objects.scientist.body:getX(), objects.scientist.body:getY(), objects.scientist.body:getAngle(), 1, 1, 35, 95)
 				love.graphics.polygon("line", objects.scientist.body:getWorldPoints(objects.scientist.shape:getPoints()))
@@ -83,16 +83,16 @@ function load()
 			click = function() end,
 		},
 		box1 = {
-			body = love.physics.newBody(world, 25, 25, "dynamic"),
-			shape = love.physics.newRectangleShape(0,0, 50,50),
+			body = love.physics.newBody(world, 25*scalex, 25*scaley, "dynamic"),
+			shape = love.physics.newRectangleShape(0,0, 50*scalex,50*scaley),
 			draw = function() 
 				love.graphics.polygon("fill", objects.box1.body:getWorldPoints(objects.box1.shape:getPoints()))
 			end,
 			click = function() end,
 		},
 		box2 = {
-			body = love.physics.newBody(world, 25, 25, "dynamic"),
-			shape = love.physics.newRectangleShape(0,0, 50,50),
+			body = love.physics.newBody(world, 25*scalex, 25*scaley, "dynamic"),
+			shape = love.physics.newRectangleShape(0,0, 50*scalex,50*scaley),
 			draw = function()
 				love.graphics.polygon("fill", objects.box2.body:getWorldPoints(objects.box2.shape:getPoints()))
 			end,

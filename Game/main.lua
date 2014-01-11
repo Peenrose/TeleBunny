@@ -60,14 +60,14 @@ function love.draw()
 		love.graphics.setColor(255,255,255,255)
 		love.graphics.draw(pausebackground)
 		setFontSize(80)
-		love.graphics.printf("Paused", 0, 100, settings.window.width, "center")
+		love.graphics.printf("Paused", 0, 100*scaley, settings.window.width, "center")
 		setFontSize(30)
 		love.graphics.printf(pausedMenu.title, 0, 175, settings.window.width, "center")
 		y = 200
 		setFontSize(40)
 		for k, v in pairs(pausedMenu) do
 			if v.action ~= nil then
-				y = y + 100
+				y = y + 100*scaley
 				love.graphics.printf(v.title, 0, y, settings.window.width, "center")
 				setFontSize(18)
 				if v.value ~= nil then love.graphics.printf(v.value, 0, y+37, settings.window.width, "center") end
@@ -250,13 +250,13 @@ function drawInfo(dt)
 	for k, v in pairs(info) do
 		v = tostring(v)
 		if #v > #x then x = v end
-		y = k*16
+		y = k*16*scaley
 	end
 	love.graphics.setColor(0,0,0)
 	love.graphics.rectangle("fill", 0, 0, font:getWidth(x), y)
 	love.graphics.setColor(255,255,255)
 	for k, v in pairs(info) do
-		love.graphics.print(v, 0, (k*16)-16)
+		love.graphics.print(v, 0, (k*16*scaley)-16*scaley)
 	end
 end
 
@@ -269,6 +269,7 @@ function updateFPS(dt)
 end
 
 function setFontSize(size)
+	size = size*scaley
 	font = love.graphics.newFont(size)
 	love.graphics.setFont(font)
 end

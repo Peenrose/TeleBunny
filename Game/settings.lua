@@ -2,8 +2,6 @@ settings = {
 	physicsMeter = 64,
 
 	window = {
-		width = 1920,
-		height = 1080,
 		title = " ",
 	},
 
@@ -25,6 +23,10 @@ settings = {
 		height = 314,
 	}
 }
+scalex = 1
+scaley = 1
+
+settings.window.width, settings.window.height = love.window.getDesktopDimensions()
 
 imageQuad = {
 	bunny_off = love.graphics.newQuad(0,0, 1432,1309, 5730,1309),
@@ -89,12 +91,14 @@ function changeResolution(button)
 		if currentRes < 8 then
 			currentRes = currentRes + 1
 			resolution.x, resolution.y = resolutions[currentRes].x, resolutions[currentRes].y
+			settings.window.x, settings.window.y = resolutions[currentRes].x, resolutions[currentRes].y
 			resolution.changing = true
 		end
 	elseif button == "r" then
-		if currentRes > 0 then
+		if currentRes > 1 then
 			currentRes = currentRes - 1
 			resolution.x, resolution.y = resolutions[currentRes].x, resolutions[currentRes].y
+			settings.window.x, settings.window.y = resolutions[currentRes].x, resolutions[currentRes].y
 			resolution.changing = true
 		end
 	end
@@ -104,6 +108,8 @@ end
 
 function applyResolution()
 	love.window.setMode(resolution.x, resolution.y)
+	loadLevel(currentLevel)
+	scalex, scaley = resolutions[currentRes].x/1920, resolutions[currentRes].y/1080
 	resolution.changing = false
 end
 

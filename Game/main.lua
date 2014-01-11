@@ -12,7 +12,7 @@ function love.load()
 end
 
 function love.update(dt)
-	if not pausedScreen then
+	if not paused then
 		dt = math.min(dt, 0.05)
 		updateFPS(dt)
 		updateGrabbed()
@@ -49,36 +49,26 @@ function love.update(dt)
 end
 
 function love.draw()
-	if pausedScreen == false then
+	if paused == false then
 		drawAll()
 		drawInfo(deltatime)
-	elseif pausedScreen == true then
+	elseif paused == true then
 		drawAll()
 		love.graphics.setColor(255,255,255,255)
 		love.graphics.draw(pausebackground)
-
-		if settingsScreen == true then
-			setFontSize(80)
-			love.graphics.printf("Paused", 0, 100, 1920, "center")
-			setFontSize(30)
-			love.graphics.printf("Settings", 0, 175, 1920, "center")
-			y = 200
-			setFontSize(40)
-			for k, v in pairs(settingsItems) do
+		setFontSize(80)
+		love.graphics.printf("Paused", 0, 100, 1920, "center")
+		setFontSize(30)
+		love.graphics.printf(pausedMenu.title, 0, 175, 1920, "center")
+		y = 200
+		setFontSize(40)
+		for k, v in pairs(pausedMenu) do
+			if v.action ~= nil then
 				y = y + 100
 				love.graphics.printf(v.title, 0, y, 1920, "center")
-				x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
-				love.graphics.rectangle("line", x, y, mx, my)
-				settingsHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
-			end
-		elseif settingsScreen == false then
-			setFontSize(80)
-			love.graphics.printf("Paused", 0, 100, 1920, "center")
-			y = 200
-			setFontSize(40)
-			for k, v in pairs(pauseItems) do
-				y = y + 100
-				love.graphics.printf(v.title, 0, y, 1920, "center")
+				setFontSize(20)
+				if v.value ~= nil then love.graphics.printf(v.value, 0, y+20, 1920, "center") end
+				setFontSize(40)
 				x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
 				love.graphics.rectangle("line", x, y, mx, my)
 				pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
@@ -88,7 +78,7 @@ function love.draw()
 end
 
 function love.keypressed(key)
-	if key == "escape" then pausedScreen = not pausedScreen; settingsScreen = false end
+	if key == "escape" then togglePause() end
 	if key == "rctrl" then debug.debug() end
 end
 
@@ -100,7 +90,7 @@ function love.mousereleased()
 end
 
 function love.mousepressed(x, y, button)
-	if pausedScreen == false then
+	if paused == false then
 		clickedon = ""
 		clickedamount = 0
 		if objects ~= nil then
@@ -144,19 +134,11 @@ function love.mousepressed(x, y, button)
 		end
 		if clickedon == "" then clickedon = " on nothing" end
 		addInfo("click at: ("..x..", "..y..")"..clickedon, 3)
-	elseif pausedScreen == true then
+	elseif paused == true then
 		lastclickx, lastclicky = x, y
-		if settingsScreen == false then
-			for k, v in pairs(pauseHitboxes) do
-				if x > v.x and x < v.mx and y > v.y and y < v.my then
-					pauseItems[k].action(button)
-				end
-			end
-		elseif settingsScreen == true then
-			for k, v in pairs(settingsHitboxes) do
-				if x > v.x and x < v.mx and y > v.y and y < v.my then
-					settingsItems[k].action(button)
-				end
+		for k, v in pairs(pauseHitboxes) do
+			if x > v.x and x < v.mx and y > v.y and y < v.my then
+				pausedMenu[k].action(button)
 			end
 		end
 	end
@@ -201,7 +183,8 @@ end
 function loadLevel(name)
 	result, err = pcall(loadLevelRaw, name)
 	if not result then 
-		addInfo(err, 60)
+		--addInfo(err, 60)
+		error(err)
 	else 
 		levelToLoad = nil
 		addInfo("Level Loaded: "..name, 10)

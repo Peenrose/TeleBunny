@@ -25,6 +25,7 @@ settings = {
 		height = 314,
 	}
 }
+
 imageQuad = {
 	bunny_off = love.graphics.newQuad(0,0, 1432,1309, 5730,1309),
 	bunny_on1 = love.graphics.newQuad(1432,0, 2864,1309, 5730,1309),
@@ -33,25 +34,62 @@ imageQuad = {
 }
 
 pauseItems = {
-	{title = "Resume Game", action = function() paused = false end},
+	title = "",
+
+	{title = "Resume Game", action = function() togglePause() end},
 	{title = "Quit Game", action = function() love.event.push("quit") end},
 	{title = "Reset Level", action = function() loadLevel(currentLevel) end},
-	{title = "Settings", action = function() settingsScreen = true end},
+	{title = "Settings", action = function() changePauseMenu(settingsItems) end},
 }
 
 settingsItems = {
-	{title = "Back", action = function() settingsScreen = false end},
-	{title = "Resolution"},
+	title = "Settings",
+
+	{title = "Back", action = function() changePauseMenu(pauseItems) end},
+	{title = "Resolution", action = function() changeResolution(button) end},
 }
 
+function togglePause()
+	if paused == true then
+		if resolution.changing then applyResolution() resolution.changing = false end
+		paused = false
+		pausedMenu = false
+	elseif paused == false then
+		paused = true
+		pausedMenu = pauseItems
+	end
+end
+
+function changePauseMenu(menu)
+	pausedMenu = menu
+	pauseHitboxes = {}
+
+	for k, v in pairs(pausedMenu) do
+		if v.action ~= nil then
+			x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
+			pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
+		end
+	end
+end
+
+resolution = {x=1920, y=1080, changing = false}
+function changeResolution()
+	resolution.x, resolution.y = 1600, 900
+	resolution.changing = true
+end
+
+function applyResolution()
+	love.window.setMode(resolution.x, resolution.y)
+	resolution.changing = false
+end
+
 pauseHitboxes = {}
-settingsHitboxes = {}
 
 deltatime = 0
 playtime = 0
 
-pausedScreen = false
-settingsScreen = false
+pauseMenu = false
+paused = false
 
 welds = {}
 toWeld = {}

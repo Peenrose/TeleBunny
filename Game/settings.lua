@@ -46,7 +46,7 @@ settingsItems = {
 	title = "Settings",
 
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
-	{title = "Resolution", action = function() changeResolution(button) end},
+	{title = "Resolution", action = function(button) changeResolution(button) end, value = "1920x1080"},
 }
 
 function togglePause()
@@ -63,7 +63,6 @@ end
 function changePauseMenu(menu)
 	pausedMenu = menu
 	pauseHitboxes = {}
-
 	for k, v in pairs(pausedMenu) do
 		if v.action ~= nil then
 			x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
@@ -73,9 +72,34 @@ function changePauseMenu(menu)
 end
 
 resolution = {x=1920, y=1080, changing = false}
-function changeResolution()
-	resolution.x, resolution.y = 1600, 900
-	resolution.changing = true
+currentRes = 8
+resolutions = {
+	{x=640, y=360},
+	{x=854, y=480},
+	{x=960, y=540},
+	{x=1024, y=576},
+	{x=1280, y=720},
+	{x=1366, y=768},
+	{x=1600, y=900},
+	{x=1920, y=1080},
+}
+
+function changeResolution(button)
+	if button == "l" then
+		if currentRes < 8 then
+			currentRes = currentRes + 1
+			resolution.x, resolution.y = resolutions[currentRes].x, resolutions[currentRes].y
+			resolution.changing = true
+		end
+	elseif button == "r" then
+		if currentRes > 0 then
+			currentRes = currentRes - 1
+			resolution.x, resolution.y = resolutions[currentRes].x, resolutions[currentRes].y
+			resolution.changing = true
+		end
+	end
+	settingsItems[2].value = resolutions[currentRes].x.."x"..resolutions[currentRes].y
+	settings.window.width, settings.window.height = resolutions[currentRes].x, resolutions[currentRes].y
 end
 
 function applyResolution()

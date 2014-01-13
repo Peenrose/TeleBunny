@@ -6,7 +6,7 @@ settings = {
 	},
 
 	displayFlags = {
-		fullscreen = true,
+		fullscreen = false,
 		fullscreentype = "desktop",
 		vsync = true,
 		fsaa = 0,
@@ -27,13 +27,6 @@ scalex = 1
 scaley = 1
 
 settings.window.width, settings.window.height = love.window.getDesktopDimensions()
-
-imageQuad = {
-	bunny_off = love.graphics.newQuad(0,0, 1432,1309, 5730,1309),
-	bunny_on1 = love.graphics.newQuad(1432,0, 2864,1309, 5730,1309),
-	bunny_on2 = love.graphics.newQuad(2864,0, 4296,1309, 5730,1309),
-	bunny_on3 = love.graphics.newQuad(4296,0, 5730,1309, 5730,1309),
-}
 
 pauseItems = {
 	title = "",
@@ -90,26 +83,29 @@ function changeResolution(button)
 	if button == "l" then
 		if currentRes < 8 then
 			currentRes = currentRes + 1
-			resolution.x, resolution.y = resolutions[currentRes].x, resolutions[currentRes].y
-			settings.window.x, settings.window.y = resolutions[currentRes].x, resolutions[currentRes].y
 			resolution.changing = true
 		end
 	elseif button == "r" then
 		if currentRes > 1 then
 			currentRes = currentRes - 1
-			resolution.x, resolution.y = resolutions[currentRes].x, resolutions[currentRes].y
-			settings.window.x, settings.window.y = resolutions[currentRes].x, resolutions[currentRes].y
 			resolution.changing = true
 		end
 	end
+
+	resolution.x, resolution.y = resolutions[currentRes].x, resolutions[currentRes].y
+	settings.window.x, settings.window.y = resolutions[currentRes].x, resolutions[currentRes].y
 	settingsItems[2].value = resolutions[currentRes].x.."x"..resolutions[currentRes].y
 	settings.window.width, settings.window.height = resolutions[currentRes].x, resolutions[currentRes].y
 end
 
 function applyResolution()
 	love.window.setMode(resolution.x, resolution.y)
-	loadLevel(currentLevel)
 	scalex, scaley = resolutions[currentRes].x/1920, resolutions[currentRes].y/1080
+	x, y = love.window.getDesktopDimensions()
+	if resolutions[currentRes].x == x and resolutions[currentRes].y == y then
+		love.window.setMode(x, y, settings.displayFlags)
+	end
+	loadLevel(currentLevel)
 	resolution.changing = false
 end
 
@@ -123,6 +119,8 @@ paused = false
 
 welds = {}
 toWeld = {}
+
+grabbed = "none"
 
 fps = 0
 lastdps = 0

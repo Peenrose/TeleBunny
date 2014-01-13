@@ -90,6 +90,7 @@ function love.mousereleased()
 		mouseJoint:destroy()
 		mouseJoint = nil
 	end
+	grabbed = "none"
 end
 
 function love.mousepressed(x, y, button)
@@ -106,7 +107,9 @@ function love.mousepressed(x, y, button)
 								if mouseJoint ~= nil then
 									mouseJoint:destroy()
 									mouseJoint = nil
+									grabbed = "none"
 								end
+								grabbed = objects[k]
 								mouseJoint = love.physics.newMouseJoint(objects[k].body, love.mouse.getPosition())
 								--mouseJoint:setMaxForce(15000)
 							end
@@ -158,6 +161,7 @@ end
 function loadLevelRaw(levelToLoad)
 	if world ~= nil then world:destroy() world = nil end
 	objects = nil
+	fadeOut = {}
 	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil

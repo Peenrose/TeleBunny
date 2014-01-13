@@ -14,14 +14,21 @@ function load()
 	carrotSprite = love.graphics.newImage("images/carrot.png")
 	scientistSprite = love.graphics.newImage("images/scientist.png")
 
-	bunny_1 = love.graphics.newImage("images/Bunny_Frames/1.png")
-	bunny_2 = love.graphics.newImage("images/Bunny_Frames/2.png")
-	bunny_3 = love.graphics.newImage("images/Bunny_Frames/3.png")
-	bunny_4 = love.graphics.newImage("images/Bunny_Frames/4.png")
+	bunnyFrames = {
+		love.graphics.newImage("images/Bunny_Frames/1.png"),
+		love.graphics.newImage("images/Bunny_Frames/2.png"),
+		love.graphics.newImage("images/Bunny_Frames/3.png"),
+		love.graphics.newImage("images/Bunny_Frames/4.png"),
+	}
 
-	bunnySprite = bunny_1
+	bunnyFrame = 1
 
-	bunnysx, bunnysy = bunnywidth/bunnySprite:getWidth(), bunnyheight/bunnySprite:getHeight()
+	bunnysx = {}
+	bunnysy = {}
+	bunnysx[1], bunnysy[1] = bunnywidth/bunnyFrames[1]:getWidth(), bunnyheight/bunnyFrames[1]:getHeight()
+	bunnysx[2], bunnysy[2] = bunnywidth/bunnyFrames[2]:getWidth(), bunnyheight/bunnyFrames[2]:getHeight()
+	bunnysx[3], bunnysy[3] = bunnywidth/bunnyFrames[3]:getWidth(), bunnyheight/bunnyFrames[3]:getHeight()
+	bunnysx[4], bunnysy[4] = bunnywidth/bunnyFrames[4]:getWidth(), bunnyheight/bunnyFrames[4]:getHeight()
 
 	objects = {
 		ground = {
@@ -56,7 +63,7 @@ function load()
 			draw = function()
 				love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 				--love.graphics.draw(bunnySheet, bunnyQuad, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.139616, 0.152788, 730, 660)
-				love.graphics.draw(bunnySprite, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), bunnysx*scalex, bunnysy*scaley, bunnySprite:getWidth()/2, bunnySprite:getHeight()/2)
+				love.graphics.draw(bunnyFrames[bunnyFrame], objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), bunnysx[bunnyFrame]*scalex, bunnysy[bunnyFrame]*scaley, bunnyFrames[bunnyFrame]:getWidth()/2, bunnyFrames[bunnyFrame]:getHeight()/2)
 			end,
 			click = function() end
 		},
@@ -120,13 +127,13 @@ function updateBunnyFrame(dt)
 	if grabbedTime > (1/fps)*4 then grabbedTime = (1/fps)*4 end
 	if grabbedTime < 0 then grabbedTime = 0 end
 	if grabbedTime == 0 then
-		bunnySprite = bunny_1
+		bunnyFrame = 1
 	elseif grabbedTime <= 1/fps then
-		bunnySprite = bunny_2
+		bunnyFrame = 2
 	elseif grabbedTime <= (1/fps)*2 then
-		bunnySprite = bunny_3
+		bunnyFrame = 3
 	elseif grabbedTime <= (1/fps)*3 then
-		bunnySprite = bunny_4
+		bunnyFrame = 4
 	end
 	addInfo("Object Grab Time: "..grabbedTime)
 end

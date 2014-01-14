@@ -23,12 +23,8 @@ function load()
 
 	bunnyFrame = 1
 
-	bunnysx = {}
-	bunnysy = {}
-	bunnysx[1], bunnysy[1] = bunnywidth/bunnyFrames[1]:getWidth(), bunnyheight/bunnyFrames[1]:getHeight()
-	bunnysx[2], bunnysy[2] = bunnywidth/bunnyFrames[2]:getWidth(), bunnyheight/bunnyFrames[2]:getHeight()
-	bunnysx[3], bunnysy[3] = bunnywidth/bunnyFrames[3]:getWidth(), bunnyheight/bunnyFrames[3]:getHeight()
-	bunnysx[4], bunnysy[4] = bunnywidth/bunnyFrames[4]:getWidth(), bunnyheight/bunnyFrames[4]:getHeight()
+	bunnysx = bunnyFrames[1]:getWidth()/1152/bunnywidth
+	bunnysy = bunnyFrames[1]:getHeight()/1149/bunnyheight
 
 	objects = {
 		ground = {
@@ -63,7 +59,10 @@ function load()
 			draw = function()
 				love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
 				--love.graphics.draw(bunnySheet, bunnyQuad, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.139616, 0.152788, 730, 660)
-				love.graphics.draw(bunnyFrames[bunnyFrame], objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), bunnysx[bunnyFrame]*scalex, bunnysy[bunnyFrame]*scaley, bunnyFrames[bunnyFrame]:getWidth()/2, bunnyFrames[bunnyFrame]:getHeight()/2)
+				--1152 1149
+				xoff = (bunnyFrames[bunnyFrame]:getWidth()-bunnyFrames[1]:getWidth()) + (bunnyFrames[1]:getWidth()/2) --1150
+				yoff = (bunnyFrames[bunnyFrame]:getHeight()-bunnyFrames[1]:getHeight()) + (bunnyFrames[1]:getHeight()/2)
+				love.graphics.draw(bunnyFrames[bunnyFrame], objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), bunnysx*scalex, bunnysy*scaley, xoff, yoff)
 			end,
 			click = function() end
 		},
@@ -116,7 +115,7 @@ function load()
 end
 
 function updateBunnyFrame(dt)
-	fps = 20
+	fps = 25
 
 	if grabbedTime == nil then grabbedTime = 0 end
 	if grabbed ~= "none" then
@@ -135,7 +134,6 @@ function updateBunnyFrame(dt)
 	elseif grabbedTime <= (1/fps)*3 then
 		bunnyFrame = 4
 	end
-	addInfo("Object Grab Time: "..grabbedTime)
 end
 
 stime = 0

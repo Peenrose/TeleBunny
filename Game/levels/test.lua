@@ -23,8 +23,8 @@ function load()
 
 	bunnyFrame = 1
 
-	bunnysx = bunnyFrames[1]:getWidth()/1152/bunnywidth
-	bunnysy = bunnyFrames[1]:getHeight()/1149/bunnyheight
+	bunnysx = bunnywidth/1147
+	bunnysy = bunnyheight/1145
 
 	objects = {
 		ground = {
@@ -57,12 +57,8 @@ function load()
 			body = love.physics.newBody(world, bunnyx*scalex, bunnyy*scaley, "static"),
 			shape = love.physics.newRectangleShape(bunnywidth*scalex, bunnyheight*scaley),
 			draw = function()
-				love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints()))
-				--love.graphics.draw(bunnySheet, bunnyQuad, objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), 0.139616, 0.152788, 730, 660)
-				--1152 1149
-				xoff = (bunnyFrames[bunnyFrame]:getWidth()-bunnyFrames[1]:getWidth()) + (bunnyFrames[1]:getWidth()/2) --1150
-				yoff = (bunnyFrames[bunnyFrame]:getHeight()-bunnyFrames[1]:getHeight()) + (bunnyFrames[1]:getHeight()/2)
-				love.graphics.draw(bunnyFrames[bunnyFrame], objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), bunnysx*scalex, bunnysy*scaley, xoff, yoff)
+				--love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints())) hitbox
+				love.graphics.draw(bunnyFrames[bunnyFrame], objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), bunnysx*scalex, bunnysy*scaley, 580, 888)
 			end,
 			click = function() end
 		},
@@ -115,7 +111,7 @@ function load()
 end
 
 function updateBunnyFrame(dt)
-	fps = 25
+	fps = 30
 
 	if grabbedTime == nil then grabbedTime = 0 end
 	if grabbed ~= "none" then

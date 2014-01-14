@@ -8,7 +8,7 @@ settings = {
 	displayFlags = {
 		fullscreen = false,
 		fullscreentype = "desktop",
-		vsync = true,
+		vsync = false,
 		fsaa = 0,
 		resizable = false,
 		borderless = false,
@@ -41,12 +41,10 @@ settingsItems = {
 	title = "Settings",
 
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
-	{title = "Resolution", action = function(button) changeResolution(button) end, value = "1920x1080"},
 }
 
 function togglePause()
 	if paused == true then
-		if resolution.changing then applyResolution() resolution.changing = false end
 		paused = false
 		pausedMenu = false
 	elseif paused == false then
@@ -64,49 +62,6 @@ function changePauseMenu(menu)
 			pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
 		end
 	end
-end
-
-resolution = {x=1920, y=1080, changing = false}
-currentRes = 8
-resolutions = {
-	{x=640, y=360},
-	{x=854, y=480},
-	{x=960, y=540},
-	{x=1024, y=576},
-	{x=1280, y=720},
-	{x=1366, y=768},
-	{x=1600, y=900},
-	{x=1920, y=1080},
-}
-
-function changeResolution(button)
-	if button == "l" then
-		if currentRes < 8 then
-			currentRes = currentRes + 1
-			resolution.changing = true
-		end
-	elseif button == "r" then
-		if currentRes > 1 then
-			currentRes = currentRes - 1
-			resolution.changing = true
-		end
-	end
-
-	resolution.x, resolution.y = resolutions[currentRes].x, resolutions[currentRes].y
-	settings.window.x, settings.window.y = resolutions[currentRes].x, resolutions[currentRes].y
-	settingsItems[2].value = resolutions[currentRes].x.."x"..resolutions[currentRes].y
-	settings.window.width, settings.window.height = resolutions[currentRes].x, resolutions[currentRes].y
-end
-
-function applyResolution()
-	love.window.setMode(resolution.x, resolution.y)
-	scalex, scaley = resolutions[currentRes].x/1920, resolutions[currentRes].y/1080
-	x, y = love.window.getDesktopDimensions()
-	if resolutions[currentRes].x == x and resolutions[currentRes].y == y then
-		love.window.setMode(x, y, settings.displayFlags)
-	end
-	loadLevel(currentLevel)
-	resolution.changing = false
 end
 
 pauseHitboxes = {}

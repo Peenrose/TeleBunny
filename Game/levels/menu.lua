@@ -4,7 +4,7 @@ function load()
 	objects = {
 		background = {
 			body = love.physics.newBody(world, settings.window.width/2, (settings.window.height/2), "static"),
-			shape = love.physics.newRectangleShape(settings.window.width*scalex, settings.window.height*scaley),
+			shape = love.physics.newRectangleShape(settings.window.width, settings.window.height),
 			draw = backgroundDraw,
 			click = backgroundClick
 		}

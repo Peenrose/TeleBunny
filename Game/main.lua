@@ -45,6 +45,11 @@ function love.update(dt)
 		--addInfo("Current Level: "..currentLevel)
 		if world ~= nil then world:update(dt) end
 		if updateLevel ~= nil then updateLevel(dt) end
+		for k, v in pairs(objects) do
+			if v.update ~= nil then
+				v.update(dt)
+			end
+		end
 	end
 end
 

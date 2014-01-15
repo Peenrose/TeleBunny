@@ -6,7 +6,7 @@ settings = {
 	},
 
 	displayFlags = {
-		fullscreen = false,
+		fullscreen = true,
 		fullscreentype = "desktop",
 		vsync = false,
 		fsaa = 0,
@@ -35,12 +35,21 @@ pauseItems = {
 	{title = "Quit Game", action = function() love.event.push("quit") end},
 	{title = "Reset Level", action = function() loadLevel(currentLevel) end},
 	{title = "Settings", action = function() changePauseMenu(settingsItems) end},
+	{title = "Load Level", action = function() changePauseMenu(levelItems) end},
 }
 
 settingsItems = {
 	title = "Settings",
 
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
+}
+
+levelItems = {
+	title = "Load Level",
+
+	{title = "Menu", action = function() loadLevel("menu") end},
+	{title = "Test", action = function() loadLevel("test") end},
+	{title = "Scientest", action = function() loadLevel("Scientest") end},
 }
 
 function togglePause()

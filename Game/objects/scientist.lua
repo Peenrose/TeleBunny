@@ -10,7 +10,7 @@ end
 
 objects.scientist_torso = {
 	body = love.physics.newBody(world, 300, settings.window.height-500, "dynamic"),
-	shape = love.physics.newPolygonShape(16,0, 161,23, 249,23, 295,212, 176,239, 0,230),
+	shape = love.physics.newPolygonShape(1.6*4,0, 16.1*4,23*4, 24.9*4,2.3*4, 29.5*4,21.2*4, 17.6*4,23.9*4, 0,23.0*4),
 	draw = function()
 		--love.graphics.draw(scientistSprite, objects.scientist_torso.body:getX(), objects.scientist_torso.body:getY(), objects.scientist_torso.body:getAngle(), 0.1, 0.1, scientistSprite:getWidth()/2, scientistSprite:getHeight()/2)
 		love.graphics.polygon("line", objects.scientist_torso.body:getWorldPoints(objects.scientist_torso.shape:getPoints()))

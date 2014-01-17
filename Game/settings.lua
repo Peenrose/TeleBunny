@@ -47,6 +47,8 @@ settingsItems = {
 levelItems = {
 	title = "Load Level",
 
+	{title = "Back", action = function() changePauseMenu(pauseItems) end},
+	
 	{title = "Menu", action = function() loadLevel("menu") end},
 	{title = "Test", action = function() loadLevel("test") end},
 	{title = "Scientest", action = function() loadLevel("Scientest") end},

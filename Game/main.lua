@@ -101,7 +101,7 @@ function love.mousepressed(x, y, button)
 		clickedamount = 0
 		if objects ~= nil then
 			for k, v in pairs(objects) do
-				if objects[k].body:isActive() == true then
+				if objects[k].body ~= nil and objects[k].body:isActive() == true then
 					if objects[k].shape ~= nil and objects[k].body ~= nil then
 						localx, localy = objects[k].body:getLocalPoint(x, y)
 						if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
@@ -176,7 +176,21 @@ function loadLevelRaw(levelToLoad)
 			fadeOut[k] = {cur=255,aps=aps}
 		end
 		if v.fixture == nil then
-			v.fixture = love.physics.newFixture(objects[k].body, objects[k].shape)
+			if v.body ~= nil then
+				if v.shape ~= nil then
+					v.fixture = love.physics.newFixture(objects[k].body, objects[k].shape)
+				else
+					if warnings.noShape[k] == nil then
+						warnings.noShape[k] = true
+						addInfo(k.." Has no shape :(", 20)
+					end
+				end
+			else
+				if warnings.noBody[k] == nil then
+					warnings.noBody[k] = true
+					addInfo(k.." Has no body :(", 20)
+				end
+			end
 		end
 	end
 	for k, v in pairs(objects) do

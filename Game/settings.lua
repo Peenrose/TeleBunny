@@ -99,6 +99,7 @@ currentlevel = ""
 warnings = {}
 warnings.noDraw = {}
 warnings.noShape = {}
+warnings.noBody = {}
 warnings.noClick = {}
 
 infoMessages = {}

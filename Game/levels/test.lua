@@ -54,36 +54,9 @@ function load()
 				objects.carrot.sy = (bry-tly)/carrotSprite:getHeight()
 			]]
 		},
-		scientist = {
-			body = love.physics.newBody(world, 300, settings.window.height-200, "dynamic"),
-			shape = love.physics.newRectangleShape(0,0, 277,329),
-			draw = function()
-				love.graphics.draw(scientistSprite, objects.scientist.body:getX(), objects.scientist.body:getY(), objects.scientist.body:getAngle(), 0.1, 0.1, scientistSprite:getWidth()/2, scientistSprite:getHeight()/2)
-				love.graphics.polygon("line", objects.scientist.body:getWorldPoints(objects.scientist.shape:getPoints()))
-			end,
-			click = function() end,
-		},
-		box1 = {
-			body = love.physics.newBody(world, 25, 25, "dynamic"),
-			shape = love.physics.newRectangleShape(0,0, 50,50),
-			draw = function() 
-				love.graphics.polygon("fill", objects.box1.body:getWorldPoints(objects.box1.shape:getPoints()))
-			end,
-			click = function() end,
-		},
-		box2 = {
-			body = love.physics.newBody(world, 25, 25, "dynamic"),
-			shape = love.physics.newRectangleShape(0,0, 50,50),
-			draw = function()
-				love.graphics.polygon("fill", objects.box2.body:getWorldPoints(objects.box2.shape:getPoints()))
-			end,
-			click = function() end,
-			afterload = [[
-				boxjoint = love.physics.newRevoluteJoint(objects.box1.body, objects.box2.body, 50,50, false)
-			]]
-		}
 	}
-	require "bunny"
+	require "objects/bunny"
+	require "objects/scientist"
 end
 
 

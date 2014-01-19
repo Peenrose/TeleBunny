@@ -207,7 +207,7 @@ function loadLevel(name)
 	result, err = pcall(loadLevelRaw, name)
 	if not result then 
 		--addInfo(err, 60)
-		error(err)
+		error("error loading level: "..name.."\n"..err)
 	else 
 		levelToLoad = nil
 		addInfo("Level Loaded: "..name, 10)

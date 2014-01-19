@@ -4,10 +4,10 @@ bunnyx = settings.window.width-200
 bunnyy = settings.window.height-205
 
 bunnyFrames = {
-	love.graphics.newImage("images/Bunny_Frames/1.png"),
-	love.graphics.newImage("images/Bunny_Frames/2.png"),
-	love.graphics.newImage("images/Bunny_Frames/3.png"),
-	love.graphics.newImage("images/Bunny_Frames/4.png"),
+	love.graphics.newImage("images/Bunny/1.png"),
+	love.graphics.newImage("images/Bunny/2.png"),
+	love.graphics.newImage("images/Bunny/3.png"),
+	love.graphics.newImage("images/Bunny/4.png"),
 }
 
 bunnyFrame = 1

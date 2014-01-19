@@ -9,12 +9,12 @@ function joinScientist()
 end
 
 scientistSprites = {
-	torso = love.graphics.newImage("images/Scientist_Parts/torso.png"),
-	head = love.graphics.newImage("images/Scientist_Parts/head.png"),
-	leftarm = love.graphics.newImage("images/Scientist_Parts/left_arm.png"),
-	rightarm = love.graphics.newImage("images/Scientist_Parts/right_arm.png"),
-	leftleg = love.graphics.newImage("images/Scientist_Parts/left_leg.png"),
-	rightleg = 	love.graphics.newImage("images/Scientist_Parts/right_leg.png"),
+	torso = love.graphics.newImage("images/Scientist/torso.png"),
+	head = love.graphics.newImage("images/Scientist/head.png"),
+	leftarm = love.graphics.newImage("images/Scientist/left_arm.png"),
+	rightarm = love.graphics.newImage("images/Scientist/right_arm.png"),
+	leftleg = love.graphics.newImage("images/Scientist/left_leg.png"),
+	rightleg = 	love.graphics.newImage("images/Scientist/right_leg.png"),
 }
 
 objects.scientist_torso = {
@@ -61,13 +61,13 @@ objects.scientist_rightarm = {
 	click = function() end,
 }
 objects.scientist_leftleg = {
-	body = love.physics.newBody(world, 300, settings.window.height-440, "dynamic"),
+	body = love.physics.newBody(world, 300, settings.window.height-435, "dynamic"),
 	shape = love.physics.newPolygonShape(4.2,2.8, 42.3,.6, 41.4,44.3, 45.3,50.8, 46.8,63.3, 9.4,64.2, .5,61.1, 7.9,27.5),
 	draw = function() end,
 	click = function() end,
 }
 objects.scientist_rightleg = {
-	body = love.physics.newBody(world, 355, settings.window.height-440, "dynamic"),
+	body = love.physics.newBody(world, 355, settings.window.height-445, "dynamic"),
 	shape = love.physics.newPolygonShape(.9,3.8, 28.4,.7, 38.5,21.6, 44.3,43.3, 47.8,48.3, 52.6,66.2, 11.4,67.9, 10.7,31.3),
 	draw = function() end,
 	click = function() end,

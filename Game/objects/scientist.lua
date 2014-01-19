@@ -1,10 +1,10 @@
 function joinScientist()
 	local joints = {}
-	joints.head = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_head.body, 349, 585, true)
-	joints.leftarm = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_leftarm.body, 305, 594, true)
-	joints.rightarm = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_rightarm.body, 379, 596, true)
-	joints.leftleg = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_leftleg.body, 329, 649, true)
-	joints.rightleg = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_rightleg.body, 375, 649, true)
+	joints.head = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_head.body, 349, 585, false)
+	joints.leftarm = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_leftarm.body, 305, 594, false)
+	joints.rightarm = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_rightarm.body, 379, 596, false)
+	joints.leftleg = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_leftleg.body, 329, 649, false)
+	joints.rightleg = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_rightleg.body, 375, 649, false)
 	objects.scientist_torso.joints = joints
 end
 

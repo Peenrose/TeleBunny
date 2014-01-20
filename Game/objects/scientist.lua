@@ -8,6 +8,24 @@ function joinScientist()
 	objects.scientist_torso.joints = joints
 end
 
+function drawScientistOutline()
+	love.graphics.polygon("line", objects.scientist_leftleg.body:getWorldPoints(objects.scientist_leftleg.shape:getPoints()))
+	love.graphics.polygon("line", objects.scientist_rightleg.body:getWorldPoints(objects.scientist_rightleg.shape:getPoints()))
+	love.graphics.polygon("line", objects.scientist_leftarm.body:getWorldPoints(objects.scientist_leftarm.shape:getPoints()))
+	love.graphics.polygon("line", objects.scientist_rightarm.body:getWorldPoints(objects.scientist_rightarm.shape:getPoints()))
+	love.graphics.polygon("line", objects.scientist_torso.body:getWorldPoints(objects.scientist_torso.shape:getPoints()))
+	love.graphics.polygon("line", objects.scientist_head.body:getWorldPoints(objects.scientist_head.shape:getPoints()))
+end
+
+function drawScientist()
+	love.graphics.draw(scientistSprites.leftleg, objects.scientist_leftleg.body:getX(), objects.scientist_leftleg.body:getY(), objects.scientist_leftleg.body:getAngle(), 0.078, 0.078)
+	love.graphics.draw(scientistSprites.rightleg, objects.scientist_rightleg.body:getX(), objects.scientist_rightleg.body:getY(), objects.scientist_rightleg.body:getAngle(), 0.078, 0.078)
+	love.graphics.draw(scientistSprites.leftarm, objects.scientist_leftarm.body:getX(), objects.scientist_leftarm.body:getY(), objects.scientist_leftarm.body:getAngle(), 0.078, 0.078)
+	love.graphics.draw(scientistSprites.rightarm, objects.scientist_rightarm.body:getX(), objects.scientist_rightarm.body:getY(), objects.scientist_rightarm.body:getAngle(), 0.078, 0.078)
+	love.graphics.draw(scientistSprites.torso, objects.scientist_torso.body:getX(), objects.scientist_torso.body:getY(), objects.scientist_torso.body:getAngle(), 0.078, 0.078)
+	love.graphics.draw(scientistSprites.head, objects.scientist_head.body:getX(), objects.scientist_head.body:getY(), objects.scientist_head.body:getAngle(), 0.078, 0.078)
+end
+
 scientistSprites = {
 	torso = love.graphics.newImage("images/Scientist/torso.png"),
 	head = love.graphics.newImage("images/Scientist/head.png"),
@@ -21,24 +39,7 @@ objects.scientist_torso = {
 	body = love.physics.newBody(world, 300, settings.window.height-500, "dynamic"),
 	shape = love.physics.newPolygonShape(4.99,0, 50.23,71.76, 77.69,7.18, 92.04,66.14, 54.9,74.5, 0,71.76),
 	draw = function()
-		--love.graphics.draw(scientistSprite, objects.scientist_torso.body:getX(), objects.scientist_torso.body:getY(), objects.scientist_torso.body:getAngle(), 0.1, 0.1, scientistSprite:getWidth()/2, scientistSprite:getHeight()/2)
-		love.graphics.polygon("line", objects.scientist_leftleg.body:getWorldPoints(objects.scientist_leftleg.shape:getPoints()))
-		love.graphics.draw(scientistSprites.leftleg, objects.scientist_leftleg.body:getX(), objects.scientist_leftleg.body:getY(), objects.scientist_leftleg.body:getAngle(), 0.078, 0.078)
-
-		love.graphics.polygon("line", objects.scientist_rightleg.body:getWorldPoints(objects.scientist_rightleg.shape:getPoints()))
-		love.graphics.draw(scientistSprites.rightleg, objects.scientist_rightleg.body:getX(), objects.scientist_rightleg.body:getY(), objects.scientist_rightleg.body:getAngle(), 0.078, 0.078)
-
-		love.graphics.polygon("line", objects.scientist_leftarm.body:getWorldPoints(objects.scientist_leftarm.shape:getPoints()))
-		love.graphics.draw(scientistSprites.leftarm, objects.scientist_leftarm.body:getX(), objects.scientist_leftarm.body:getY(), objects.scientist_leftarm.body:getAngle(), 0.078, 0.078)
-
-		love.graphics.polygon("line", objects.scientist_rightarm.body:getWorldPoints(objects.scientist_rightarm.shape:getPoints()))
-		love.graphics.draw(scientistSprites.rightarm, objects.scientist_rightarm.body:getX(), objects.scientist_rightarm.body:getY(), objects.scientist_rightarm.body:getAngle(), 0.078, 0.078)
-
-		love.graphics.polygon("line", objects.scientist_torso.body:getWorldPoints(objects.scientist_torso.shape:getPoints()))
-		love.graphics.draw(scientistSprites.torso, objects.scientist_torso.body:getX(), objects.scientist_torso.body:getY(), objects.scientist_torso.body:getAngle(), 0.078, 0.078)
-
-		love.graphics.polygon("line", objects.scientist_head.body:getWorldPoints(objects.scientist_head.shape:getPoints()))
-		love.graphics.draw(scientistSprites.head, objects.scientist_head.body:getX(), objects.scientist_head.body:getY(), objects.scientist_head.body:getAngle(), 0.078, 0.078)
+		drawScientist()
 	end,
 	click = function() end,
 }

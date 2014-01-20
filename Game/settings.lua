@@ -51,7 +51,6 @@ levelItems = {
 	
 	{title = "Menu", action = function() loadLevel("menu") end},
 	{title = "Test", action = function() loadLevel("test") end},
-	{title = "Scientest", action = function() loadLevel("Scientest") end},
 }
 
 function togglePause()

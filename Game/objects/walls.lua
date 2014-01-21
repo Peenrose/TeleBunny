@@ -2,8 +2,8 @@ objects.ground = {
 	body = love.physics.newBody(world, settings.window.width, settings.window.height-(100), "static"),
 	shape = love.physics.newRectangleShape(settings.window.width*2, 10),
 	draw = function()
-		love.graphics.setColor(50,205,50)
-		love.graphics.rectangle("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
+		--love.graphics.setColor(50,205,50)
+		--love.graphics.rectangle("fill", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
 	end,
 	afterload = [[
 		objects.ground.fixture:setFriction(1.2)

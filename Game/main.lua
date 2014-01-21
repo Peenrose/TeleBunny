@@ -8,7 +8,8 @@ function love.load()
 	assert(love.graphics.isSupported("shader"), "your display adapter does not support shaders")
 	assert(love.graphics.isSupported("canvas"), "your display adapter does not support canvases")
 
-	loadLevel("menu")
+	bg1 = love.graphics.newImage("images/bg1.png")
+	loadLevel("1")
 end
 
 function love.update(dt)
@@ -223,6 +224,9 @@ end
 
 function drawAll()
 	love.graphics.setColor(255,255,255)
+	if currentLevel == "1" then
+		love.graphics.draw(bg1, 0, 0)
+	end
 	if objects ~= nil then
 		for k, v in pairs(objects) do
 			if k ~= nil and v.body then

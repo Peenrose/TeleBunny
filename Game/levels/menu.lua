@@ -29,7 +29,7 @@ function backgroundDraw()
 end
 
 function backgroundClick()
-	loadLevel("test")
+	loadLevel("1")
 end
 
 titletime = 0

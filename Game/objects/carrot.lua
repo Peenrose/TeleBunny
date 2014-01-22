@@ -1,4 +1,4 @@
-carrot = love.graphics.newImage("images/carrot.png")
+carrot = love.graphics.newImage("images/new_carrot.png")
 
 objects.carrot = {
 	body = love.physics.newBody(world, 500, 1, "dynamic"),

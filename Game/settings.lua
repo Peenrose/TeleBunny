@@ -6,7 +6,7 @@ settings = {
 	},
 
 	displayFlags = {
-		fullscreen = true,
+		fullscreen = false,
 		fullscreentype = "desktop",
 		vsync = false,
 		fsaa = 0,
@@ -36,6 +36,7 @@ pauseItems = {
 	{title = "Reset Level", action = function() loadLevel(currentLevel) end},
 	{title = "Settings", action = function() changePauseMenu(settingsItems) end},
 	{title = "Load Level", action = function() changePauseMenu(levelItems) end},
+	{title = "Cage Bunny", action = function() bunnyInCage = not bunnyInCage; pauseItems[6].value = not pauseItems[6].value end, value = false}
 }
 
 settingsItems = {

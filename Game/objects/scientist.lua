@@ -26,6 +26,17 @@ function drawScientist()
 	love.graphics.draw(scientistSprites.head, objects.scientist_head.body:getX(), objects.scientist_head.body:getY(), objects.scientist_head.body:getAngle(), 0.078, 0.078)
 end
 
+function isScientistPart(fixture)
+	if fixture == objects.scientist_torso.fixture then return true end
+	if fixture == objects.scientist_head.fixture then return true end
+	if fixture == objects.scientist_leftarm.fixture then return true end
+	if fixture == objects.scientist_rightarm.fixture then return true end
+	if fixture == objects.scientist_leftleg.fixture then return true end
+	if fixture == objects.scientist_rightleg.fixture then return true end
+
+	return false
+end
+
 scientistSprites = {
 	torso = love.graphics.newImage("images/Scientist/torso.png"),
 	head = love.graphics.newImage("images/Scientist/head.png"),

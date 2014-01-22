@@ -26,11 +26,13 @@ function beginContact(a, b, coll)
 	bvel = math.abs(b:getBody():getLinearVelocity())
 
 	--addInfo("Collision! Velocity: "..a:getBody():getLinearVelocity().. " and "..b:getBody():getLinearVelocity(), 1)
-	if objects.scientist ~= nil then
-		if a == objects.scientist.fixture or b == objects.scientist.fixture then
-			if avel > 600 or bvel > 600 then
+
+	--[[ --Scientist Scream and fade out
+	if objects.scientist_torso ~= nil then
+		if isScientistPart(a) or isScientistPart(a) then
+			if avel > 5200 or bvel > 5200 then
 				if fadeOut["scientist"] == nil then
-					--objects.scientist.fadeout(100)
+					objects.scientist_torso.fadeout(100)
 				end
 				yell = "[Scientist:] "
 				force = math.max(avel, bvel)
@@ -41,6 +43,17 @@ function beginContact(a, b, coll)
 				yell = yell.."!"
 				addInfo(yell, 5)
 			end
+		end
+	end
+	]]--
+
+	if isScientistPart(a) then
+		if b == objects.bunny.fixture then
+			error("Game Over.\nInsert Carrot To Continue")
+		end
+	elseif isScientistPart(b) then
+		if a == objects.bunny.fixture then
+			error("Game Over.\nInsert Carrot To Continue")
 		end
 	end
 end

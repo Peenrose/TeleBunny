@@ -73,7 +73,7 @@ function love.draw()
 				y = y + 100
 				love.graphics.printf(v.title, 0, y, settings.window.width, "center")
 				setFontSize(18)
-				if v.value ~= nil then love.graphics.printf(v.value, 0, y+37, settings.window.width, "center") end
+				if v.value ~= nil then love.graphics.printf(tostring(v.value), 0, y+37, settings.window.width, "center") end
 				setFontSize(40)
 				x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
 				love.graphics.rectangle("line", x, y, mx, my)

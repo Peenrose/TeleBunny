@@ -17,11 +17,6 @@ settings = {
 		minwidth = 100,
 		minheight = 100,
 	},
-
-	carrot = {
-		width = 160,
-		height = 314,
-	}
 }
 scalex = 1
 scaley = 1

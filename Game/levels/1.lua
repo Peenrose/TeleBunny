@@ -4,17 +4,13 @@ function load()
 
 	world = love.physics.newWorld(0, 9.81*64, true)
 
-	carrotSprite = love.graphics.newImage("images/carrot.png")
-
-	scientistWidth = 277
-	scientistHeight = 329
-
 	objects = {}
 
 	addObject("bunny")
 	addObject("scientist")
 	addObject("carrot")
 	addObject("walls")
+	addObject("level1objects")
 end
 
 function updateLevel(dt)

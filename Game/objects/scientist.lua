@@ -18,12 +18,12 @@ function drawScientistOutline()
 end
 
 function drawScientist()
-	love.graphics.draw(scientistSprites.leftleg, objects.scientist_leftleg.body:getX(), objects.scientist_leftleg.body:getY(), objects.scientist_leftleg.body:getAngle(), 0.078, 0.078)
-	love.graphics.draw(scientistSprites.rightleg, objects.scientist_rightleg.body:getX(), objects.scientist_rightleg.body:getY(), objects.scientist_rightleg.body:getAngle(), 0.078, 0.078)
-	love.graphics.draw(scientistSprites.leftarm, objects.scientist_leftarm.body:getX(), objects.scientist_leftarm.body:getY(), objects.scientist_leftarm.body:getAngle(), 0.078, 0.078)
-	love.graphics.draw(scientistSprites.rightarm, objects.scientist_rightarm.body:getX(), objects.scientist_rightarm.body:getY(), objects.scientist_rightarm.body:getAngle(), 0.078, 0.078)
-	love.graphics.draw(scientistSprites.torso, objects.scientist_torso.body:getX(), objects.scientist_torso.body:getY(), objects.scientist_torso.body:getAngle(), 0.078, 0.078)
-	love.graphics.draw(scientistSprites.head, objects.scientist_head.body:getX(), objects.scientist_head.body:getY(), objects.scientist_head.body:getAngle(), 0.078, 0.078)
+	love.graphics.draw(scientistSprites.leftleg, objects.scientist_leftleg.body:getX(), objects.scientist_leftleg.body:getY(), objects.scientist_leftleg.body:getAngle(), 0.078*2, 0.078*2)
+	love.graphics.draw(scientistSprites.rightleg, objects.scientist_rightleg.body:getX(), objects.scientist_rightleg.body:getY(), objects.scientist_rightleg.body:getAngle(), 0.078*2, 0.078*2)
+	love.graphics.draw(scientistSprites.leftarm, objects.scientist_leftarm.body:getX(), objects.scientist_leftarm.body:getY(), objects.scientist_leftarm.body:getAngle(), 0.078*2, 0.078*2)
+	love.graphics.draw(scientistSprites.rightarm, objects.scientist_rightarm.body:getX(), objects.scientist_rightarm.body:getY(), objects.scientist_rightarm.body:getAngle(), 0.078*2, 0.078*2)
+	love.graphics.draw(scientistSprites.torso, objects.scientist_torso.body:getX(), objects.scientist_torso.body:getY(), objects.scientist_torso.body:getAngle(), 0.078*2, 0.078*2)
+	love.graphics.draw(scientistSprites.head, objects.scientist_head.body:getX(), objects.scientist_head.body:getY(), objects.scientist_head.body:getAngle(), 0.078*2, 0.078*2)
 end
 
 function isScientistPart(fixture)
@@ -37,6 +37,10 @@ function isScientistPart(fixture)
 	return false
 end
 
+scientistWidth = 277*2
+scientistHeight = 329*2
+
+
 scientistSprites = {
 	torso = love.graphics.newImage("images/Scientist/torso.png"),
 	head = love.graphics.newImage("images/Scientist/head.png"),
@@ -48,7 +52,7 @@ scientistSprites = {
 
 objects.scientist_torso = {
 	body = love.physics.newBody(world, 300, settings.window.height-500, "dynamic"),
-	shape = love.physics.newPolygonShape(4.99,0, 50.23,71.76, 77.69,7.18, 92.04,66.14, 54.9,74.5, 0,71.76),
+	shape = love.physics.newPolygonShape(4.99*2,0, 50.23*2,71.76*2, 77.69*2,7.18*2, 92.04*2,66.14*2, 54.9*2,74.5*2, 0,71.76*2),
 	draw = function()
 		drawScientist()
 	end,
@@ -56,32 +60,32 @@ objects.scientist_torso = {
 }
 objects.scientist_head = {
 	body = love.physics.newBody(world, 270, settings.window.height-615, "dynamic"),
-	shape = love.physics.newPolygonShape(43.0,4.7, 95.0,6.3, 124.5,37.1, 117.0,117.9, 81.6,120.5, 30.8,111.3, 19.6,100.3, 19.4,27.7),
+	shape = love.physics.newPolygonShape(43.0*2,4.7*2, 95.0*2,6.3*2, 124.5*2,37.1*2, 117.0*2,117.9*2, 81.6*2,120.5*2, 30.8*2,111.3*2, 19.6*2,100.3*2, 19.4*2,27.7*2),
 	draw = function() end,
 	click = function() end,
 }
 objects.scientist_leftarm = {
 	body = love.physics.newBody(world, 300-70, settings.window.height-500, "dynamic"),
-	shape = love.physics.newPolygonShape(20.4,7.2, 78.6,0, 79.4,28.3, 35.0,39.5, 17.6,45.3, 2.0,33.9, .8,24.0, 12.5,9.8),
+	shape = love.physics.newPolygonShape(20.4*2,7.2*2, 78.6*2,0, 79.4*2,28.3*2, 35.0*2,39.5*2, 17.6*2,45.3*2, 2.0*2,33.9*2, .8*2,24.0*2, 12.5*2,9.8*2),
 	draw = function() end,
 	click = function() end,
 }
 objects.scientist_rightarm = {
 	body = love.physics.newBody(world, 300+70, settings.window.height-500, "dynamic"),
-	shape = love.physics.newPolygonShape(10.3,.9, 61.2,27.6, 70.1,46.2, 66.0,55.8, 51.7,60.8, 0,29.0),
+	shape = love.physics.newPolygonShape(10.3*2,.9*2, 61.2*2,27.6*2, 70.1*2,46.2*2, 66.0*2,55.8*2, 51.7*2,60.*28, 0,29.0*2),
 	draw = function() end,
 	click = function() end,
 }
 objects.scientist_leftleg = {
 	body = love.physics.newBody(world, 300, settings.window.height-435, "dynamic"),
-	shape = love.physics.newPolygonShape(4.2,2.8, 42.3,.6, 41.4,44.3, 45.3,50.8, 46.8,63.3, 9.4,64.2, .5,61.1, 7.9,27.5),
+	shape = love.physics.newPolygonShape(4.2*2,2.8*2, 42.3*2,.6*2, 41.4*2,44.3*2, 45.3*2,50.8*2, 46.8*2,63.3*2, 9.4*2,64.2*2, .5*2,61.1*2, 7.9*2,27.5*2),
 	draw = function() end,
 	click = function() end,
 }
 objects.scientist_rightleg = {
 	body = love.physics.newBody(world, 355, settings.window.height-445, "dynamic"),
-	shape = love.physics.newPolygonShape(.9,3.8, 28.4,.7, 38.5,21.6, 44.3,43.3, 47.8,48.3, 52.6,66.2, 11.4,67.9, 10.7,31.3),
+	shape = love.physics.newPolygonShape(.9*2,3.8*2, 28.4*2,.7*2, 38.5*2,21.6*2, 44.3*2,43.3*2, 47.8*2,48.3*2, 52.6*2,66.2*2, 11.4*2,67.9*2, 10.7*2,31.3*2),
 	draw = function() end,
 	click = function() end,
 }
-joinScientist()
+--joinScientist()

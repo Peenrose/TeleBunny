@@ -5,11 +5,11 @@ function load()
 	world = love.physics.newWorld(0, 9.81*64, true)
 
 	objects = {}
-
+	
+	addObject("walls")
 	addObject("bunny")
 	addObject("scientist")
 	addObject("carrot")
-	addObject("walls")
 	addObject("level1objects")
 end
 

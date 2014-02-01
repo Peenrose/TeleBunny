@@ -31,13 +31,14 @@ pauseItems = {
 	{title = "Reset Level", action = function() loadLevel(currentLevel) end},
 	{title = "Settings", action = function() changePauseMenu(settingsItems) end},
 	{title = "Load Level", action = function() changePauseMenu(levelItems) end},
-	{title = "Cage Bunny", action = function() bunnyInCage = not bunnyInCage; pauseItems[6].value = not pauseItems[6].value end, value = false}
+	--{title = "Cage Bunny", action = function() bunnyInCage = not bunnyInCage; pauseItems[6].value = not pauseItems[6].value end, value = false}
 }
 
 settingsItems = {
 	title = "Settings",
 
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
+	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = true}
 }
 
 levelItems = {
@@ -101,6 +102,9 @@ infoMessages = {}
 fadeOut = {}
 scheduled = {}
 removals = {}
+
+ais = {}
+objectList = {}
 
 cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 love.mouse.setCursor(cursor)

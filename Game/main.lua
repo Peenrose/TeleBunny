@@ -1,6 +1,5 @@
---crash when destroyed body has weld joint attached
---error when destroyed body has mouse joint attached
-
+--drag radius
+--get objects function
 function love.load()
 	settings = require "settings"
 
@@ -8,7 +7,6 @@ function love.load()
 	assert(love.graphics.isSupported("shader"), "your display adapter does not support shaders")
 	assert(love.graphics.isSupported("canvas"), "your display adapter does not support canvases")
 
-	bg1 = love.graphics.newImage("images/bg1.png")
 	loadLevel("1")
 end
 
@@ -32,13 +30,6 @@ function love.update(dt)
 				fadeOut[k] = nil
 			end
 		end
-		for k, v in pairs(scheduled) do
-			v.time = v.time - dt
-			if v.time >= 0 then
-				v.action()
-				table.remove(k, scheduler)
-			end
-		end
 		for k, v in pairs(toWeld) do
 			weld = love.physics.newWeldJoint(v.a, v.b, v.x, v.y, v.coll)
 			table.insert(welds, weld)
@@ -46,20 +37,20 @@ function love.update(dt)
 		--addInfo("Current Level: "..currentLevel)
 		if world ~= nil then world:update(dt) end
 		if updateLevel ~= nil then updateLevel(dt) end
-		for k, v in pairs(objects) do
-			if v.update ~= nil then
-				v.update(dt)
-			end
-		end
+		runAI(dt)
 	end
 end
 
 function love.draw()
 	if paused == false then
+		if drawLevelBackground ~= nil then drawLevelBackground() end
 		drawAll()
+		if drawLevelForeground ~= nil then drawLevelForeground() end
 		drawInfo(deltatime)
 	elseif paused == true then
+		if drawLevelBackground ~= nil then drawLevelBackground() end
 		drawAll()
+		if drawLevelForeground ~= nil then drawLevelForeground() end
 		love.graphics.setColor(255,255,255,255)
 		love.graphics.draw(pausebackground)
 		setFontSize(80)
@@ -96,28 +87,38 @@ function love.mousereleased()
 	grabbed = "none"
 end
 
+function getObjects(inside, collected) -- recursively iterate through objects and return any entries that have a fixture
+	collected = {}
+	for k, v in pairs(objects) do
+		if v.fixture ~= nil then
+			collected.k = v
+		end
+	end
+	return objects
+end
+
 function love.mousepressed(x, y, button)
 	if paused == false then
 		clickedon = ""
 		clickedamount = 0
 		if objects ~= nil then
-			for k, v in pairs(objects) do
-				if objects[k].body ~= nil and objects[k].body:isActive() == true then
-					if objects[k].shape ~= nil and objects[k].body ~= nil then
-						localx, localy = objects[k].body:getLocalPoint(x, y)
-						if objects[k].shape:testPoint(0, 0, 0, localx, localy) then
-							if objects[k].body:getType() ~= "static" then
+			for k, v in pairs(getObjects()) do
+				if v.body ~= nil and v.body:isActive() == true then
+					if v.shape ~= nil and v.body ~= nil then
+						localx, localy = v.body:getLocalPoint(x, y)
+						if v.shape:testPoint(0, 0, 0, localx, localy) then
+							if v.body:getType() ~= "static" then
 								if mouseJoint ~= nil then
 									mouseJoint:destroy()
 									mouseJoint = nil
 									grabbed = "none"
 								end
 								grabbed = objects[k]
-								mouseJoint = love.physics.newMouseJoint(objects[k].body, love.mouse.getPosition())
+								mouseJoint = love.physics.newMouseJoint(v.body, love.mouse.getPosition())
 								--mouseJoint:setMaxForce(15000)
 							end
-							if objects[k].click ~= nil and type(objects[k].click) == "function" then 
-								objects[k].click()
+							if v.click ~= nil and type(v.click) == "function" then 
+								v.click()
 							else
 								if warnings.noClick[v] == nil then
 									addInfo("Method '"..k.."' has no click function!", 5)
@@ -142,7 +143,7 @@ function love.mousepressed(x, y, button)
 			end
 		end
 		if clickedon == "" then clickedon = " on nothing" end
-		addInfo("click at: ("..x..", "..y..")"..clickedon, 3)
+		addInfo("click at: ("..x..", "..y..")"..clickedon.." with "..button.." button", 3)
 	elseif paused == true then
 		lastclickx, lastclicky = x, y
 		for k, v in pairs(pauseHitboxes) do
@@ -161,38 +162,57 @@ function schedule(func, time)
 	table.insert(scheduled, {time=time, func=func})
 end
 
+function addObjectFunctions(k, v)
+	v.remove = function(self)
+		objects[self].body:setActive(false)
+		objects[self].draw = nil
+	end
+	v.fadeout = function(aps) --alpha value per second
+		fadeOut[k] = {cur=255,aps=aps}
+	end
+	if v.fixture == nil then
+		if v.body ~= nil then
+			if v.shape ~= nil then
+				v.fixture = love.physics.newFixture(v.body, v.shape)
+			else
+				if warnings.noShape[k] == nil then
+					warnings.noShape[k] = true
+					addInfo(k.." Has no shape :(", 20)
+				end
+			end
+		else
+			if warnings.noBody[k] == nil then
+				warnings.noBody[k] = true
+				addInfo(k.." Has no body :(", 20)
+			end
+		end
+	end
+end
+
+function checkObject(k, v)
+	if type(v) == "table" then
+		for k2, v2 in pairs(v) do
+			checkObject(k2, v2)
+		end
+		if v.body ~= nil and v.shape ~= nil then
+			addObjectFunctions(k, v)
+		end
+	end
+end
+
 function loadLevelRaw(levelToLoad)
 	if world ~= nil then world:destroy() world = nil end
 	objects = nil
 	fadeOut = {}
+	drawLevelBackground = nil
+	drawLevelForeground = nil
 	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil
+	if objects == nil then objects = {} end
+	if world == nil then world = love.physics.newWorld(0, 9.81*64, true) end
 	for k, v in pairs(objects) do
-		v.remove = function(self)
-			objects[self].body:setActive(false)
-			objects[self].draw = nil
-		end
-		v.fadeout = function(aps) --alpha value per second
-			fadeOut[k] = {cur=255,aps=aps}
-		end
-		if v.fixture == nil then
-			if v.body ~= nil then
-				if v.shape ~= nil then
-					v.fixture = love.physics.newFixture(objects[k].body, objects[k].shape)
-				else
-					if warnings.noShape[k] == nil then
-						warnings.noShape[k] = true
-						addInfo(k.." Has no shape :(", 20)
-					end
-				end
-			else
-				if warnings.noBody[k] == nil then
-					warnings.noBody[k] = true
-					addInfo(k.." Has no body :(", 20)
-				end
-			end
-		end
+		checkObject(k, v)
 	end
 	for k, v in pairs(objects) do
 		if v.afterload ~= nil then
@@ -200,6 +220,7 @@ function loadLevelRaw(levelToLoad)
 		end
 	end
 	world:setCallbacks(beginContactMain, endContactMain, preSolveMain, postSolveMain)
+	lastLevel = currentLevel
 	currentLevel = name
 	return true
 end
@@ -207,7 +228,6 @@ end
 function loadLevel(name)
 	result, err = pcall(loadLevelRaw, name)
 	if not result then 
-		--addInfo(err, 60)
 		error("error loading level: "..name.."\n"..err)
 	else 
 		levelToLoad = nil
@@ -239,13 +259,6 @@ function drawAll()
 						love.graphics.setColor(255,255,255)
 						v.draw()
 					end
-				--[[
-				else
-					if warnings.noDraw[v] == nil then
-						addInfo("Method '"..k.."' has no draw function!", 5)
-						warnings.noDraw[v] = true
-					end
-				]]--
 				end
 			end
 		end
@@ -261,7 +274,7 @@ function addInfo(toAdd, time)
 end
 
 function drawInfo(dt)
-	setFontSize(14)
+	setFontSize(15)
 
 	for k, v in pairs(infoMessages) do
 		addInfo(v.message)
@@ -276,11 +289,15 @@ function drawInfo(dt)
 		if #v > #x then x = v end
 		y = k*16
 	end
-	love.graphics.setColor(0,0,0)
-	love.graphics.rectangle("fill", 0, 0, font:getWidth(x), y)
-	love.graphics.setColor(255,255,255)
-	for k, v in pairs(info) do
-		love.graphics.print(v, 0, (k*16)-16)
+
+	if settingsItems[2].value then
+		love.graphics.setColor(0,0,0)
+		love.graphics.rectangle("fill", 0, 0, font:getWidth(x), y)
+		love.graphics.setColor(255,255,255)
+
+		for k, v in pairs(info) do
+			love.graphics.print(v, 0, (k*16)-16)
+		end
 	end
 end
 
@@ -293,7 +310,6 @@ function updateFPS(dt)
 end
 
 function setFontSize(size)
-	size = size
 	font = love.graphics.newFont(size)
 	love.graphics.setFont(font)
 end
@@ -324,6 +340,34 @@ function round(num, idp)
   return math.floor(num * mult + 0.5) / mult
 end
 
-function addObject(name)
-	return love.filesystem.load("objects/"..name..".lua")()
+function addObject(name, amount)
+	if not amount then amount = 1 end
+	for i = 1, amount do
+		if love.filesystem.exists("objects/"..name..".lua") then
+			if objectList[name] == nil then 
+				objectList[name] = 1 
+			else
+				if objectList[name] >= 1 then objectList[name] = objectList[name] + 1 end
+			end
+
+			object = love.filesystem.load("objects/"..name..".lua")()
+			if love.filesystem.exists("objects/ai/"..name..".lua") then
+				ais[name] = love.filesystem.load("objects/ai/"..name..".lua")(deltatime)
+				
+				addInfo("AI loaded for "..name, 5)
+			else
+				addInfo("'objects/ai/"..name..".lua' has no AI", 5)
+			end
+		else
+			addInfo("Object not found: 'objects/"..name..".lua'", 10)
+			break
+		end
+	end
+end
+
+function runAI(dt)
+	for k, v in pairs(ais) do
+		func = v
+		func(dt)
+	end
 end

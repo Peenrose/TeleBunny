@@ -3,14 +3,14 @@ function load()
 	setFontSize(14)
 
 	world = love.physics.newWorld(0, 9.81*64, true)
-
+	bg1 = love.graphics.newImage("images/bg1.png")
 	objects = {}
 	
 	addObject("walls")
 	addObject("bunny")
 	addObject("scientist")
-	addObject("carrot")
-	addObject("level1objects")
+	--addObject("carrot")
+	--addObject("level1objects")
 end
 
 function updateLevel(dt)

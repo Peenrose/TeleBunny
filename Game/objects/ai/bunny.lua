@@ -1,5 +1,5 @@
 return function(dt)
-	fps = 30
+	local fps = 30
 	if grabbedTime == nil then grabbedTime = 0 end
 	if grabbed ~= "none" then
 		grabbedTime = grabbedTime + dt

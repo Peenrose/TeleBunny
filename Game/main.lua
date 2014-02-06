@@ -1,11 +1,12 @@
 --drag radius
 --get objects function
+
 function love.load()
 	settings = require "settings"
 
 	if not love.graphics.isSupported("npot") then addInfo("Warning: your display adapter is susceptible to PO2 Syndrome", 20) end
 	assert(love.graphics.isSupported("shader"), "your display adapter does not support shaders")
-	assert(love.graphics.isSupported("canvas"), "your display adapter does not support canvases")
+	assert(love.graphics.isSupported("canvas"), "your display adapter does not support canvas use")
 
 	loadLevel("1")
 end
@@ -274,23 +275,23 @@ function addInfo(toAdd, time)
 end
 
 function drawInfo(dt)
-	setFontSize(15)
-
-	for k, v in pairs(infoMessages) do
-		addInfo(v.message)
-		v.time = v.time - dt
-		if v.time <= 0 then
-			table.remove(infoMessages, k)
-		end
-	end
-	x, y = "", 0
-	for k, v in pairs(info) do
-		v = tostring(v)
-		if #v > #x then x = v end
-		y = k*16
-	end
-
 	if settingsItems[2].value then
+		setFontSize(15)
+
+		for k, v in pairs(infoMessages) do
+			addInfo(v.message)
+			v.time = v.time - dt
+			if v.time <= 0 then
+				table.remove(infoMessages, k)
+			end
+		end
+		x, y = "", 0
+		for k, v in pairs(info) do
+			v = tostring(v)
+			if #v > #x then x = v end
+			y = k*16
+		end
+
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("fill", 0, 0, font:getWidth(x), y)
 		love.graphics.setColor(255,255,255)
@@ -300,6 +301,7 @@ function drawInfo(dt)
 		end
 	end
 end
+
 
 function updateFPS(dt)
 	fps = (0.20*lastfps)+(0.80*fps)

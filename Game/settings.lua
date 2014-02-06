@@ -6,7 +6,7 @@ settings = {
 	},
 
 	displayFlags = {
-		fullscreen = false,
+		fullscreen = true,
 		fullscreentype = "desktop",
 		vsync = false,
 		fsaa = 0,
@@ -36,18 +36,16 @@ pauseItems = {
 
 settingsItems = {
 	title = "Settings",
-
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
-	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = true}
+	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = true},
+	{title = "Caged Bunny", action = function() settingsItems[3].value = not settingsItems[3].value end, value = false},
 }
 
 levelItems = {
 	title = "Load Level",
-
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
-	
 	{title = "Menu", action = function() loadLevel("menu") end},
-	{title = "1", action = function() loadLevel("1") end},
+	{title = "One", action = function() loadLevel("1") end},
 }
 
 function togglePause()
@@ -72,6 +70,9 @@ function changePauseMenu(menu)
 end
 
 pauseHitboxes = {}
+
+ssx = (settings.window.width/1080)
+ssy = (settings.window.width/1920)
 
 deltatime = 0
 playtime = 0
@@ -111,11 +112,11 @@ love.mouse.setCursor(cursor)
 font = love.graphics.newFont(20)
 love.graphics.setFont(font)
 
+love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)
 
 pausebackground = love.graphics.newImage("images/cyanpause.png")
 love.physics.setMeter(settings.physicsMeter)
 love.window.setTitle(settings.window.title)
-love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)
 love.window.setIcon(love.image.newImageData("images/icon.png"))
 
 return settings

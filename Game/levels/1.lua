@@ -45,11 +45,11 @@ function beginContact(a, b, coll)
 
 	if isScientistPart(a) then
 		if b == objects.bunny.fixture then
-			error("Game Over.\nInsert Carrot To Continue")
+			--error("Game Over.\nInsert Carrot To Continue")
 		end
 	elseif isScientistPart(b) then
 		if a == objects.bunny.fixture then
-			error("Game Over.\nInsert Carrot To Continue")
+			--error("Game Over.\nInsert Carrot To Continue")
 		end
 	end
 end

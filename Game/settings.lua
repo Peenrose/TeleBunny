@@ -21,7 +21,7 @@ settings = {
 scalex = 1
 scaley = 1
 
-settings.window.width, settings.window.height = love.window.getDesktopDimensions()
+settings.window.width, settings.window.height = 1920,1080
 
 pauseItems = {
 	title = "",

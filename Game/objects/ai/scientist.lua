@@ -62,7 +62,7 @@ function AI(dt)
 	vel = math.max(avel, bvel)
 	y = objects.scientist_head.body:getY()
 	if y > 475 and y < 600 then
-		objects.scientist_head.body:applyLinearImpulse(1000,-1000)
+		--objects.scientist_head.body:applyLinearImpulse(1000,-1000)
 	end 
 end
 return AI

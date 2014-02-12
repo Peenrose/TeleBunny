@@ -8,6 +8,12 @@ function love.load()
 	assert(love.graphics.isSupported("shader"), "your display adapter does not support shaders")
 	assert(love.graphics.isSupported("canvas"), "your display adapter does not support canvas use")
 
+	scaleAmountX = love.graphics.getWidth()/1920
+	transAmountX = love.graphics.getWidth() * (1-scaleAmountX)
+
+	scaleAmountY = love.graphics.getHeight()/1080
+	transAmountY = love.graphics.getHeight() * (1-scaleAmountY)
+
 	loadLevel("1")
 end
 
@@ -43,6 +49,10 @@ function love.update(dt)
 end
 
 function love.draw()
+	love.graphics.push()
+	--love.graphics.translate(transAmountY, transAmountY)
+	love.graphics.scale(scaleAmountX,scaleAmountY)
+
 	if paused == false then
 		if drawLevelBackground ~= nil then drawLevelBackground() end
 		drawAll()
@@ -73,6 +83,8 @@ function love.draw()
 			end
 		end
 	end
+
+	love.graphics.pop()
 end
 
 function love.keypressed(key)
@@ -98,7 +110,16 @@ function getObjects(inside, collected) -- recursively iterate through objects an
 	return objects
 end
 
+oldGetPosition = love.mouse.getPosition
+function love.mouse.getPosition()
+	x, y = oldGetPosition()
+	x, y = x/scaleAmountX, y/scaleAmountY
+	return x,y
+end
 function love.mousepressed(x, y, button)
+	x = x/scaleAmountX
+	y = y/scaleAmountY
+
 	if paused == false then
 		clickedon = ""
 		clickedamount = 0

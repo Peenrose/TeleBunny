@@ -25,7 +25,7 @@ function drawScientist()
 	love.graphics.draw(scientistSprites.leftarm, objects.scientist_leftarm.body:getX(), objects.scientist_leftarm.body:getY(), objects.scientist_leftarm.body:getAngle(), 0.078*2, 0.078*2)
 	love.graphics.draw(scientistSprites.rightarm, objects.scientist_rightarm.body:getX(), objects.scientist_rightarm.body:getY(), objects.scientist_rightarm.body:getAngle(), 0.078*2, 0.078*2)
 	love.graphics.draw(scientistSprites.torso, objects.scientist_torso.body:getX(), objects.scientist_torso.body:getY(), objects.scientist_torso.body:getAngle(), 0.078*2, 0.078*2)
-	love.graphics.draw(scientistSprites.head, objects.scientist_head.body:getX(), objects.scientist_head.body:getY(), objects.scientist_head.body:getAngle(), 0.078*2, 0.078*2)
+	love.graphics.draw(scientistSprites.head, objects.scientist_head.body:getX(), objects.scientist_head.body:getY(), objects.scientist_head.body:getAngle(), 0.078*2*4.16, 0.078*2*3.91)
 end
 
 function isScientistPart(fixture)
@@ -45,7 +45,7 @@ scientistHeight = 329*2
 
 scientistSprites = {
 	torso = love.graphics.newImage("images/Scientist/torso.png"),
-	head = love.graphics.newImage("images/Scientist/head.png"),
+	head = love.graphics.newImage("images/Scientist/scientist_head.png"),
 	leftarm = love.graphics.newImage("images/Scientist/left_arm.png"),
 	rightarm = love.graphics.newImage("images/Scientist/right_arm.png"),
 	leftleg = love.graphics.newImage("images/Scientist/left_leg.png"),

@@ -11,6 +11,7 @@ function load()
 	addObject("scientist")
 	--addObject("carrot")
 	--addObject("level1objects")
+	touching_ground = 0
 end
 
 function updateLevel(dt)
@@ -21,27 +22,19 @@ function beginContact(a, b, coll)
 	avel = math.abs(a:getBody():getLinearVelocity())
 	bvel = math.abs(b:getBody():getLinearVelocity())
 
-	--addInfo("Collision! Velocity: "..a:getBody():getLinearVelocity().. " and "..b:getBody():getLinearVelocity(), 1)
+	maxvel = math.abs(math.max(avel, bvel))
+	scientistparts = 0
+	if isScientistPart(a) then scientistparts = scientistparts + 1 end
+	if isScientistPart(b) then scientistparts = scientistparts + 1 end
+	if scientistparts ~= 2 then if maxvel > 750 then addInfo("Collision! Velocity: "..maxvel, 4) end end
 
-	--[[ --Scientist Scream and fade out
 	if objects.scientist_torso ~= nil then
 		if isScientistPart(a) or isScientistPart(a) then
-			if avel > 5200 or bvel > 5200 then
-				if fadeOut["scientist"] == nil then
-					objects.scientist_torso.fadeout(100)
-				end
-				yell = "[Scientist:] "
-				force = math.max(avel, bvel)
-				repeat
-					yell = yell.."A"
-					force = force - 150
-				until force <= 0
-				yell = yell.."!"
-				addInfo(yell, 5)
+			if avel > 2000 or bvel > 2000 then
+				--dazed face
 			end
 		end
 	end
-	]]--
 
 	if isScientistPart(a) then
 		if b == objects.bunny.fixture then
@@ -52,9 +45,37 @@ function beginContact(a, b, coll)
 			--error("Game Over.\nInsert Carrot To Continue")
 		end
 	end
+
+	if isScientistPart(a) then
+		if b == objects.ground.fixture then
+			touching_ground = touching_ground + 1
+		end
+	elseif isScientistPart(b) then
+		if a == objects.ground.fixture then
+			touching_ground = touching_ground + 1
+		end
+	end
+
+	if scientistparts == 1 then
+		maxvel = math.max(math.abs(xvel), math.abs(yvel))
+		if maxvel > 800 then
+			scientistDazed = math.abs(math.min(scientistDazed + ((maxvel-1000)/1000), 3))
+		end
+	end
 end
 
-function endContact(a, b, coll) end
+function endContact(a, b, coll)
+	if isScientistPart(a) then
+		if b == objects.ground.fixture then
+			touching_ground = touching_ground - 1
+		end
+	elseif isScientistPart(b) then
+		if a == objects.ground.fixture then
+			touching_ground = touching_ground - 1
+		end
+	end
+end
+
 function preSolve(a, b, coll) end
 function postSolve(a, b, coll) end
 

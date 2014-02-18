@@ -100,7 +100,7 @@ function love.mousereleased()
 	grabbed = "none"
 end
 
-function getObjects(inside, collected) -- recursively iterate through objects and return any entries that have a fixture
+function getObjects(inside, collected)
 	collected = {}
 	for k, v in pairs(objects) do
 		if v.fixture ~= nil then

@@ -1,6 +1,30 @@
 --drag radius
 --get objects function
 
+function setResolution(x, y)
+	--love.window.setMode(x, y, {fullscreen=fullscreen})
+	local scrx, scry = love.window.getDesktopDimensions()
+	local full = true
+	if scrx == x and scry == y then 
+		full = true
+		resolutionX, resolutionY = x, y
+	elseif x > scrx or y > scry then
+		full = true
+		resolutionX, resolutionY = love.graphics.getResolution()
+	else
+		full = false
+		resolutionX, resolutionY = x, y
+		if x/y ~= 1920/1080 then
+			addInfo("Incorrect aspect ratio")
+		end
+	end
+	setMode(resolutionX, resolutionY, full)
+end
+
+function setMode(x, y, full)
+	love.window.setMode(x, y, {fullscreen=full})
+end
+
 function love.load()
 	settings = require "settings"
 
@@ -8,11 +32,7 @@ function love.load()
 	assert(love.graphics.isSupported("shader"), "your display adapter does not support shaders")
 	assert(love.graphics.isSupported("canvas"), "your display adapter does not support canvas use")
 
-	scaleAmountX = love.graphics.getWidth()/1920
-	transAmountX = love.graphics.getWidth() * (1-scaleAmountX)
-
-	scaleAmountY = love.graphics.getHeight()/1080
-	transAmountY = love.graphics.getHeight() * (1-scaleAmountY)
+	setResolution(settings.window.width, settings.window.height)
 
 	loadLevel("1")
 end
@@ -23,9 +43,8 @@ function love.update(dt)
 		updateFPS(dt)
 		updateGrabbed()
 		info = {}
-		if currentLevel ~= "menu" then
+		if currentLevel ~= "menu" and fps < 50 then
 			addInfo("FPS: "..math.floor(fps))
-			--addInfo("RAM Usage: "..(collectgarbage("count")/1024).."MB")
 		end
 		
 		for k, v in pairs(fadeOut) do
@@ -50,8 +69,7 @@ end
 
 function love.draw()
 	love.graphics.push()
-	--love.graphics.translate(transAmountY, transAmountY)
-	love.graphics.scale(scaleAmountX,scaleAmountY)
+	love.graphics.scale(resolutionX/1920,resolutionY/1080)
 
 	if paused == false then
 		if drawLevelBackground ~= nil then drawLevelBackground() end
@@ -113,12 +131,12 @@ end
 oldGetPosition = love.mouse.getPosition
 function love.mouse.getPosition()
 	x, y = oldGetPosition()
-	x, y = x/scaleAmountX, y/scaleAmountY
+	x, y = x/(resolutionX/1920), y/(resolutionY/1080)
 	return x,y
 end
 function love.mousepressed(x, y, button)
-	x = x/scaleAmountX
-	y = y/scaleAmountY
+	x = x/(resolutionX/1920)
+	y = y/(resolutionY/1080)
 
 	if paused == false then
 		clickedon = ""

@@ -10,7 +10,7 @@ parts = {
 scientistDazed = -1
 
 function approachBunny(dt)
-	addInfo("Ima get you bunny!")
+	--addInfo("Ima get you bunny!")
 end
 
 function AI(dt)
@@ -19,8 +19,8 @@ function AI(dt)
 	
 	maxvel = math.max(math.abs(xvel), math.abs(yvel))
 	
-	addInfo("Head Y Level: "..head_y)
-	addInfo("Velocity: "..maxvel)
+	--addInfo("Head Y Level: "..head_y) --standing is about 490
+	--addInfo("Velocity: "..maxvel)
 
 	if scientistDazed > -0.95 then
 		scientistDazed = scientistDazed - dt

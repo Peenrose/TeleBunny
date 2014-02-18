@@ -8,8 +8,8 @@ settings = {
 	displayFlags = {
 		fullscreen = true,
 		fullscreentype = "desktop",
-		vsync = false,
-		fsaa = 0,
+		vsync = true,
+		fsaa = 16,
 		resizable = false,
 		borderless = false,
 		centered = true,
@@ -21,7 +21,7 @@ settings = {
 scalex = 1
 scaley = 1
 
-settings.window.width, settings.window.height = 1920,1080
+settings.window.width, settings.window.height = love.window.getDesktopDimensions()
 
 pauseItems = {
 	title = "",
@@ -37,7 +37,7 @@ pauseItems = {
 settingsItems = {
 	title = "Settings",
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
-	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = true},
+	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = false},
 	{title = "Caged Bunny", action = function() settingsItems[3].value = not settingsItems[3].value end, value = false},
 }
 

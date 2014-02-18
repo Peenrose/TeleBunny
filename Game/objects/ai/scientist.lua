@@ -7,7 +7,11 @@ parts = {
 	objects.scientist_rightleg.body:getAngle(),
 }
 --mouse joint to pull scientist
-scientistDazed = 0
+scientistDazed = -1
+
+function approachBunny(dt)
+	addInfo("Ima get you bunny!")
+end
 
 function AI(dt)
 	x,head_y = objects.scientist_head.body:getPosition()
@@ -18,10 +22,12 @@ function AI(dt)
 	addInfo("Head Y Level: "..head_y)
 	addInfo("Velocity: "..maxvel)
 
-	if scientistDazed > 0 then
+	if scientistDazed > -0.95 then
 		scientistDazed = scientistDazed - dt
 		scientistSprites.head = headSprites.dazed
-	else
+	end
+
+	if scientistDazed <= 0 then
 		if isScientistPart(grabbed.fixture) then
 			scientistSprites.head = headSprites.worried
 			return
@@ -29,6 +35,7 @@ function AI(dt)
 			scientistSprites.head = headSprites.normal
 		end
 	end
-	addInfo("Dazed Amount: "..scientistDazed)
+	if scientistDazed <= -0.95 then scientistDazed = -1 end
+	if scientistDazed == -1 and scientistSprites.head == headSprites.normal then approachBunny() end
 end
 return AI

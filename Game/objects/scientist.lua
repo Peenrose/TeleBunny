@@ -39,6 +39,13 @@ function isScientistPart(fixture)
 	return false
 end
 
+function isFoot(fixture)
+	if fixture == objects.scientist_leftleg.fixture then return true end
+	if fixture == objects.scientist_rightleg.fixture then return true end
+
+	return false
+end
+
 scientistWidth = 277*2
 scientistHeight = 329*2
 

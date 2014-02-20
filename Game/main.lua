@@ -18,7 +18,7 @@ function setResolution(x, y)
 			addInfo("Incorrect aspect ratio")
 		end
 	end
-	setMode(resolutionX, resolutionY, full)
+	setMode(resolutionX, resolutionY, settings.displayFlags.fullscreen)
 end
 
 function setMode(x, y, full)

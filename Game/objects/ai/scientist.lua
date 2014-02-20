@@ -8,20 +8,41 @@ parts = {
 }
 --mouse joint to pull scientist
 scientistDazed = -1
+scientistRotating = false
 
 function approachBunny(dt)
-	--addInfo("Ima get you bunny!")
-	objects.scientist_torso.body:setLinearVelocity(125, 0)
+	objects.scientist_torso.body:setLinearVelocity(125, -100)
+	--objects.scientist_torso.body:applyLinearImpulse(125, -200)
 end
-
+angle = 0
 function spinUpright(dt)
 	angle = objects.scientist_torso.body:getAngle()
+	local pos = 1
 	if angle < 0 then
-		while angle < -360 do angle = angle + 360 end
+		while angle < -(2*math.pi) do angle = angle + (2*math.pi) end
+		pos = 1
 	elseif angle > 0 then
-		while angle > 360 do angle = angle - 360 end
+		while angle > (2*math.pi) do angle = angle - (2*math.pi) end
+		pos = -1
 	end
-	objects.scientist_torso.body:setAngle(angle+(dt*90))
+	-- local newAngle = angle+(0.4*dt)
+	if math.abs(angle) > 1 then
+		objects.scientist_torso.body:applyAngularImpulse(angle*-20000)
+	else
+		objects.scientist_torso.body:applyAngularImpulse(angle*-30000)
+	end
+	
+	if math.abs(angle) < 0.5 then 
+		objects.scientist_torso.body:applyAngularImpulse((angle-0.1)*-200000) 
+	end
+
+	if angle < 0.2 then
+		objects.scientist_rightleg.body:applyAngularImpulse(-1000)
+	end
+
+	if (math.abs(angle) < 0.4) then
+		scientistRotating = false
+	else scientistRotating = true end
 end
 
 function AI(dt)
@@ -49,13 +70,12 @@ function AI(dt)
 	if scientistDazed <= -0.95 then scientistDazed = -1 end
 
 	if scientistDazed == -1 and scientistSprites.head == headSprites.normal then
-		objects.scientist_torso.body:setFixedRotation(true)
+		--objects.scientist_torso.body:setFixedRotation(true)
 		spinUpright(dt)
-		approachBunny(dt)
+		if scientistRotating == false and foot_touching_ground > 1 then approachBunny(dt) end
 	else
-		objects.scientist_torso.body:setFixedRotation(false)
+		--objects.scientist_torso.body:setFixedRotation(false)
 	end
-
-	if scientistDazed == -1 and scientistSprites.head == headSprites.normal then approachBunny() end
+	addInfo("Feet: "..foot_touching_ground)
 end
 return AI

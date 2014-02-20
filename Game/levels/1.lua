@@ -12,6 +12,7 @@ function load()
 	--addObject("carrot")
 	--addObject("level1objects")
 	touching_ground = 0
+	foot_touching_ground = 0
 end
 
 function updateLevel(dt)
@@ -46,6 +47,8 @@ function beginContact(a, b, coll)
 		end
 	end
 
+	if isFoot(a) or isFoot(b) then if a == objects.ground.fixture or b == objects.ground.fixture then foot_touching_ground = foot_touching_ground + 1 end end
+
 	if isScientistPart(a) then
 		if b == objects.ground.fixture then
 			touching_ground = touching_ground + 1
@@ -65,6 +68,8 @@ function beginContact(a, b, coll)
 end
 
 function endContact(a, b, coll)
+	if isFoot(a) or isFoot(b) then if a == objects.ground.fixture or b == objects.ground.fixture then foot_touching_ground = foot_touching_ground - 1 end end
+
 	if isScientistPart(a) then
 		if b == objects.ground.fixture then
 			touching_ground = touching_ground - 1

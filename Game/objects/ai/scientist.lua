@@ -11,6 +11,17 @@ scientistDazed = -1
 
 function approachBunny(dt)
 	--addInfo("Ima get you bunny!")
+	objects.scientist_torso.body:setLinearVelocity(125, 0)
+end
+
+function spinUpright(dt)
+	angle = objects.scientist_torso.body:getAngle()
+	if angle < 0 then
+		while angle < -360 do angle = angle + 360 end
+	elseif angle > 0 then
+		while angle > 360 do angle = angle - 360 end
+	end
+	objects.scientist_torso.body:setAngle(angle+(dt*90))
 end
 
 function AI(dt)
@@ -36,6 +47,15 @@ function AI(dt)
 		end
 	end
 	if scientistDazed <= -0.95 then scientistDazed = -1 end
+
+	if scientistDazed == -1 and scientistSprites.head == headSprites.normal then
+		objects.scientist_torso.body:setFixedRotation(true)
+		spinUpright(dt)
+		approachBunny(dt)
+	else
+		objects.scientist_torso.body:setFixedRotation(false)
+	end
+
 	if scientistDazed == -1 and scientistSprites.head == headSprites.normal then approachBunny() end
 end
 return AI

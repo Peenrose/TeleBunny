@@ -1,6 +1,6 @@
 function love.conf(game)
   game.identity = "TeleBunny"
-  game.author = "Simon Hoke | Andrew Visser | Max Townsend"
+  game.author = "Simon Hoke | Andrew Visser | Tyler Lastname"
   game.version = "0.9.0"
 
   game.modules.joystick = false
@@ -16,4 +16,5 @@ function love.conf(game)
 
   game.window.width = 1920
   game.window.height = 1080
+  game.window.fullscreen = true
 end

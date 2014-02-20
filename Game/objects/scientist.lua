@@ -49,7 +49,7 @@ headSprites = {
 }
 scientistSprites = {
 	torso = love.graphics.newImage("images/Scientist/torso.png"),
-	head = headSprites.normal,
+	head = headSprites.worried,
 	leftarm = love.graphics.newImage("images/Scientist/left_arm.png"),
 	rightarm = love.graphics.newImage("images/Scientist/right_arm.png"),
 	leftleg = love.graphics.newImage("images/Scientist/left_leg.png"),

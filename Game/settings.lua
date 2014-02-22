@@ -6,7 +6,7 @@ settings = {
 	},
 
 	displayFlags = {
-		fullscreen = true,
+		fullscreen = false,
 		fullscreentype = "desktop",
 		vsync = true,
 		fsaa = 16,

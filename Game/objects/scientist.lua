@@ -80,7 +80,7 @@ objects.scientist_head = {
 	touching_ground = false,
 }
 objects.scientist_leftarm = {
-	body = love.physics.newBody(world, 159, 596, "dynamic"),
+	body = love.physics.newBody(world, 159, 605, "dynamic"),
 	shape = love.physics.newPolygonShape(20.4*2,7.2*2, 78.6*2,0, 79.4*2,28.3*2, 35.0*2,39.5*2, 17.6*2,45.3*2, 2.0*2,33.9*2, .8*2,24.0*2, 12.5*2,9.8*2),
 	draw = function() end,
 	click = function() end,

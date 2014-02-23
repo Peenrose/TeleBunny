@@ -1,7 +1,12 @@
 bunnyheight = 200
 bunnywidth = 200
+
+if currentLevel == "2" then
+	bunnyy = 1080-(205-90)
+else
+	bunnyy = 1080-205
+end
 bunnyx = settings.window.width-200
-bunnyy = settings.window.height-205
 
 bunnyFrames = {
 	love.graphics.newImage("images/Bunny/1.png"),

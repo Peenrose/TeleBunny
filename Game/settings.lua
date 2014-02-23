@@ -45,7 +45,8 @@ levelItems = {
 	title = "Load Level",
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
 	{title = "Menu", action = function() loadLevel("menu") end},
-	{title = "One", action = function() loadLevel("1") end},
+	{title = "Level One", action = function() loadLevel("1") end},
+	{title = "Level Two", action = function() loadLevel("2") end},
 }
 
 function togglePause()
@@ -106,6 +107,8 @@ removals = {}
 
 ais = {}
 objectList = {}
+
+healthRemaining = {}
 
 cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 love.mouse.setCursor(cursor)

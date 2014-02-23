@@ -3,7 +3,7 @@ function load()
 	setFontSize(14)
 
 	world = love.physics.newWorld(0, 9.81*64, true)
-	bg1 = love.graphics.newImage("images/bg1.png")
+	background = love.graphics.newImage("images/bg1.png")
 	objects = {}
 	
 	addObject("walls")

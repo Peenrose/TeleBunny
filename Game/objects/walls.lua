@@ -1,5 +1,9 @@
+function getGroundHeight()
+	if currentLevel == "2" then return 1070 end
+	return 980
+end
 objects.ground = {
-	body = love.physics.newBody(world, settings.window.width, settings.window.height-(100), "static"),
+	body = love.physics.newBody(world, settings.window.width, getGroundHeight(), "static"),
 	shape = love.physics.newRectangleShape(settings.window.width*2, 10),
 	draw = function()
 		love.graphics.setColor(0,0,0)

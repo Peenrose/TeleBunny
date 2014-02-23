@@ -72,14 +72,10 @@ function love.draw()
 	love.graphics.scale(resolutionX/1920,resolutionY/1080)
 
 	if paused == false then
-		if drawLevelBackground ~= nil then drawLevelBackground() end
 		drawAll()
-		if drawLevelForeground ~= nil then drawLevelForeground() end
 		drawInfo(deltatime)
 	elseif paused == true then
-		if drawLevelBackground ~= nil then drawLevelBackground() end
 		drawAll()
-		if drawLevelForeground ~= nil then drawLevelForeground() end
 		love.graphics.setColor(255,255,255,255)
 		love.graphics.draw(pausebackground)
 		setFontSize(80)
@@ -241,11 +237,14 @@ function checkObject(k, v)
 end
 
 function loadLevelRaw(levelToLoad)
+	lastLevel = currentLevel
+	currentLevel = levelToLoad
 	if world ~= nil then world:destroy() world = nil end
 	objects = nil
 	fadeOut = {}
 	drawLevelBackground = nil
 	drawLevelForeground = nil
+
 	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil
@@ -260,8 +259,6 @@ function loadLevelRaw(levelToLoad)
 		end
 	end
 	world:setCallbacks(beginContactMain, endContactMain, preSolveMain, postSolveMain)
-	lastLevel = currentLevel
-	currentLevel = name
 	return true
 end
 
@@ -284,9 +281,7 @@ end
 
 function drawAll()
 	love.graphics.setColor(255,255,255)
-	if currentLevel == "1" then
-		love.graphics.draw(bg1, 0, 0)
-	end
+	if background ~= nil then love.graphics.draw(background, 0, 0) end
 	if objects ~= nil then
 		for k, v in pairs(objects) do
 			if k ~= nil and v.body then
@@ -343,7 +338,7 @@ end
 
 
 function updateFPS(dt)
-	fps = (0.20*lastfps)+(0.80*fps)
+	fps = (0.80*lastfps)+(0.20*fps)
 	deltatime = dt
 	playtime = playtime + dt
 	lastdt = dt
@@ -357,6 +352,7 @@ end
 
 function beginContactMain(a, b, coll)
 	if beginContact ~= nil then beginContact(a, b, coll) end
+	--if healthRemaining[a]
 end
 
 function weldJoint(a, b, x, y, coll)

@@ -2,7 +2,7 @@ function joinScientist()
 	local joints = {}
 	joints.head = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_head.body, settings.window.width/4.89, settings.window.height/1.83, false)
 	joints.head2 = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_head.body, settings.window.width/5.98, settings.window.height/1.85, false)
-	joints.leftarm = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_leftarm.body, settings.window.width/6.23, settings.window.height/1.75, false)
+	joints.leftarm = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_leftarm.body, settings.window.width/6.23, settings.window.height/1.73, false)
 	joints.rightarm = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_rightarm.body, settings.window.width/4.17, settings.window.height/1.69, false)
 	joints.leftleg = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_leftleg.body, settings.window.width/5.58, settings.window.height/1.48, false)
 	joints.rightleg = love.physics.newRevoluteJoint(objects.scientist_torso.body, objects.scientist_rightleg.body, settings.window.width/4.29, settings.window.height/1.5, false)

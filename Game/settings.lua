@@ -6,7 +6,7 @@ settings = {
 	},
 
 	displayFlags = {
-		fullscreen = false,
+		fullscreen = true,
 		fullscreentype = "desktop",
 		vsync = true,
 		fsaa = 16,
@@ -37,7 +37,7 @@ pauseItems = {
 settingsItems = {
 	title = "Settings",
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
-	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = false},
+	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = true},
 	{title = "Caged Bunny", action = function() settingsItems[3].value = not settingsItems[3].value end, value = false},
 }
 

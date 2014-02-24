@@ -71,6 +71,7 @@ objects.scientist_torso = {
 	end,
 	click = function() end,
 	touching_ground = false,
+	afterload = [[objects.scientist_torso.body:setBullet(true)]],
 }
 objects.scientist_head = {
 	body = love.physics.newBody(world, 250, settings.window.height-725, "dynamic"),
@@ -78,6 +79,7 @@ objects.scientist_head = {
 	draw = function() end,
 	click = function() end,
 	touching_ground = false,
+	afterload = [[objects.scientist_head.body:setBullet(true)]],
 }
 objects.scientist_leftarm = {
 	body = love.physics.newBody(world, 159, 605, "dynamic"),
@@ -85,6 +87,7 @@ objects.scientist_leftarm = {
 	draw = function() end,
 	click = function() end,
 	touching_ground = false,
+	afterload = [[objects.scientist_leftarm.body:setBullet(true)]],
 }
 objects.scientist_rightarm = {
 	body = love.physics.newBody(world, 430, 600, "dynamic"),
@@ -92,6 +95,7 @@ objects.scientist_rightarm = {
 	draw = function() end,
 	click = function() end,
 	touching_ground = false,
+	afterload = [[objects.scientist_rightarm.body:setBullet(true)]],
 }
 objects.scientist_leftleg = {
 	body = love.physics.newBody(world, 294, 707, "dynamic"),
@@ -99,6 +103,7 @@ objects.scientist_leftleg = {
 	draw = function() end,
 	click = function() end,
 	touching_ground = false,
+	afterload = [[objects.scientist_leftleg.body:setBullet(true)]],
 }
 objects.scientist_rightleg = {
 	body = love.physics.newBody(world, 408, 697, "dynamic"),
@@ -106,5 +111,6 @@ objects.scientist_rightleg = {
 	draw = function() end,
 	click = function() end,
 	touching_ground = false,
+	afterload = [[objects.scientist_rightleg.body:setBullet(true)]],
 }
 joinScientist()

@@ -16,15 +16,15 @@ objects.ground = {
 objects.leftwall = {
 	body = love.physics.newBody(world, 0, settings.window.height/2, "static"),
 	shape = love.physics.newRectangleShape(0, settings.window.height),
-	draw = function() end,
+	afterload = [[objects.leftwall.fixture:setRestitution(0.1)]],
 }
 objects.rightwall = {
 	body = love.physics.newBody(world, settings.window.width, settings.window.height/2, "static"),
 	shape = love.physics.newRectangleShape(0, settings.window.height),
-	draw = function() end,
+	afterload = [[objects.rightwall.fixture:setRestitution(0.1)]],
 }
 objects.topwall = {
 	body = love.physics.newBody(world, 0,0, "static"),
 	shape = love.physics.newRectangleShape(settings.window.width*2, 0),
-	draw = function() end,
+	afterload = [[objects.topwall.fixture:setRestitution(0.1)]],
 }

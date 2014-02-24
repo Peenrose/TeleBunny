@@ -13,9 +13,10 @@ angle = 0
 secondCounter = 0
 lastKicked = 0
 lastX = 0
+kickReset = 0
 
 function approachBunny()
-	objects.scientist_torso.body:setLinearVelocity(125, -100)
+	objects.scientist_torso.body:setLinearVelocity(125, -125)
 end
 
 function spinUpright()
@@ -49,6 +50,7 @@ function spinUpright()
 end
 
 function kick()
+	kickReset = 1
 	objects.scientist_rightleg.body:applyAngularImpulse(-1000000)
 	objects.scientist_torso.body:applyLinearImpulse(10000, 0)
 end
@@ -60,6 +62,13 @@ function AI(dt)
 		
 		maxvel = math.max(math.abs(xvel), math.abs(yvel))
 
+		if kickReset > 0 then 
+			kickReset = kickReset - dt 
+			if kickReset < 0 then
+				objects.scientist_rightleg.body:applyAngularImpulse(200000)
+				kickReset = 0
+			end
+		end
 		secondCounter = secondCounter + dt
 		if secondCounter >= 5 then
 			secondCounter = 0

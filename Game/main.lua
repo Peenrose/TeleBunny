@@ -27,6 +27,7 @@ end
 
 function love.load()
 	settings = require "settings"
+	require "load"
 
 	if not love.graphics.isSupported("npot") then addInfo("Warning: your display adapter is susceptible to PO2 Syndrome", 20) end
 	assert(love.graphics.isSupported("shader"), "your display adapter does not support shaders")
@@ -44,7 +45,7 @@ function love.update(dt)
 		updateGrabbed()
 		info = {}
 		if currentLevel ~= "menu" and fps < 50 then
-			addInfo("FPS: "..math.floor(fps))
+			--addInfo("FPS: "..math.floor(fps))
 		end
 		
 		for k, v in pairs(fadeOut) do
@@ -114,14 +115,26 @@ function love.mousereleased()
 	grabbed = "none"
 end
 
-function getObjects(inside, collected)
+function getObjects()
 	collected = {}
-	for k, v in pairs(objects) do
-		if v.fixture ~= nil then
-			collected.k = v
+	for name, amount in pairs(objectList) do --all types
+		for uid = 1, amount do -- all per type
+			if objects[name] == nil or objects[name][uid] == nil then break end
+			if objects[name][uid].fixture then
+				local objectName = name.." #"..uid
+				collected[objectName] = objects[name][uid]
+			end
+			local objectName = name.." #"..uid
+			if objects[name][uid].torso ~= nil then collected[objectName.." (torso)"] = objects[name][uid].torso end
+			if objects[name][uid].head ~= nil then collected[objectName.." (head)"] = objects[name][uid].head end
+			if objects[name][uid].leftleg ~= nil then collected[objectName.." (leftleg)"] = objects[name][uid].leftleg end
+			if objects[name][uid].rightleg ~= nil then collected[objectName.." (rightleg)"] = objects[name][uid].rightleg end
+			if objects[name][uid].rightarm ~= nil then collected[objectName.." (rightarm)"] = objects[name][uid].rightarm end
+			if objects[name][uid].leftarm ~= nil then collected[objectName.." (leftarm)"] = objects[name][uid].leftarm end
 		end
 	end
-	return objects
+	--error(to_string(objects["scientist"]))
+	return collected
 end
 
 oldGetPosition = love.mouse.getPosition
@@ -130,6 +143,7 @@ function love.mouse.getPosition()
 	x, y = x/(resolutionX/1920), y/(resolutionY/1080)
 	return x,y
 end
+
 function love.mousepressed(x, y, button)
 	x = x/(resolutionX/1920)
 	y = y/(resolutionY/1080)
@@ -150,6 +164,9 @@ function love.mousepressed(x, y, button)
 									grabbed = "none"
 								end
 								grabbed = objects[k]
+								for k2, v2 in pairs(getObjects()) do
+									if k2 == k then grabbed = k end 
+								end
 								mouseJoint = love.physics.newMouseJoint(v.body, love.mouse.getPosition())
 								--mouseJoint:setMaxForce(15000)
 							end
@@ -198,33 +215,6 @@ function schedule(func, time)
 	table.insert(scheduled, {time=time, func=func})
 end
 
-function addObjectFunctions(k, v)
-	v.remove = function(self)
-		objects[self].body:setActive(false)
-		objects[self].draw = nil
-	end
-	v.fadeout = function(aps) --alpha value per second
-		fadeOut[k] = {cur=255,aps=aps}
-	end
-	if v.fixture == nil then
-		if v.body ~= nil then
-			if v.shape ~= nil then
-				v.fixture = love.physics.newFixture(v.body, v.shape)
-			else
-				if warnings.noShape[k] == nil then
-					warnings.noShape[k] = true
-					addInfo(k.." Has no shape :(", 20)
-				end
-			end
-		else
-			if warnings.noBody[k] == nil then
-				warnings.noBody[k] = true
-				addInfo(k.." Has no body :(", 20)
-			end
-		end
-	end
-end
-
 function checkObject(k, v)
 	if type(v) == "table" then
 		for k2, v2 in pairs(v) do
@@ -233,43 +223,6 @@ function checkObject(k, v)
 		if v.body ~= nil and v.shape ~= nil then
 			addObjectFunctions(k, v)
 		end
-	end
-end
-
-function loadLevelRaw(levelToLoad)
-	lastLevel = currentLevel
-	currentLevel = levelToLoad
-	if world ~= nil then world:destroy() world = nil end
-	objects = nil
-	fadeOut = {}
-	drawLevelBackground = nil
-	drawLevelForeground = nil
-
-	load = require ("levels/"..levelToLoad)
-	load()
-	load = nil
-	if objects == nil then objects = {} end
-	if world == nil then world = love.physics.newWorld(0, 9.81*64, true) end
-	for k, v in pairs(objects) do
-		checkObject(k, v)
-	end
-	for k, v in pairs(objects) do
-		if v.afterload ~= nil then
-			loadstring(v.afterload)()
-		end
-	end
-	world:setCallbacks(beginContactMain, endContactMain, preSolveMain, postSolveMain)
-	return true
-end
-
-function loadLevel(name)
-	result, err = pcall(loadLevelRaw, name)
-	if not result then 
-		error("error loading level: "..name.."\n"..err)
-	else 
-		levelToLoad = nil
-		addInfo("Level Loaded: "..name, 10)
-		currentLevel = name
 	end
 end
 
@@ -283,22 +236,38 @@ function drawAll()
 	love.graphics.setColor(255,255,255)
 	if background ~= nil then love.graphics.draw(background, 0, 0) end
 	if objects ~= nil then
+		for name, amount in pairs(objectList) do
+			for uid = 1, objectList[name] do
+				--error(name..": \n"..to_string(objects[name]))
+				if objects[name][uid] ~= nil then 
+					objects[name][uid].draw(uid)
+				end
+			end
+		end
+	end
+end
+--[[
+function drawAll()
+	love.graphics.setColor(255,255,255)
+	if background ~= nil then love.graphics.draw(background, 0, 0) end
+	if objects ~= nil then
 		for k, v in pairs(objects) do
-			if k ~= nil and v.body then
-				if v.draw ~= nil and type(v.draw) == "function" then 
-					if fadeOut[k] ~= nil then
-						if fadeOut[k].cur < 0 then fadeOut[k].cur = 0 end
-						love.graphics.setColor(255,255,255, fadeOut[k].cur)
-						v.draw()
+			for k2, v2 in pairs(objectList) do
+				if v2.draw ~= nil and type(v2.draw) == "function" then 
+					if fadeOut[k2] ~= nil then
+						if fadeOut[k2].cur < 0 then fadeOut[k2].cur = 0 end
+						love.graphics.setColor(255,255,255, fadeOut[k2].cur)
+						v2.draw()
 					else
 						love.graphics.setColor(255,255,255)
-						v.draw()
+						v2.draw(uid)
 					end
 				end
 			end
 		end
 	end
 end
+]]--
 
 function addInfo(toAdd, time)
 	if time == nil then
@@ -375,38 +344,6 @@ end
 function round(num, idp)
   local mult = 10^(idp or 0)
   return math.floor(num * mult + 0.5) / mult
-end
-
-function addObject(name, amount)
-	if not amount then amount = 1 end
-	for i = 1, amount do
-		if love.filesystem.exists("objects/"..name..".lua") then
-			if objectList[name] == nil then 
-				objectList[name] = 1 
-			else
-				if objectList[name] >= 1 then objectList[name] = objectList[name] + 1 end
-			end
-
-			object = love.filesystem.load("objects/"..name..".lua")()
-			if love.filesystem.exists("objects/ai/"..name..".lua") then
-				ais[name] = love.filesystem.load("objects/ai/"..name..".lua")(deltatime)
-				
-				addInfo("AI loaded for "..name, 5)
-			else
-				addInfo("'objects/ai/"..name..".lua' has no AI", 5)
-			end
-		else
-			addInfo("Object not found: 'objects/"..name..".lua'", 10)
-			break
-		end
-	end
-end
-
-function runAI(dt)
-	for k, v in pairs(ais) do
-		func = v
-		func(dt)
-	end
 end
 
 function round(num, idp)

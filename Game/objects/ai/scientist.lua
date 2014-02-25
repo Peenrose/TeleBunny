@@ -1,13 +1,12 @@
-parts = {
-	objects.scientist_head.body:getAngle(), 
-	objects.scientist_torso.body:getAngle(), 
-	objects.scientist_leftarm.body:getAngle(), 
-	objects.scientist_rightarm.body:getAngle(), 
-	objects.scientist_leftleg.body:getAngle(), 
-	objects.scientist_rightleg.body:getAngle(),
-}
+-- parts = {
+-- 	scientist.head.body:getAngle(), 
+-- 	scientist.torso.body:getAngle(), 
+-- 	scientist.leftarm.body:getAngle(), 
+-- 	scientist.rightarm.body:getAngle(), 
+-- 	scientist.leftleg.body:getAngle(), 
+-- 	scientist.rightleg.body:getAngle(),
+-- }
 --mouse joint to pull scientist
-scientistDazed = -1
 scientistRotating = false
 angle = 0
 secondCounter = 0
@@ -15,12 +14,14 @@ lastKicked = 0
 lastX = 0
 kickReset = 0
 
-function approachBunny()
-	objects.scientist_torso.body:setLinearVelocity(125, -125)
+function approachBunny(uid)
+	scientist = objects["scientist"][uid]
+	scientist.torso.body:setLinearVelocity(125, -125)
 end
 
-function spinUpright()
-	angle = objects.scientist_torso.body:getAngle()
+function spinUpright(uid)
+	scientist = objects["scientist"][uid]
+	angle = scientist.torso.body:getAngle()
 	local pos = 1
 	if angle < 0 then
 		while angle < -(2*math.pi) do angle = angle + (2*math.pi) end
@@ -31,17 +32,17 @@ function spinUpright()
 	end
 	-- local newAngle = angle+(0.4*dt)
 	if math.abs(angle) > 1 then
-		objects.scientist_torso.body:applyAngularImpulse(angle*-35000)
+		scientist.torso.body:applyAngularImpulse(angle*-35000)
 	else
-		objects.scientist_torso.body:applyAngularImpulse(angle*-30000)
+		scientist.torso.body:applyAngularImpulse(angle*-30000)
 	end
 	
 	if math.abs(angle) < 0.5 then 
-		objects.scientist_torso.body:applyAngularImpulse((angle-0.1)*-200000) 
+		scientist.torso.body:applyAngularImpulse((angle-0.1)*-200000) 
 	end
 
 	if angle < 0.2 then
-		objects.scientist_rightleg.body:applyAngularImpulse(-750)
+		scientist.rightleg.body:applyAngularImpulse(-750)
 	end
 
 	if (math.abs(angle) < 0.4) then
@@ -49,59 +50,62 @@ function spinUpright()
 	else scientistRotating = true end
 end
 
-function kick()
+function kick(uid)
+	scientist = objects["scientist"][uid]
 	kickReset = 1
-	objects.scientist_rightleg.body:applyAngularImpulse(-1000000)
-	objects.scientist_torso.body:applyLinearImpulse(10000, 0)
+	scientist.rightleg.body:applyAngularImpulse(-1000000)
+	scientist.torso.body:applyLinearImpulse(10000, 0)
 end
 
-function AI(dt)
-	if objects.scientist_torso ~= nil and objects.scientist_leftleg ~= nil then
-		x,head_y = objects.scientist_head.body:getPosition()
-		xvel, yvel = objects.scientist_head.body:getLinearVelocity()
+function AI(uid, dt)
+	scientist = objects["scientist"][uid]
+	if not scientist then return end
+	if objects["scientist"][uid].scientistDazed == nil then objects["scientist"][uid].scientistDazed = 0 end
+	if scientist.torso ~= nil and scientist.leftleg ~= nil then
+		x,head_y = scientist.head.body:getPosition()
+		xvel, yvel = scientist.head.body:getLinearVelocity()
 		
 		maxvel = math.max(math.abs(xvel), math.abs(yvel))
 
 		if kickReset > 0 then 
 			kickReset = kickReset - dt 
 			if kickReset < 0 then
-				objects.scientist_rightleg.body:applyAngularImpulse(200000)
+				scientist.rightleg.body:applyAngularImpulse(200000)
 				kickReset = 0
 			end
 		end
 		secondCounter = secondCounter + dt
 		if secondCounter >= 5 then
 			secondCounter = 0
-			local X = objects.scientist_torso.body:getX()
+			local X = scientist.torso.body:getX()
 			if X > lastX then
 				moved = X - lastX
 			elseif X <= lastX then
 				moved = lastX - X
 			end
-			addInfo("Moved: "..moved, 5)
-			if moved < 75 then kick() end
+			if moved < 75 then kick(uid) end
 			lastX = X
 			traveledLastSecond = 0
 		end
-
-		if scientistDazed > -0.95 then
-			scientistDazed = scientistDazed - dt
-			scientistSprites.head = headSprites.dazed
+		--if objects["scientist"][uid].scientistDazed == nil then return end
+		if objects["scientist"][uid].scientistDazed > -0.95 then
+			objects["scientist"][uid].scientistDazed = objects["scientist"][uid].scientistDazed - dt
+			objects["scientist"][uid].headSprite = headSprites.dazed
 		end
 
-		if scientistDazed <= 0 then
+		if objects["scientist"][uid].scientistDazed <= 0 then
 			if isScientistPart(grabbed.fixture) then
-				scientistSprites.head = headSprites.worried
+				objects["scientist"][uid].headSprite = headSprites.worried
 				return
 			elseif touching_ground ~= 0 then
-				scientistSprites.head = headSprites.normal
+				objects["scientist"][uid].headSprite = headSprites.normal
 			end
 		end
-		if scientistDazed <= -0.95 then scientistDazed = -1 end
+		if objects["scientist"][uid].scientistDazed <= -0.95 then objects["scientist"][uid].scientistDazed = -1 end
 
-		if scientistDazed == -1 and scientistSprites.head == headSprites.normal then
-			spinUpright()
-			if scientistRotating == false and foot_touching_ground > 1 then approachBunny() end
+		if objects["scientist"][uid].scientistDazed == -1 and objects["scientist"][uid].headSprite == headSprites.normal then
+			spinUpright(uid)
+			if scientistRotating == false and foot_touching_ground > 1 then approachBunny(uid) end
 		end
 	end
 end

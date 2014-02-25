@@ -1,15 +1,11 @@
-beakerUnbrokenSprite = love.graphics.newImage()
-beakerBrokenSprite = love.graphics.newImage()
-
-objects.beaker = {
-	body = love.physics.newBody(world, bunnyx, bunnyy, "static"),
-	shape = love.physics.newRectangleShape(bunnywidth, bunnyheight),
+beakerSprite = love.graphics.newImage("images/beaker1.png")
+local beaker = {
+	body = love.physics.newBody(world, x, y, "dynamic"),
+	shape = love.physics.newPolygonShape(155/4,11/4, 240/4,11/4, 240/4,209/4, 403/4,581/4, 0,581/4, 155/4,209/4),
 	draw = function()
-		--love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints())) hitbox
-		love.graphics.draw(bunnyFrames[bunnyFrame], objects.bunny.body:getX(), objects.bunny.body:getY(), objects.bunny.body:getAngle(), bunnysx, bunnysy, 580, 888)
+		love.graphics.polygon("line", objects.beaker.body:getWorldPoints(objects.beaker.shape:getPoints()))
+		love.graphics.draw(beakerSprite, objects.beaker.body:getX(), objects.beaker.body:getY(), objects.beaker.body:getAngle(), 1/4, 1/4)
 	end,
 	click = function() end,
-	update = function(dt)
-
-	end
 }
+return beaker

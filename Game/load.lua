@@ -1,6 +1,12 @@
 function loadLevelRaw(levelToLoad)
 	lastLevel = currentLevel
 	currentLevel = levelToLoad
+	for name, amount in pairs(objectList) do
+		for uid = 1, amount do
+			removeObject(name, uid)
+		end
+	end
+
 	if world ~= nil then world:destroy() world = nil end
 	objects = nil
 	fadeOut = {}
@@ -27,10 +33,11 @@ end
 function loadLevel(name)
 	result, err = pcall(loadLevelRaw, name)
 	if not result then 
-		error("error loading level: "..name.."\n"..tostring(err))
+		addInfo("error: "..tostring(err), 20)
+		paused = false
 	else 
 		levelToLoad = nil
-		addInfo("Level Loaded: "..name, 10)
+		addInfo("Level Loaded: "..name, 5)
 		currentLevel = name
 	end
 end
@@ -72,11 +79,20 @@ function addObject(name, amount, args)
 	end
 end
 
+function removeObject(name, uid, sub)
+		if objects[name] ~= nil and objects[name][uid] ~= nil then else return end
+		if objects[name][uid].body ~= nil then 
+			objects[name][uid].body:setActive(false) 
+		end
+		world:update(0)
+		objects[name][uid].draw = nil
+		if ais[name] ~= nil then ais[name][uid] = nil end
+		objects[name][uid] = nil
+		if removedObjects[name] == nil then removedObjects[name] = {} end
+		removedObjects[name][uid] = true
+end
+
 function addObjectFunctions(k, v)
-	v.remove = function(self)
-		objects[self].body:setActive(false)
-		objects[self].draw = nil
-	end
 	v.fadeout = function(aps) --alpha value per second
 		fadeOut[k] = {cur=255,aps=aps}
 	end

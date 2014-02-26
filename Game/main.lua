@@ -119,18 +119,22 @@ function getObjects()
 	collected = {}
 	for name, amount in pairs(objectList) do --all types
 		for uid = 1, amount do -- all per type
-			if objects[name] == nil or objects[name][uid] == nil then break end
-			if objects[name][uid].fixture then
+			if removedObjects[name] ~= nil and removedObjects[name][uid] ~= nil then
+
+			else
+				if objects[name] == nil or objects[name][uid] == nil then break end
+				if objects[name][uid].fixture then
+					local objectName = name.." #"..uid
+					collected[objectName] = objects[name][uid]
+				end
 				local objectName = name.." #"..uid
-				collected[objectName] = objects[name][uid]
+				if objects[name][uid].torso ~= nil then collected[objectName.." (torso)"] = objects[name][uid].torso end
+				if objects[name][uid].head ~= nil then collected[objectName.." (head)"] = objects[name][uid].head end
+				if objects[name][uid].leftleg ~= nil then collected[objectName.." (leftleg)"] = objects[name][uid].leftleg end
+				if objects[name][uid].rightleg ~= nil then collected[objectName.." (rightleg)"] = objects[name][uid].rightleg end
+				if objects[name][uid].rightarm ~= nil then collected[objectName.." (rightarm)"] = objects[name][uid].rightarm end
+				if objects[name][uid].leftarm ~= nil then collected[objectName.." (leftarm)"] = objects[name][uid].leftarm end
 			end
-			local objectName = name.." #"..uid
-			if objects[name][uid].torso ~= nil then collected[objectName.." (torso)"] = objects[name][uid].torso end
-			if objects[name][uid].head ~= nil then collected[objectName.." (head)"] = objects[name][uid].head end
-			if objects[name][uid].leftleg ~= nil then collected[objectName.." (leftleg)"] = objects[name][uid].leftleg end
-			if objects[name][uid].rightleg ~= nil then collected[objectName.." (rightleg)"] = objects[name][uid].rightleg end
-			if objects[name][uid].rightarm ~= nil then collected[objectName.." (rightarm)"] = objects[name][uid].rightarm end
-			if objects[name][uid].leftarm ~= nil then collected[objectName.." (leftarm)"] = objects[name][uid].leftarm end
 		end
 	end
 	--error(to_string(objects["scientist"]))
@@ -239,8 +243,10 @@ function drawAll()
 		for name, amount in pairs(objectList) do
 			for uid = 1, objectList[name] do
 				--error(name..": \n"..to_string(objects[name]))
-				if objects[name][uid] ~= nil then 
-					objects[name][uid].draw(uid)
+				if objects[name][uid] ~= nil then
+					if objects[name][uid].draw ~= nil then
+						objects[name][uid].draw(uid)
+					end
 				end
 			end
 		end

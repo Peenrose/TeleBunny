@@ -115,6 +115,7 @@ ais = {}
 aiList = {}
 objects = {}
 objectList = {}
+removedObjects = {}
 
 healthRemaining = {}
 

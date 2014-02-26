@@ -1,5 +1,5 @@
 --drag radius
---get objects function
+--get object scientist uid
 
 function setResolution(x, y)
 	--love.window.setMode(x, y, {fullscreen=fullscreen})

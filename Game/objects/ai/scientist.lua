@@ -1,18 +1,18 @@
--- parts = {
--- 	scientist.head.body:getAngle(), 
--- 	scientist.torso.body:getAngle(), 
--- 	scientist.leftarm.body:getAngle(), 
--- 	scientist.rightarm.body:getAngle(), 
--- 	scientist.leftleg.body:getAngle(), 
--- 	scientist.rightleg.body:getAngle(),
--- }
---mouse joint to pull scientist
 scientistRotating = false
 angle = 0
 secondCounter = 0
 lastKicked = 0
 lastX = 0
 kickReset = 0
+dazed = {}
+
+function AI(dt)
+	for uid = 1, objectList["scientist"] do
+		if removedObjects["scientist"] ~= nil and removedObjects["scientist"][uid] ~= nil then else
+			ScientistAI(uid, dt)
+		end
+	end
+end
 
 function approachBunny(uid)
 	scientist = objects["scientist"][uid]
@@ -57,7 +57,7 @@ function kick(uid)
 	scientist.torso.body:applyLinearImpulse(10000, 0)
 end
 
-function AI(uid, dt)
+function ScientistAI(uid, dt)
 	scientist = objects["scientist"][uid]
 	if not scientist then return end
 	if objects["scientist"][uid].scientistDazed == nil then objects["scientist"][uid].scientistDazed = 0 end
@@ -109,4 +109,5 @@ function AI(uid, dt)
 		end
 	end
 end
+
 return AI

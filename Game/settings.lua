@@ -112,7 +112,6 @@ scheduled = {}
 removals = {}
 
 ais = {}
-aiList = {}
 objects = {}
 objectList = {}
 removedObjects = {}

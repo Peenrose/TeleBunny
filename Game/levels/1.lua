@@ -10,13 +10,12 @@ function load()
 	addObject("bunny")
 	addObject("scientist", 2)
 	addObject("carrot", 1)
-	--addObject("level1objects")
 	touching_ground = 0
 	foot_touching_ground = 0
 end
 
 function updateLevel(dt)
-
+	--
 end
 
 function isScientistPart(fix) 
@@ -25,7 +24,7 @@ function isScientistPart(fix)
 			for k, v in pairs(objects["scientist"][uid]) do
 				if type(v) == "table" then
 					for k2, v2 in pairs(v) do
-						if k2 == "fixture" and v2 == fix then return true end
+						if k2 == "fixture" and v2 == fix then return true end --return uid
 					end
 				end
 			end

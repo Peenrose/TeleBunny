@@ -58,18 +58,10 @@ function addObject(name, amount, args)
 			objects[name][objectList[name]] = {}
 			love.filesystem.load("objects/"..name..".lua")()
 			objects[name][objectList[name]] = loadObject(objectList[name])
-			if name == "scientist" then joinScientist(objectList[name]) end
 			if love.filesystem.exists("objects/ai/"..name..".lua") then
-				if aiList[name] == nil then 
-					aiList[name] = 1
-				else 
-					if aiList[name] >= 1 then 
-						aiList[name] = aiList[name] + 1 
-					end 
+				if ais[name] == nil then
+					ais[name] = love.filesystem.load("objects/ai/"..name..".lua")(deltatime)
 				end
-				if ais[name] == nil then ais[name] = {} end
-				--local ai = love.filesystem.load("objects/ai/"..name..".lua")(uid, deltatime)
-				--ais[name][aiList[name]] = ai
 			else
 				addInfo("'objects/ai/"..name..".lua' has no AI", 5)
 			end
@@ -86,7 +78,9 @@ function removeObject(name, uid, sub)
 		end
 		world:update(0)
 		objects[name][uid].draw = nil
-		if ais[name] ~= nil then ais[name][uid] = nil end
+		if ais[name] ~= nil then 
+			ais[name][uid] = nil 
+		end
 		objects[name][uid] = nil
 		if removedObjects[name] == nil then removedObjects[name] = {} end
 		removedObjects[name][uid] = true
@@ -154,11 +148,7 @@ function to_string( tbl )
 end
 
 function runAI(dt)
-	if not nil then return end
 	for k, v in pairs(ais) do 
-		for uid = 1, aiList[k] do
-			addInfo("Running AI For: "..k.." #"..uid)
-			ais[k][uid](uid, dt)
-		end
+		ais[k](dt)
 	end 
 end

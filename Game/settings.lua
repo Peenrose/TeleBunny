@@ -124,7 +124,7 @@ love.mouse.setCursor(cursor)
 font = love.graphics.newFont(20)
 love.graphics.setFont(font)
 
-love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)
+--love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)
 
 pausebackground = love.graphics.newImage("images/cyanpause.png")
 love.physics.setMeter(settings.physicsMeter)

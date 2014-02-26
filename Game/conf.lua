@@ -13,8 +13,4 @@ function love.conf(game)
   game.modules.mouse = true
   game.modules.sound = true
   game.modules.physics = true
-
-  game.window.width = 1920
-  game.window.height = 1080
-  game.window.fullscreen = true
 end

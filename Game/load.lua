@@ -79,7 +79,7 @@ function removeObject(name, uid, sub)
 		world:update(0)
 		objects[name][uid].draw = nil
 		if ais[name] ~= nil then 
-			ais[name][uid] = nil 
+			ais[name] = nil 
 		end
 		objects[name][uid] = nil
 		if removedObjects[name] == nil then removedObjects[name] = {} end

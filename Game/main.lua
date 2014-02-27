@@ -1,5 +1,6 @@
 --drag radius
 --get object scientist uid
+feetTouching = {}
 
 function setResolution(x, y)
 	--love.window.setMode(x, y, {fullscreen=fullscreen})

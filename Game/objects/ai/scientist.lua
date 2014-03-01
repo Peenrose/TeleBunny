@@ -28,7 +28,6 @@ end
 function spinUpright(uid)
 	scientist = objects["scientist"][uid]
 	angle = getAngle(uid)
-	-- local newAngle = angle+(0.4*dt)
 	if math.abs(angle) > 1 then
 		scientist.torso.body:applyAngularImpulse(angle*-35000)
 	else
@@ -93,10 +92,8 @@ function ScientistAI(uid, dt)
 			traveledLastSecond[uid] = 0
 		end
 		
-
-		--[[
 		if dazed[uid] == nil then dazed[uid] = 0 end
-		if touchingGround[uid] == nil then touchingGround[uid] = 0 end
+		if touching_ground[uid] == nil then touching_ground[uid] = 0 end
 
 		if dazed[uid] > -0.95 then
 			dazed[uid] = dazed[uid] - dt
@@ -107,19 +104,23 @@ function ScientistAI(uid, dt)
 			if isScientistPart(grabbed.fixture) then
 				objects["scientist"][uid].headSprite = headSprites.worried
 				return
-			elseif touchingGround[uid] ~= 0 then
+			elseif touching_ground[uid] ~= 0 then
 				objects["scientist"][uid].headSprite = headSprites.normal
 			end
 		end
 
 		if dazed[uid] <= -0.95 then dazed[uid] = -1 end
+		if foot_touching_ground[uid] == nil then foot_touching_ground[uid] = 0 end
 
-		if dazed[uid] == -1 then objects["scientist"][uid].headSprite = headSprites.normal
-		if dazed[uid] == -1 and objects["scientist"][uid].headSprite == headSprites.normal then
+		if dazed[uid] == -1 then
+			objects["scientist"][uid].headSprite = headSprites.normal
 			spinUpright(uid)
-			if isRotating(uid) == false  then approachBunny(uid) end --and touchingGround[uid] > 1
+			
+			if isRotating(uid) == false and foot_touching_ground[uid] > 1 then approachBunny(uid) end
 		end
-		]]--
+			addInfo("Feet On Ground ("..uid.."): "..foot_touching_ground[uid])
+			addInfo("Touching Ground ("..uid.."): "..touching_ground[uid])
+			addInfo("Dazed ("..uid.."): "..dazed[uid])
 	end
 end
 

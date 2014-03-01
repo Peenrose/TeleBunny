@@ -29,24 +29,6 @@ function drawScientist(uid)
 	love.graphics.draw(objects["scientist"][uid].headSprite,objects["scientist"][uid].head.body:getX(),objects["scientist"][uid].head.body:getY(),objects["scientist"][uid].head.body:getAngle(),     0.078*2*4.16, 0.078*2*3.91)
 end
 
-function isScientistPart(fixture)
-	if fixture == scientist.torso.fixture then return true end
-	if fixture == scientist.head.fixture then return true end
-	if fixture == scientist.leftarm.fixture then return true end
-	if fixture == scientist.rightarm.fixture then return true end
-	if fixture == scientist.leftleg.fixture then return true end
-	if fixture == scientist.rightleg.fixture then return true end
-
-	return false
-end
-
-function isFoot(fixture)
-	if fixture == scientist.leftleg.fixture then return true end
-	if fixture == scientist.rightleg.fixture then return true end
-
-	return false
-end
-
 scientistWidth = 277*2
 scientistHeight = 329*2
 

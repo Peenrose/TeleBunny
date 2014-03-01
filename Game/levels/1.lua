@@ -1,9 +1,11 @@
-touchingGround = {}
+touching_ground = {}
+foot_touching_ground = {}
 dazed = {}
 kickReset = {}
 lastx = {}
 traveledLastSecond = {}
 secondCounter = {}
+touching = {}
 
 function load()
 	love.window.setTitle("Telekinetic Bunny")
@@ -17,37 +19,31 @@ function load()
 	addObject("bunny")
 	addObject("scientist", 2)
 	addObject("carrot", 1)
-	touching_ground = 0
-	foot_touching_ground = 0
 end
 
 function updateLevel(dt)
 	--
 end
 
-function isScientistPart(fix) 
+function isScientistPart(fix)
 	if objects["scientist"] ~= nil then
-		for uid = 1, objectList["scientist"] do
-			for k, v in pairs(objects["scientist"][uid]) do
-				if type(v) == "table" then
-					for k2, v2 in pairs(v) do
-						if k2 == "fixture" and v2 == fix then return uid end --return uid
-					end
-				end
-			end
+		for k, v in pairs(objects["scientist"]) do
+			if fix == v.torso.fixture then return k end
+			if fix == v.leftleg.fixture then return k end
+			if fix == v.rightleg.fixture then return k end
+			if fix == v.leftarm.fixture then return k end
+			if fix == v.rightarm.fixture then return k end
+			if fix == v.head.fixture then return k end
 		end
 	end
 	return false
 end
 
-function isFoot(fix) 
-	if isScientistPart(fix) == true then
-		for uid = 1, objectList["scientist"] do
-			for k, v in pairs(objects["scientist"][uid]) do
-				if k == "leftleg" or k == "rightleg" then
-					if v.fixture == fix then return uid end
-				end
-			end
+function isFoot(fix)
+	if objects["scientist"] ~= nil then
+		for k, v in pairs(objects["scientist"]) do
+			if fix == v.leftleg.fixture then return k end
+			if fix == v.rightleg.fixture then return k end
 		end
 	end
 	return false
@@ -64,24 +60,50 @@ function beginContact(a, b, coll)
 
 	--if scientistparts ~= 2 then if maxvel > 750 then addInfo("Collision! Velocity: "..maxvel, 4) end end
 
-	if isScientistPart(a) then
-		if b == objects.bunny.fixture then
-			--error("Game Over.\nInsert Carrot To Continue")
-		end
-	elseif isScientistPart(b) then
-		if a == objects.bunny.fixture then
-			--error("Game Over.\nInsert Carrot To Continue")
+
+	if isScientistPart(a) or isScientistPart(b) then
+
+		if isScientistPart(a) then
+			if touching_ground[isScientistPart(a)] == nil then touching_ground[isScientistPart(a)] = 0 end
+			if foot_touching_ground[isScientistPart(a)] == nil then foot_touching_ground[isScientistPart(a)] = 0 end
+		elseif isScientistPart(b) then
+			if touching_ground[isScientistPart(b)] == nil then touching_ground[isScientistPart(b)] = 0 end
+			if foot_touching_ground[isScientistPart(b)] == nil then foot_touching_ground[isScientistPart(b)] = 0 end
 		end
 	end
 
-	--calculate any scientist parts touching ground
+	if isScientistPart(a) then
+		if isFoot(a) then
+			if b == ground.fixture then
+				foot_touching_ground[isScientistPart(a)] = foot_touching_ground[isScientistPart(a)] + 1
+			end
+		else
+			if b == ground.fixture then
+				touching_ground[isScientistPart(a)] = touching_ground[isScientistPart(a)] + 1
+			end
+		end
+	elseif isScientistPart(b) then
+		if isFoot(b) then
+			if a == ground.fixture then
+				foot_touching_ground[isScientistPart(b)] = foot_touching_ground[isScientistPart(b)] + 1
+			end
+		else
+			if a == ground.fixture then
+				touching_ground[isScientistPart(b)] = touching_ground[isScientistPart(b)] + 1
+			end
+		end
+	end
 
-	-- calculate any sicentist feet touching ground
-
-
-	if scientistparts == 1 then
+	if isScientistPart(a) then
 		if maxvel > 800 then
-			uid = isScientistPart(a) or isScientistPart(b)
+			uid = isScientistPart(a)
+			if dazed[uid] == nil then dazed[uid] = 0 end
+			dazed[uid] = math.abs(math.min(dazed[uid] + ((maxvel-1000)/1000), 3))
+		end
+	end
+	if isScientistPart(b) then
+		if maxvel > 800 then
+			uid = isScientistPart(b)
 			if dazed[uid] == nil then dazed[uid] = 0 end
 			dazed[uid] = math.abs(math.min(dazed[uid] + ((maxvel-1000)/1000), 3))
 		end
@@ -89,7 +111,27 @@ function beginContact(a, b, coll)
 end
 
 function endContact(a, b, coll)
-	--recalc scientist parts
+	if isScientistPart(a) then
+		if isFoot(a) then
+			if b == ground.fixture then
+				foot_touching_ground[isScientistPart(a)] = foot_touching_ground[isScientistPart(a)] - 1
+			end
+		else
+			if b == ground.fixture then
+				touching_ground[isScientistPart(a)] = touching_ground[isScientistPart(a)] - 1
+			end
+		end
+	elseif isScientistPart(b) then
+		if isFoot(b) then
+			if a == ground.fixture then
+				foot_touching_ground[isScientistPart(b)] = foot_touching_ground[isScientistPart(b)] - 1
+			end
+		else
+			if a == ground.fixture then
+				touching_ground[isScientistPart(b)] = touching_ground[isScientistPart(b)] - 1
+			end
+		end
+	end
 end
 
 function preSolve(a, b, coll) end

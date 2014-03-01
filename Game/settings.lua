@@ -44,7 +44,7 @@ settingsItems = {
 	title = "Settings",
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
 	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = true},
-	{title = "Caged Bunny", action = function() settingsItems[3].value = not settingsItems[3].value end, value = false},
+	--{title = "Caged Bunny", action = function() settingsItems[3].value = not settingsItems[3].value end, value = false},
 }
 
 levelItems = {
@@ -125,7 +125,7 @@ love.graphics.setFont(font)
 
 --love.window.setMode(settings.window.width, settings.window.height, settings.displayFlags)
 
-pausebackground = love.graphics.newImage("images/cyanpause.png")
+pausebackground = love.graphics.newImage("images/pause.png")
 love.physics.setMeter(settings.physicsMeter)
 love.window.setTitle(settings.window.title)
 love.window.setIcon(love.image.newImageData("images/icon.png"))

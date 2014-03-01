@@ -101,12 +101,12 @@ scientist.leftarm.body:setBullet(true)
 scientist.rightarm.body:setBullet(true)
 joinScientist()
 function loadObject(uid)
-	scientist.torso.body:setX(scientist.torso.body:getX()+(objectList["scientist"]*300))
-	scientist.leftarm.body:setX(scientist.leftarm.body:getX()+(objectList["scientist"]*300))
-	scientist.rightarm.body:setX(scientist.rightarm.body:getX()+(objectList["scientist"]*300))
-	scientist.head.body:setX(scientist.head.body:getX()+(objectList["scientist"]*300))
-	scientist.leftleg.body:setX(scientist.leftleg.body:getX()+(objectList["scientist"]*300))
-	scientist.rightleg.body:setX(scientist.rightleg.body:getX()+(objectList["scientist"]*300))
+	scientist.torso.body:setX((scientist.torso.body:getX()-(objectList["scientist"]*350))-80)
+	scientist.leftarm.body:setX((scientist.leftarm.body:getX()-(objectList["scientist"]*350))-80)
+	scientist.rightarm.body:setX((scientist.rightarm.body:getX()-(objectList["scientist"]*350))-80)
+	scientist.head.body:setX((scientist.head.body:getX()-(objectList["scientist"]*350))-80)
+	scientist.leftleg.body:setX((scientist.leftleg.body:getX()-(objectList["scientist"]*350))-80)
+	scientist.rightleg.body:setX((scientist.rightleg.body:getX()-(objectList["scientist"]*350))-80)
 
 	return scientist
 end

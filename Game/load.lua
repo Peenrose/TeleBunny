@@ -9,6 +9,7 @@ function loadLevelRaw(levelToLoad)
 
 	if world ~= nil then world:destroy() world = nil end
 	objects = nil
+	objectList = {}
 	fadeOut = {}
 	drawLevelBackground = nil
 	drawLevelForeground = nil
@@ -62,8 +63,6 @@ function addObject(name, amount, args)
 				if ais[name] == nil then
 					ais[name] = love.filesystem.load("objects/ai/"..name..".lua")(deltatime)
 				end
-			else
-				addInfo("'objects/ai/"..name..".lua' has no AI", 5)
 			end
 		end
 	else

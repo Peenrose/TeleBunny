@@ -78,26 +78,7 @@ function love.draw()
 		drawInfo(deltatime)
 	elseif paused == true then
 		drawAll()
-		love.graphics.setColor(255,255,255,255)
-		love.graphics.draw(pausebackground)
-		setFontSize(80)
-		love.graphics.printf("Paused", 0, 100, settings.window.width, "center")
-		setFontSize(30)
-		love.graphics.printf(pausedMenu.title, 0, 175, settings.window.width, "center")
-		y = 200
-		setFontSize(40)
-		for k, v in pairs(pausedMenu) do
-			if v.action ~= nil then
-				y = y + 100
-				love.graphics.printf(v.title, 0, y, settings.window.width, "center")
-				setFontSize(18)
-				if v.value ~= nil then love.graphics.printf(tostring(v.value), 0, y+37, settings.window.width, "center") end
-				setFontSize(40)
-				x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
-				love.graphics.rectangle("line", x, y, mx, my)
-				pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
-			end
-		end
+		drawPauseScreen()
 	end
 
 	love.graphics.pop()
@@ -234,6 +215,33 @@ end
 function updateGrabbed()
 	if mouseJoint ~= nil then
 		mouseJoint.setTarget(mouseJoint, love.mouse.getPosition())
+	end
+end
+
+function drawPauseScreen()
+	love.graphics.setColor(255,255,255,255)
+	love.graphics.draw(pausebackground)
+	setFontSize(80)
+	love.graphics.printf("Paused", 0, 100, settings.window.width, "center")
+	setFontSize(30)
+	love.graphics.printf(pausedMenu.title, 0, 175, settings.window.width, "center")
+	y = 200
+	setFontSize(40)
+	for k, v in pairs(pausedMenu) do
+		if v.action ~= nil then
+			y = y + 100
+			x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
+			love.graphics.setColor(127,127,127,200)
+			love.graphics.rectangle("fill", x, y, mx, my)
+			love.graphics.setColor(255,255,255)
+			setFontSize(40)
+			love.graphics.printf(v.title, 0, y+10, settings.window.width, "center")
+			if v.value ~= nil then
+				setFontSize(18)
+				love.graphics.printf(tostring(v.value), 0, y+50, settings.window.width, "center")
+			end
+			pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
+		end
 	end
 end
 

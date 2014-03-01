@@ -52,13 +52,16 @@ function isRotating(uid)
 end
 
 function kick(uid)
-	scientist = objects["scientist"][uid]
-	kickReset[uid] = 1
-	scientist.rightleg.body:applyAngularImpulse(-1000000)
-	scientist.torso.body:applyLinearImpulse(10000, 0)
+	if dazed[uid] == -1 then
+		scientist = objects["scientist"][uid]
+		kickReset[uid] = 1
+		scientist.rightleg.body:applyAngularImpulse(-1000000)
+		scientist.torso.body:applyLinearImpulse(10000, 0)
+	end
 end
 
 function ScientistAI(uid, dt)
+	dt = dt * 1.5
 	scientist = objects["scientist"][uid]
 	if kickReset[uid] == nil then kickReset[uid] = 0 end
 
@@ -77,7 +80,7 @@ function ScientistAI(uid, dt)
 			end
 		end
 		if secondCounter[uid] == nil then secondCounter[uid] = 0 end
-		secondCounter[uid] = secondCounter[uid] + dt
+		if dazed[uid] == -1 then secondCounter[uid] = secondCounter[uid] + dt*0.75 end
 		if secondCounter[uid] >= 5 then
 			secondCounter[uid] = 0
 			local X = scientist.torso.body:getX()
@@ -96,7 +99,7 @@ function ScientistAI(uid, dt)
 		if touching_ground[uid] == nil then touching_ground[uid] = 0 end
 
 		if dazed[uid] > -0.95 then
-			dazed[uid] = dazed[uid] - dt
+			dazed[uid] = dazed[uid] - dt*0.6
 			objects["scientist"][uid].headSprite = headSprites.dazed
 		end
 

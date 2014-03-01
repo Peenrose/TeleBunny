@@ -8,7 +8,7 @@ end
 
 function approachBunny(uid)
 	scientist = objects["scientist"][uid]
-	scientist.torso.body:setLinearVelocity(125, -125)
+	scientist.torso.body:setLinearVelocity(150, -125)
 end
 
 function getAngle(uid)
@@ -118,9 +118,9 @@ function ScientistAI(uid, dt)
 			
 			if isRotating(uid) == false and foot_touching_ground[uid] > 1 then approachBunny(uid) end
 		end
-			addInfo("Feet On Ground ("..uid.."): "..foot_touching_ground[uid])
-			addInfo("Touching Ground ("..uid.."): "..touching_ground[uid])
-			addInfo("Dazed ("..uid.."): "..dazed[uid])
+			-- addInfo("Feet On Ground ("..uid.."): "..foot_touching_ground[uid])
+			-- addInfo("Touching Ground ("..uid.."): "..touching_ground[uid])
+			-- addInfo("Dazed ("..uid.."): "..dazed[uid])
 	end
 end
 

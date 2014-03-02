@@ -1,8 +1,8 @@
 function loadLevelRaw(levelToLoad)
 	lastLevel = currentLevel
 	currentLevel = levelToLoad
-	for name, amount in pairs(objectList) do
-		for uid = 1, amount do
+	for name, data in pairs(objects) do
+		for uid, v in pairs(data) do
 			removeObject(name, uid)
 		end
 	end
@@ -10,6 +10,7 @@ function loadLevelRaw(levelToLoad)
 	if world ~= nil then world:destroy() world = nil end
 	objects = nil
 	objectList = {}
+	removedObjects = {}
 	fadeOut = {}
 	drawLevelBackground = nil
 	drawLevelForeground = nil

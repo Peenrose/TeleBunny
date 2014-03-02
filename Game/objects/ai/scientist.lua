@@ -119,7 +119,7 @@ function ScientistAI(uid, dt)
 			objects["scientist"][uid].headSprite = headSprites.normal
 			spinUpright(uid)
 			
-			if isRotating(uid) == false and foot_touching_ground[uid] > 1 then approachBunny(uid) end
+			if isRotating(uid) == false and foot_touching_ground[uid] >= 2 then approachBunny(uid) end
 		end
 			-- addInfo("Feet On Ground ("..uid.."): "..foot_touching_ground[uid])
 			-- addInfo("Touching Ground ("..uid.."): "..touching_ground[uid])

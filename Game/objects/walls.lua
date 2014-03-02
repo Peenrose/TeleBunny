@@ -25,11 +25,11 @@ topwall = {
 
 if currentLevel == "1" then
 	shelf = {
-		body = love.physics.newBody(world, 62, 384, "static"),
-		shape = love.physics.newRectangleShape(710, 12)
+		body = love.physics.newBody(world, 240, 375, "static"),
+		shape = love.physics.newRectangleShape(330, 12)
 	}
 	shelf.fixture = love.physics.newFixture(shelf.body, shelf.shape)
-	shelf.fixture:setMask(1) -- 1 = shelf layer
+	shelf.fixture:setMask(2)
 end
 
 ground.fixture = love.physics.newFixture(ground.body, ground.shape)

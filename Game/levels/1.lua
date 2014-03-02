@@ -23,6 +23,7 @@ end
 
 function updateLevel(dt)
 	--
+	if objects["bunny"][1] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
 end
 
 function isScientistPart(fix)

@@ -9,6 +9,8 @@ function loadLevelRaw(levelToLoad)
 
 	if world ~= nil then world:destroy() world = nil end
 	objects = nil
+	grabbed = "none"
+	grabbedV = nil
 	objectList = {}
 	removedObjects = {}
 	fadeOut = {}
@@ -23,9 +25,12 @@ function loadLevelRaw(levelToLoad)
 	for k, v in pairs(objects) do
 		checkObject(k, v)
 	end
-	for k, v in pairs(objects) do
-		if v.afterload ~= nil then
-			loadstring(v.afterload)()
+	for name, v in pairs(objects) do
+		for uid, data in pairs(v) do
+			if v.afterload ~= nil then
+				uid = uid
+				loadstring(v.afterload)()
+			end
 		end
 	end
 	world:setCallbacks(beginContactMain, endContactMain, preSolveMain, postSolveMain)

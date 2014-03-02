@@ -94,6 +94,9 @@ function love.mousereleased()
 		mouseJoint:destroy()
 		mouseJoint = nil
 	end
+	if grabbedV ~= nil then
+		grabbedV.fixture:setMask()
+	end
 	grabbed = "none"
 end
 
@@ -151,8 +154,10 @@ function love.mousepressed(x, y, button)
 								end
 								grabbed = objects[k]
 								for k2, v2 in pairs(getObjects()) do
-									if k2 == k then grabbed = k end 
+									if k2 == k then grabbed = k end
 								end
+								v.fixture:setMask(1)
+								grabbedV = v
 								mouseJoint = love.physics.newMouseJoint(v.body, love.mouse.getPosition())
 								--mouseJoint:setMaxForce(15000)
 							end
@@ -248,6 +253,7 @@ end
 function drawAll()
 	love.graphics.setColor(255,255,255)
 	if background ~= nil then love.graphics.draw(background, 0, 0) end
+	if objects["bunny"][1] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
 	if objects ~= nil then
 		for name, amount in pairs(objectList) do
 			for uid = 1, objectList[name] do

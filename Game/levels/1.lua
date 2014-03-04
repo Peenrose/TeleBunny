@@ -56,6 +56,7 @@ function updateLevel(dt)
 	if frozenPotato and objects["potato"] ~= nil and objects["potato"][1] ~= nil then
 		objects["potato"][1].body:setX(potatoX)
 		objects["potato"][1].body:setY(potatoY)
+		objects["potato"][1].body:setLinearVelocity(0,0)
 		objects["potato"][1].body:setAngle(0)
 	elseif frozenPotato == false then
 		objects["potato"][1].fixture:setMask()
@@ -64,6 +65,7 @@ function updateLevel(dt)
 	if frozenMicroscope and objects["microscope"] ~= nil and objects["microscope"][1] ~= nil then
 		objects["microscope"][1].body:setX(microscopeX)
 		objects["microscope"][1].body:setY(microscopeY)
+		objects["microscope"][1].body:setLinearVelocity(0,0)
 		objects["microscope"][1].body:setAngle(0)
 	elseif frozenMicroscope == false then
 		objects["microscope"][1].fixture:setMask()
@@ -72,6 +74,7 @@ function updateLevel(dt)
 	if frozenSyringe and objects["syringe"] ~= nil and objects["syringe"][1] ~= nil then
 		objects["syringe"][1].body:setX(syringeX)
 		objects["syringe"][1].body:setY(syringeY)
+		objects["syringe"][1].body:setLinearVelocity(0,0)
 		objects["syringe"][1].body:setAngle(1.5)
 	elseif frozenSyringe == false then
 		objects["syringe"][1].fixture:setMask()

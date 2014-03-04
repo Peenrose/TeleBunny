@@ -57,7 +57,7 @@ function updateLevel(dt)
 		objects["potato"][1].body:setX(potatoX)
 		objects["potato"][1].body:setY(potatoY)
 		objects["potato"][1].body:setAngle(0)
-	else
+	elseif frozenPotato == false then
 		objects["potato"][1].fixture:setMask()
 	end
 
@@ -65,7 +65,7 @@ function updateLevel(dt)
 		objects["microscope"][1].body:setX(microscopeX)
 		objects["microscope"][1].body:setY(microscopeY)
 		objects["microscope"][1].body:setAngle(0)
-	else
+	elseif frozenMicroscope == false then
 		objects["microscope"][1].fixture:setMask()
 	end
 
@@ -73,7 +73,7 @@ function updateLevel(dt)
 		objects["syringe"][1].body:setX(syringeX)
 		objects["syringe"][1].body:setY(syringeY)
 		objects["syringe"][1].body:setAngle(1.5)
-	else
+	elseif frozenSyringe == false then
 		objects["syringe"][1].fixture:setMask()
 	end
 end

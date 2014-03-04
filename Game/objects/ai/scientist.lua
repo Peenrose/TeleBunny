@@ -57,15 +57,30 @@ function kick(uid)
 		kickReset[uid] = 1
 		scientist.rightleg.body:applyAngularImpulse(-1000000)
 		scientist.torso.body:applyLinearImpulse(10000, 0)
+		dazedImmune[uid] = 2
 	end
 end
 
 function ScientistAI(uid, dt)
 	dt = dt * 1.5
 	scientist = objects["scientist"][uid]
-	if kickReset[uid] == nil then kickReset[uid] = 0 end
-
 	if not scientist then return end
+
+	-- if binKick == false and scientist.rightarm.body:getX() > 230 and objects["bin"] ~= nil then 
+	-- 	--kickReset[uid] = 1
+	-- 	scientist.rightleg.body:applyAngularImpulse(-1000000)
+	-- 	scientist.torso.body:applyLinearImpulse(2000, -800) 
+	-- 	binKick = true
+	-- 	dazedImmune[uid] = 5
+	-- 	objects["bin"][1].body:applyLinearImpulse(10000, -10000)
+	-- 	objects["bin"][1].body:applyAngularImpulse(-50000)
+	-- end
+
+	if kickReset[uid] == nil then kickReset[uid] = 0 end
+	if dazedImmune[uid] == nil then dazedImmune[uid] = 0 end
+	if dazedImmune[uid] > 0 then dazedImmune[uid] = dazedImmune[uid] - dt end
+	if dazedImmune[uid] < 0 then dazedImmune[uid] = 0 end
+	
 	if scientist.torso ~= nil and scientist.leftleg ~= nil then
 		x,head_y = scientist.head.body:getPosition()
 		xvel, yvel = scientist.head.body:getLinearVelocity()
@@ -115,11 +130,11 @@ function ScientistAI(uid, dt)
 		if dazed[uid] <= -0.95 then dazed[uid] = -1 end
 		if foot_touching_ground[uid] == nil then foot_touching_ground[uid] = 0 end
 
-		if dazed[uid] == -1 then
+		if dazed[uid] == -1 or dazedImmune[uid] > 0 then
 			objects["scientist"][uid].headSprite = headSprites.normal
 			spinUpright(uid)
 			
-			if isRotating(uid) == false and foot_touching_ground[uid] >= 2 then approachBunny(uid) end
+			if isRotating(uid) == false and foot_touching_ground[uid] == 2 then approachBunny(uid) end
 		end
 			-- addInfo("Feet On Ground ("..uid.."): "..foot_touching_ground[uid])
 			-- addInfo("Touching Ground ("..uid.."): "..touching_ground[uid])

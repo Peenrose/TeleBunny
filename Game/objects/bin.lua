@@ -2,7 +2,7 @@ binSprite = love.graphics.newImage("images/bin.png")
 
 function loadObject(uid)
 	local bin = {
-		body = love.physics.newBody(world, x, y, "dynamic"),
+		body = love.physics.newBody(world, 680, 689, "dynamic"),
 		shape = love.physics.newPolygonShape(14,14, 58,260, 148,260, 194,0, 166,285, 38,285),
 		draw = function()
 			--love.graphics.polygon("line", objects["bin"][uid].body:getWorldPoints(objects["bin"][uid].shape:getPoints()))

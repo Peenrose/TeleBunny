@@ -2,7 +2,7 @@ syringeSprite = love.graphics.newImage("images/syringe_full.png")
 
 function loadObject(uid)
 	local syringe = {
-		body = love.physics.newBody(world, x, y, "dynamic"),
+		body = love.physics.newBody(world, syringeX, syringeY, "dynamic"),
 		shape = love.physics.newPolygonShape(39/4,0, 137/4,0, 137/4,489/4, 99/4,499/4, 88/4,620/4, 78/4,500/4, 39/4,488/4),
 		draw = function()
 			love.graphics.polygon("line", objects["syringe"][uid].body:getWorldPoints(objects["syringe"][uid].shape:getPoints()))
@@ -10,5 +10,8 @@ function loadObject(uid)
 		end,
 		click = function() end,	
 	}
+	syringe.fixture = love.physics.newFixture(syringe.body, syringe.shape)
+	syringe.fixture:setMask(1)
+	syringe.body:setAngle(1.5)
 	return syringe
 end

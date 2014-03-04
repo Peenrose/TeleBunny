@@ -16,7 +16,9 @@ function loadLevelRaw(levelToLoad)
 	fadeOut = {}
 	drawLevelBackground = nil
 	drawLevelForeground = nil
-
+	touching_ground = {}
+	foot_touching_ground = {}
+	frozenPotato, frozenSyringe, frozenMicroscope = true, true, true
 	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil

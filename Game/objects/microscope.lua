@@ -2,7 +2,7 @@ microscopeSprite = love.graphics.newImage("images/microscope.png")
 
 function loadObject(uid)
 	local microscope = {
-		body = love.physics.newBody(world, x, y, "dynamic"),
+		body = love.physics.newBody(world, microscopeX, microscopeY, "dynamic"),
 		shape = love.physics.newPolygonShape(186/3,0, 266/3,108/3, 306/3,300/3, 236/3,521/3, 8/3,521/3, 8/3,218/3),
 		draw = function()
 			--love.graphics.polygon("line", objects["microscope"][uid].body:getWorldPoints(objects["microscope"][uid].shape:getPoints()))
@@ -10,5 +10,7 @@ function loadObject(uid)
 		end,
 		click = function() end,	
 	}
+	microscope.fixture = love.physics.newFixture(microscope.body, microscope.shape)
+	microscope.fixture:setMask(1)
 	return microscope
 end

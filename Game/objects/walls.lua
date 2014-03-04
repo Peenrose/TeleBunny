@@ -10,10 +10,10 @@ ground = {
 		love.graphics.rectangle("line", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
 	end,
 }
--- leftwall = {
--- 	body = love.physics.newBody(world, 0, settings.window.height/2, "static"),
--- 	shape = love.physics.newRectangleShape(0, settings.window.height),
--- }
+leftwall = {
+	body = love.physics.newBody(world, 0, 0, "static"),
+	shape = love.physics.newRectangleShape(0, 850),
+}
 rightwall = {
 	body = love.physics.newBody(world, settings.window.width, settings.window.height/2, "static"),
 	shape = love.physics.newRectangleShape(0, settings.window.height),
@@ -29,11 +29,11 @@ if currentLevel == "1" then
 		shape = love.physics.newRectangleShape(330, 12)
 	}
 	shelf.fixture = love.physics.newFixture(shelf.body, shelf.shape)
-	shelf.fixture:setMask(2)
+	--shelf.fixture:setMask(2)
 end
 
 ground.fixture = love.physics.newFixture(ground.body, ground.shape)
---leftwall.fixture = love.physics.newFixture(leftwall.body, leftwall.shape)
+leftwall.fixture = love.physics.newFixture(leftwall.body, leftwall.shape)
 rightwall.fixture = love.physics.newFixture(rightwall.body, rightwall.shape)
 topwall.fixture = love.physics.newFixture(topwall.body, topwall.shape)
 

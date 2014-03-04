@@ -95,7 +95,7 @@ function love.mousereleased()
 		mouseJoint = nil
 	end
 	if grabbedV ~= nil then
-		grabbedV.fixture:setMask()
+		--grabbedV.fixture:setMask()
 	end
 	grabbed = "none"
 end
@@ -136,7 +136,6 @@ end
 function love.mousepressed(x, y, button)
 	x = x/(resolutionX/1920)
 	y = y/(resolutionY/1080)
-
 	if paused == false then
 		clickedon = ""
 		clickedamount = 0
@@ -152,12 +151,25 @@ function love.mousepressed(x, y, button)
 									mouseJoint = nil
 									grabbed = "none"
 								end
-								grabbed = objects[k]
 								for k2, v2 in pairs(getObjects()) do
-									if k2 == k then grabbed = k end
+									if k2 == k then 
+										grabbed = k 
+									end
 								end
-								v.fixture:setMask(1)
+								--v.fixture:setMask()
 								grabbedV = v
+								if currentLevel == "1" then
+									if k == "potato #1" then
+										frozenPotato = false
+									end
+									if k == "syringe #1" then
+										frozenSyringe = false
+									end
+									if k == "microscope #1" then
+										frozenMicroscope = false
+									end
+								end
+
 								mouseJoint = love.physics.newMouseJoint(v.body, love.mouse.getPosition())
 								--mouseJoint:setMaxForce(15000)
 							end
@@ -256,11 +268,82 @@ function drawAll()
 	if objects["bunny"][1] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
 	if objects ~= nil then
 		for name, amount in pairs(objectList) do
-			for uid = 1, objectList[name] do
-				--error(name..": \n"..to_string(objects[name]))
-				if objects[name][uid] ~= nil then
-					if objects[name][uid].draw ~= nil then
-						objects[name][uid].draw(uid)
+			if name == "potato" then
+				if frozenPotato == true then
+					for uid = 1, objectList[name] do
+					--error(name..": \n"..to_string(objects[name]))
+					if objects[name][uid] ~= nil then
+						if objects[name][uid].draw ~= nil then
+							objects[name][uid].draw(uid)
+						end
+					end
+				end
+				end
+			elseif name == "syringe" then
+				if frozenSyringe == true then
+					for uid = 1, objectList[name] do
+					--error(name..": \n"..to_string(objects[name]))
+					if objects[name][uid] ~= nil then
+						if objects[name][uid].draw ~= nil then
+							objects[name][uid].draw(uid)
+						end
+					end
+				end
+				end
+			elseif name == "microscope" then
+				if frozenMicroscope == true then
+					for uid = 1, objectList[name] do
+					--error(name..": \n"..to_string(objects[name]))
+					if objects[name][uid] ~= nil then
+						if objects[name][uid].draw ~= nil then
+							objects[name][uid].draw(uid)
+						end
+					end
+				end
+			end
+		end
+	end
+		for name, amount in pairs(objectList) do
+			if name == "potato" then
+				if frozenPotato ~= true then
+					for uid = 1, objectList[name] do
+					--error(name..": \n"..to_string(objects[name]))
+					if objects[name][uid] ~= nil then
+						if objects[name][uid].draw ~= nil then
+							objects[name][uid].draw(uid)
+						end
+					end
+				end
+				end
+			elseif name == "syringe" then
+				if frozenSyringe ~= true then
+					for uid = 1, objectList[name] do
+					--error(name..": \n"..to_string(objects[name]))
+					if objects[name][uid] ~= nil then
+						if objects[name][uid].draw ~= nil then
+							objects[name][uid].draw(uid)
+						end
+					end
+				end
+				end
+			elseif name == "microscope" then
+				if frozenMicroscope ~= true then
+					for uid = 1, objectList[name] do
+					--error(name..": \n"..to_string(objects[name]))
+					if objects[name][uid] ~= nil then
+						if objects[name][uid].draw ~= nil then
+							objects[name][uid].draw(uid)
+						end
+					end
+				end
+				end
+			else
+				for uid = 1, objectList[name] do
+					--error(name..": \n"..to_string(objects[name]))
+					if objects[name][uid] ~= nil then
+						if objects[name][uid].draw ~= nil then
+							objects[name][uid].draw(uid)
+						end
 					end
 				end
 			end

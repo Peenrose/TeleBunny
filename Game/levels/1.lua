@@ -6,6 +6,20 @@ lastx = {}
 traveledLastSecond = {}
 secondCounter = {}
 touching = {}
+binKick = false
+dazedImmune = {}
+frozenSyringe = true
+frozenMicroscope = true
+frozenPotato = true
+
+potatoX = 648
+potatoY = 560
+
+microscopeX = 326
+microscopeY = 403
+
+syringeX = 1547
+syringeY = 575
 
 function load()
 	love.window.setTitle("Telekinetic Bunny")
@@ -13,17 +27,55 @@ function load()
 
 	world = love.physics.newWorld(0, 9.81*64, true)
 	background = love.graphics.newImage("images/bg1.png")
+	windowSprite = love.graphics.newImage("images/window.png")
 	objects = {}
-	
+	window = {
+		body = love.physics.newBody(world, 451,489, "static"),
+		shape = love.physics.newRectangleShape(1092, 348)
+	}
+	window.fixture = love.physics.newFixture(window.body, window.shape)
+	window.fixture:setMask(1)
+
 	addObject("walls")
 	addObject("bunny")
 	addObject("scientist", 2)
 	addObject("carrot", 1)
+	addObject("bin")
+	addObject("beaker")
+	addObject("syringe")
+	addObject("microscope")
+	addObject("potato")
 end
 
 function updateLevel(dt)
 	--
+	--if playtime > 1 then addInfo(objects["bin"][1].body:getX()..":"..objects["bin"][1].body:getY()) end
 	if objects["bunny"][1] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
+	love.graphics.draw(windowSprite, window.body:getX(), window.body:getY(), 1, 1)
+
+	if frozenPotato and objects["potato"] ~= nil and objects["potato"][1] ~= nil then
+		objects["potato"][1].body:setX(potatoX)
+		objects["potato"][1].body:setY(potatoY)
+		objects["potato"][1].body:setAngle(0)
+	else
+		objects["potato"][1].fixture:setMask()
+	end
+
+	if frozenMicroscope and objects["microscope"] ~= nil and objects["microscope"][1] ~= nil then
+		objects["microscope"][1].body:setX(microscopeX)
+		objects["microscope"][1].body:setY(microscopeY)
+		objects["microscope"][1].body:setAngle(0)
+	else
+		objects["microscope"][1].fixture:setMask()
+	end
+
+	if frozenSyringe and objects["syringe"] ~= nil and objects["syringe"][1] ~= nil then
+		objects["syringe"][1].body:setX(syringeX)
+		objects["syringe"][1].body:setY(syringeY)
+		objects["syringe"][1].body:setAngle(1.5)
+	else
+		objects["syringe"][1].fixture:setMask()
+	end
 end
 
 function isScientistPart(fix)

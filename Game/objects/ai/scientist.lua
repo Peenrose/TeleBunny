@@ -5,10 +5,12 @@ function AI(dt)
 		end
 	end
 end
-
+-- delete after 2 kicks
+--mouse lag
 function approachBunny(uid)
 	scientist = objects["scientist"][uid]
-	scientist.torso.body:setLinearVelocity(150, -125)
+	scientist.torso.body:setLinearVelocity(240, -180)
+	scientist.rightleg.body:applyAngularImpulse(-2500)
 end
 
 function getAngle(uid)

@@ -1,6 +1,5 @@
 --drag radius
 --get object scientist uid
-feetTouching = {}
 
 function setResolution(x, y)
 	--love.window.setMode(x, y, {fullscreen=fullscreen})
@@ -73,12 +72,23 @@ function love.draw()
 	love.graphics.push()
 	love.graphics.scale(resolutionX/1920,resolutionY/1080)
 
+	drawAll()
 	if paused == false then
-		drawAll()
 		drawInfo(deltatime)
 	elseif paused == true then
-		drawAll()
 		drawPauseScreen()
+	end
+	if grabbed ~= "none" then
+		if grabbedTime ~= nil then
+			local grabbedAgo = playtime - grabbedTime
+			if grabbedAgo > 0 then
+				love.mouse.setCursor(blankCursor)
+				grabbedAgo = nil
+			end
+		end
+
+		local x, y = grabbedV.body:getWorldPoint(clickX, clickY)
+		love.graphics.draw(cursorImg, x, y, 0)
 	end
 
 	love.graphics.pop()
@@ -90,6 +100,7 @@ function love.keypressed(key)
 end
 
 function love.mousereleased()
+	love.mouse.setCursor(bunnyCursor)
 	if mouseJoint ~= nil then
 		mouseJoint:destroy()
 		mouseJoint = nil
@@ -156,6 +167,9 @@ function love.mousepressed(x, y, button)
 										grabbed = k 
 									end
 								end
+								
+								grabbedTime = playtime
+								clickX, clickY = v.body:getLocalPoint(love.mouse.getPosition())
 								--v.fixture:setMask()
 								grabbedV = v
 								if currentLevel == "1" then
@@ -171,7 +185,7 @@ function love.mousepressed(x, y, button)
 								end
 
 								mouseJoint = love.physics.newMouseJoint(v.body, love.mouse.getPosition())
-								--mouseJoint:setMaxForce(15000)
+								mouseJoint:setMaxForce(15000)
 							end
 							if v.click ~= nil and type(v.click) == "function" then 
 								v.click()
@@ -408,7 +422,6 @@ function drawInfo(dt)
 		end
 	end
 end
-
 
 function updateFPS(dt)
 	fps = (0.80*lastfps)+(0.20*fps)

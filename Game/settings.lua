@@ -118,8 +118,14 @@ removedObjects = {}
 
 healthRemaining = {}
 
-cursor = love.mouse.newCursor("images/cursor.png", 0, 0)
-love.mouse.setCursor(cursor)
+feetTouching = {}
+
+bunnyCursor = love.mouse.newCursor("images/cursor.png", 0, 0)
+blankCursor = love.mouse.newCursor("images/blank.png", 0, 0)
+
+cursorImg = love.graphics.newImage("images/cursor.png")
+
+love.mouse.setCursor(bunnyCursor)
 font = love.graphics.newFont(20)
 love.graphics.setFont(font)
 

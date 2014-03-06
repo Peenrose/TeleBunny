@@ -38,13 +38,14 @@ function load()
 
 	addObject("walls")
 	addObject("bunny")
-	addObject("scientist", 2)
+	addObject("scientist", 3)
 	addObject("carrot", 1)
 	addObject("bin")
 	addObject("beaker")
 	addObject("syringe")
 	addObject("microscope")
 	addObject("potato")
+	addObject("pipe", 1)
 end
 
 function updateLevel(dt)

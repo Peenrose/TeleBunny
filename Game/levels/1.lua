@@ -46,6 +46,7 @@ function load()
 	addObject("microscope")
 	addObject("potato")
 	addObject("pipe", 1)
+	addObject("window", 1)
 end
 
 function updateLevel(dt)

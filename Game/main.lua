@@ -82,13 +82,13 @@ function love.draw()
 		if grabbedTime ~= nil then
 			local grabbedAgo = playtime - grabbedTime
 			if grabbedAgo > 0 then
-				love.mouse.setCursor(blankCursor)
+				--love.mouse.setCursor(blankCursor)
 				grabbedAgo = nil
 			end
 		end
 
 		local x, y = grabbedV.body:getWorldPoint(clickX, clickY)
-		love.graphics.draw(cursorImg, x, y, 0)
+		love.graphics.draw(grabImg, x, y, grabbedV.body:getAngle(), 1, 1, 25, 21)
 	end
 
 	love.graphics.pop()
@@ -97,6 +97,7 @@ end
 function love.keypressed(key)
 	if key == "escape" then togglePause() end
 	if key == "rctrl" then debug.debug() end
+	if key == "r" then removeObject("scientist", 1) end
 end
 
 function love.mousereleased()

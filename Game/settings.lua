@@ -123,7 +123,7 @@ feetTouching = {}
 bunnyCursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 blankCursor = love.mouse.newCursor("images/blank.png", 0, 0)
 
-cursorImg = love.graphics.newImage("images/cursor.png")
+grabImg = love.graphics.newImage("images/grab.png")
 
 love.mouse.setCursor(bunnyCursor)
 font = love.graphics.newFont(20)

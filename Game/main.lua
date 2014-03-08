@@ -176,12 +176,19 @@ function love.mousepressed(x, y, button)
 								if currentLevel == "1" then
 									if k == "potato #1" then
 										frozenPotato = false
+										v.fixture:setMask()
 									end
 									if k == "syringe #1" then
 										frozenSyringe = false
+										v.fixture:setMask()
 									end
 									if k == "microscope #1" then
 										frozenMicroscope = false
+										v.fixture:setMask()
+									end
+									if k == "pipe #1" then
+										frozenPipe = false
+										v.fixture:setMask()
 									end
 								end
 
@@ -316,6 +323,17 @@ function drawAll()
 					end
 				end
 			end
+			elseif name == "pipe" then
+				if frozenPipe == true then
+					for uid = 1, objectList[name] do
+					--error(name..": \n"..to_string(objects[name]))
+					if objects[name][uid] ~= nil then
+						if objects[name][uid].draw ~= nil then
+							objects[name][uid].draw(uid)
+						end
+					end
+				end
+			end
 		end
 	end
 		for name, amount in pairs(objectList) do
@@ -343,6 +361,17 @@ function drawAll()
 				end
 			elseif name == "microscope" then
 				if frozenMicroscope ~= true then
+					for uid = 1, objectList[name] do
+					--error(name..": \n"..to_string(objects[name]))
+					if objects[name][uid] ~= nil then
+						if objects[name][uid].draw ~= nil then
+							objects[name][uid].draw(uid)
+						end
+					end
+				end
+				end
+			elseif name == "pipe" then
+				if frozenPipe ~= true then
 					for uid = 1, objectList[name] do
 					--error(name..": \n"..to_string(objects[name]))
 					if objects[name][uid] ~= nil then

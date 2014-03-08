@@ -18,7 +18,7 @@ function loadLevelRaw(levelToLoad)
 	drawLevelForeground = nil
 	touching_ground = {}
 	foot_touching_ground = {}
-	frozenPotato, frozenSyringe, frozenMicroscope = true, true, true
+	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe = true, true, true, true
 	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil

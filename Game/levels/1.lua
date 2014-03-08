@@ -11,6 +11,7 @@ dazedImmune = {}
 frozenSyringe = true
 frozenMicroscope = true
 frozenPotato = true
+frozenPipe = true
 
 potatoX = 648
 potatoY = 560
@@ -60,8 +61,6 @@ function updateLevel(dt)
 		objects["potato"][1].body:setY(potatoY)
 		objects["potato"][1].body:setLinearVelocity(0,0)
 		objects["potato"][1].body:setAngle(0)
-	elseif frozenPotato == false then
-		objects["potato"][1].fixture:setMask()
 	end
 
 	if frozenMicroscope and objects["microscope"] ~= nil and objects["microscope"][1] ~= nil then
@@ -69,8 +68,6 @@ function updateLevel(dt)
 		objects["microscope"][1].body:setY(microscopeY)
 		objects["microscope"][1].body:setLinearVelocity(0,0)
 		objects["microscope"][1].body:setAngle(0)
-	elseif frozenMicroscope == false then
-		objects["microscope"][1].fixture:setMask()
 	end
 
 	if frozenSyringe and objects["syringe"] ~= nil and objects["syringe"][1] ~= nil then
@@ -78,9 +75,15 @@ function updateLevel(dt)
 		objects["syringe"][1].body:setY(syringeY)
 		objects["syringe"][1].body:setLinearVelocity(0,0)
 		objects["syringe"][1].body:setAngle(1.5)
-	elseif frozenSyringe == false then
-		objects["syringe"][1].fixture:setMask()
 	end
+
+	if frozenPipe and objects["pipe"] ~= nil and objects["pipe"][1] ~= nil then
+		objects["pipe"][1].body:setX(950)
+		objects["pipe"][1].body:setY(-14)
+		objects["pipe"][1].body:setLinearVelocity(0,0)
+		objects["pipe"][1].body:setAngle(0)
+	end
+
 end
 
 function isScientistPart(fix)

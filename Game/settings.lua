@@ -120,6 +120,7 @@ healthRemaining = {}
 
 feetTouching = {}
 
+
 bunnyCursor = love.mouse.newCursor("images/cursor.png", 0, 0)
 blankCursor = love.mouse.newCursor("images/blank.png", 0, 0)
 

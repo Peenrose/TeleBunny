@@ -15,7 +15,7 @@ function loadLevelRaw(levelToLoad)
 	removedObjects = {}
 	fadeOut = {}
 	drawLevelBackground = nil
-	drawLevelForeground = nil
+	LevelForeground = nil
 	touching_ground = {}
 	foot_touching_ground = {}
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe = true, true, true, true
@@ -78,25 +78,52 @@ function addObject(name, amount, args)
 	end
 end
 
-function removeObject(name, uid, sub)
+function removeObject(name, uid)
 		if objects[name] ~= nil and objects[name][uid] ~= nil then else return end
-		if objects[name][uid].body ~= nil then 
-			objects[name][uid].body:setActive(false) 
+		if objects[name][uid].body ~= nil then objects[name][uid].body:setActive(false) end
+		if name == "scientist" then
+			objects[name][uid].torso.body:setActive(false)
+			objects[name][uid].head.body:setActive(false)
+			objects[name][uid].leftarm.body:setActive(false)
+			objects[name][uid].rightarm.body:setActive(false)
+			objects[name][uid].leftleg.body:setActive(false)
+			objects[name][uid].rightleg.body:setActive(false)
 		end
 		world:update(0)
 		objects[name][uid].draw = nil
-		if ais[name] ~= nil then 
-			ais[name] = nil 
-		end
+
 		objects[name][uid] = nil
 		if removedObjects[name] == nil then removedObjects[name] = {} end
 		removedObjects[name][uid] = true
 end
 
-function addObjectFunctions(k, v)
-	v.fadeout = function(aps) --alpha value per second
-		fadeOut[k] = {cur=255,aps=aps}
+function updateFadeOut(dt)
+	for name, things in pairs(fadeOut) do --name
+		for k, v in pairs(things) do --uid
+			v.cur = v.cur - v.aps*dt
+
+			if v.cur <= 0 then
+				removeObject(name, k)
+				fadeOut[name][k] = nil
+			end
+		end
 	end
+	if fadeOut["scientist"] == nil then
+		fadeOut["scientist"] = {}
+fadeOut["scientist"][1] = {cur=255, aps=10}
+	end
+	if fadeOut["scientist"][1] ~= nil then addInfo(fadeOut["scientist"][1].cur) end
+end
+
+function fadeOutObject(name, uid, seconds)
+	if objects[name] ~= nil and objects[name][uid] ~= nil then
+		obj = objects[name][uid]
+		if fadeOut[name] == nil then fadeOut[name] = {} end
+		fadeOut[name][uid] = {aps=255/seconds, cur=255}
+	end
+end
+
+function addObjectFunctions(k, v)
 	if v.fixture == nil then
 		if v.body ~= nil then
 			if v.shape ~= nil then

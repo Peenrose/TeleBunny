@@ -48,15 +48,8 @@ function love.update(dt)
 			--addInfo("FPS: "..math.floor(fps))
 		end
 		
-		for k, v in pairs(fadeOut) do
-			if fadeOut[k].cur < 0 then fadeOut[k].cur = 0 end
-			if fadeOut[k].cur > 0 then
-				fadeOut[k].cur = fadeOut[k].cur - fadeOut[k].aps*dt
-			elseif fadeOut[k].cur == 0 then 
-				objects[k].remove(k)
-				fadeOut[k] = nil
-			end
-		end
+		updateFadeOut(dt)
+
 		for k, v in pairs(toWeld) do
 			weld = love.physics.newWeldJoint(v.a, v.b, v.x, v.y, v.coll)
 			table.insert(welds, weld)
@@ -290,102 +283,37 @@ function drawAll()
 	if objects["bunny"][1] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
 	if objects ~= nil then
 		for name, amount in pairs(objectList) do
-			if name == "potato" then
-				if frozenPotato == true then
-					for uid = 1, objectList[name] do
-					--error(name..": \n"..to_string(objects[name]))
-					if objects[name][uid] ~= nil then
-						if objects[name][uid].draw ~= nil then
-							objects[name][uid].draw(uid)
-						end
-					end
-				end
-				end
-			elseif name == "syringe" then
-				if frozenSyringe == true then
-					for uid = 1, objectList[name] do
-					--error(name..": \n"..to_string(objects[name]))
-					if objects[name][uid] ~= nil then
-						if objects[name][uid].draw ~= nil then
-							objects[name][uid].draw(uid)
-						end
-					end
-				end
-				end
-			elseif name == "microscope" then
-				if frozenMicroscope == true then
-					for uid = 1, objectList[name] do
-					--error(name..": \n"..to_string(objects[name]))
-					if objects[name][uid] ~= nil then
-						if objects[name][uid].draw ~= nil then
-							objects[name][uid].draw(uid)
-						end
-					end
-				end
-			end
-			elseif name == "pipe" then
-				if frozenPipe == true then
-					for uid = 1, objectList[name] do
-					--error(name..": \n"..to_string(objects[name]))
-					if objects[name][uid] ~= nil then
-						if objects[name][uid].draw ~= nil then
-							objects[name][uid].draw(uid)
-						end
-					end
-				end
+			love.graphics.setColor(255,255,255)
+			if fadeOut[name] ~= nil and fadeOut[name][1] ~= nil then love.graphics.setColor(255,255,255, fadeOut[name][1].cur) end
+			if name == "window" then
+				objects["window"][1].draw(1)
+			elseif name == "potato" and frozenPotato then 
+				objects["potato"][1].draw(1)
+			elseif name == "syringe" and frozenSyringe then 
+				objects["syringe"][1].draw(1)
+			elseif name == "microscope" and frozenMicroscope then 
+				objects["microscope"][1].draw(1)
+			elseif name == "pipe" and frozenPipe then 
+				objects["pipe"][1].draw(1)
 			end
 		end
-	end
 		for name, amount in pairs(objectList) do
-			if name == "potato" then
-				if frozenPotato ~= true then
-					for uid = 1, objectList[name] do
-					--error(name..": \n"..to_string(objects[name]))
-					if objects[name][uid] ~= nil then
-						if objects[name][uid].draw ~= nil then
-							objects[name][uid].draw(uid)
-						end
-					end
-				end
-				end
-			elseif name == "syringe" then
-				if frozenSyringe ~= true then
-					for uid = 1, objectList[name] do
-					--error(name..": \n"..to_string(objects[name]))
-					if objects[name][uid] ~= nil then
-						if objects[name][uid].draw ~= nil then
-							objects[name][uid].draw(uid)
-						end
-					end
-				end
-				end
-			elseif name == "microscope" then
-				if frozenMicroscope ~= true then
-					for uid = 1, objectList[name] do
-					--error(name..": \n"..to_string(objects[name]))
-					if objects[name][uid] ~= nil then
-						if objects[name][uid].draw ~= nil then
-							objects[name][uid].draw(uid)
-						end
-					end
-				end
-				end
-			elseif name == "pipe" then
-				if frozenPipe ~= true then
-					for uid = 1, objectList[name] do
-					--error(name..": \n"..to_string(objects[name]))
-					if objects[name][uid] ~= nil then
-						if objects[name][uid].draw ~= nil then
-							objects[name][uid].draw(uid)
-						end
-					end
-				end
-				end
+			love.graphics.setColor(255,255,255)
+			if fadeOut[name] ~= nil and fadeOut[name][1] ~= nil then love.graphics.setColor(255,255,255, fadeOut[name][1].cur) end
+			if name == "potato" and not frozenPotato then 
+				objects["potato"][1].draw(1)
+			elseif name == "syringe" and not frozenSyringe then
+				objects["syringe"][1].draw(1)
+			elseif name == "microscope" and not frozenMicroscope then
+				objects["microscope"][1].draw(1)
+			elseif name == "pipe" and not frozenPipe then
+				objects["pipe"][1].draw(1)
 			else
 				for uid = 1, objectList[name] do
-					--error(name..": \n"..to_string(objects[name]))
 					if objects[name][uid] ~= nil then
-						if objects[name][uid].draw ~= nil then
+						if objects[name][uid].draw ~= nil and name ~= "window" and name ~= "syringe" and name ~= "microscope" and name ~= "pipe" and name ~= "potato" then
+							love.graphics.setColor(255,255,255)
+							if fadeOut[name] ~= nil and fadeOut[name][uid] ~= nil then love.graphics.setColor(255,255,255, fadeOut[name][uid].cur) end
 							objects[name][uid].draw(uid)
 						end
 					end
@@ -394,28 +322,6 @@ function drawAll()
 		end
 	end
 end
---[[
-function drawAll()
-	love.graphics.setColor(255,255,255)
-	if background ~= nil then love.graphics.draw(background, 0, 0) end
-	if objects ~= nil then
-		for k, v in pairs(objects) do
-			for k2, v2 in pairs(objectList) do
-				if v2.draw ~= nil and type(v2.draw) == "function" then 
-					if fadeOut[k2] ~= nil then
-						if fadeOut[k2].cur < 0 then fadeOut[k2].cur = 0 end
-						love.graphics.setColor(255,255,255, fadeOut[k2].cur)
-						v2.draw()
-					else
-						love.graphics.setColor(255,255,255)
-						v2.draw(uid)
-					end
-				end
-			end
-		end
-	end
-end
-]]--
 
 function addInfo(toAdd, time)
 	if time == nil then

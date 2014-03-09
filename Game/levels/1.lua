@@ -8,7 +8,7 @@ secondCounter = {}
 touching = {}
 binKick = false
 dazedImmune = {}
-
+fadeOut["scientist"] = {}
 potatoX = 648
 potatoY = 560
 
@@ -20,6 +20,7 @@ syringeY = 575
 
 thrownObjects = -1
 transition = 0
+binKicked = 0
 
 function load()
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
@@ -115,6 +116,15 @@ function isFoot(fix)
 	return false
 end
 
+function binKick(uid)
+	binKicked = binKicked + 1
+	if binKicked >= 2 then
+		fadeOutObject("bin", 1, 1)
+		thrownObjects = thrownObjects + 1
+		if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+	end
+end
+
 function beginContact(a, b, coll)
 	avel = math.abs(a:getBody():getLinearVelocity())
 	bvel = math.abs(b:getBody():getLinearVelocity())
@@ -123,16 +133,29 @@ function beginContact(a, b, coll)
 
 	scientistBeginContact(a, b, coll)
 
+	for uid = 1, 3 do
+		if kickReset[uid] == nil then kickReset[uid] = 0 end
+		if kickReset[uid] > 0.8 then
+			if isScientistPart(a) and objects["bin"] ~= nil and b == objects["bin"][1] then
+				binKick(uid)
+			elseif isScientistPart(b) and objects["bin"] ~= nil and a == objects["bin"][1] then
+				binKick(uid)
+			end
+		end
+	end
+
 	if objects["pipe"][1] ~= nil and fadeOut["pipe"] == nil then
 		if a == objects["pipe"][1].fixture then
 			if isScientistPart(b) then
 				fadeOutObject("scientist", isScientistPart(b), 1)
 				fadeOutObject("pipe", 1, 1)
+				thrownObjects = thrownObjects + 1
 			end
 		elseif b == objects["pipe"][1].fixture then
 			if isScientistPart(a) then
 				fadeOutObject("scientist", isScientistPart(a), 1)
 				fadeOutObject("pipe", 1, 1)
+				thrownObjects = thrownObjects + 1
 			end
 		end
 	end
@@ -145,7 +168,7 @@ function beginContact(a, b, coll)
 		other = a
 	end
 
-	if uid ~= nil and other ~= nil and objects ~= nil then
+	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["scientist"][uid] == nil then
 		if objects["potato"] ~= nil and objects["potato"][1] ~= nil and other == objects["potato"][1].fixture and maxvel > 3000 then
 			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			fadeOutObject("potato", 1, 1.5)

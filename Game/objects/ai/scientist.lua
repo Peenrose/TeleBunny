@@ -6,8 +6,7 @@ function AI(dt)
 		end
 	end
 end
--- delete after 2 kicks
---mouse lag
+
 function approachBunny(uid)
 	scientist = objects["scientist"][uid]
 	scientist.torso.body:setLinearVelocity(240, -180)

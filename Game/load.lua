@@ -13,13 +13,14 @@ function loadLevelRaw(levelToLoad)
 	grabbedV = nil
 	objectList = {}
 	removedObjects = {}
-	fadeOut = {}
+	fadeOut = {scientist={}}
 	drawLevelBackground = nil
 	LevelForeground = nil
 	touching_ground = {}
 	foot_touching_ground = {}
 	thrownObjects = -1
 	transition = 0
+	binKicked = 0
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)
 	load()

@@ -43,8 +43,9 @@ pauseItems = {
 settingsItems = {
 	title = "Settings",
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
+	{title = "Fullscreen", action = function() settings.displayFlags.fullscreen = not settings.displayFlags.fullscreen; setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen) end},
 	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = true},
-	--{title = "Caged Bunny", action = function() settingsItems[3].value = not settingsItems[3].value end, value = false},
+	
 }
 
 levelItems = {

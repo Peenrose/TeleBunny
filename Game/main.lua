@@ -1,10 +1,6 @@
---drag radius
---get object scientist uid
-
-function setResolution(x, y)
+function setResolution(x, y, fullscreen)
 	--love.window.setMode(x, y, {fullscreen=fullscreen})
 	local scrx, scry = love.window.getDesktopDimensions()
-	local full = true
 	if scrx == x and scry == y then 
 		full = true
 		resolutionX, resolutionY = x, y
@@ -18,11 +14,8 @@ function setResolution(x, y)
 			addInfo("Incorrect aspect ratio")
 		end
 	end
-	setMode(resolutionX, resolutionY, settings.displayFlags.fullscreen)
-end
-
-function setMode(x, y, full)
-	love.window.setMode(x, y, {fullscreen=full})
+	if full == true and fullscreen == false then full = false end
+	love.window.setMode(resolutionX, resolutionY, {fullscreen=full})
 end
 
 function love.load()
@@ -33,7 +26,7 @@ function love.load()
 	assert(love.graphics.isSupported("shader"), "your display adapter does not support shaders")
 	assert(love.graphics.isSupported("canvas"), "your display adapter does not support canvas use")
 
-	setResolution(settings.window.width, settings.window.height)
+	setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen)
 
 	loadLevel("1")
 end
@@ -152,6 +145,7 @@ function love.mousepressed(x, y, button)
 						localx, localy = v.body:getLocalPoint(x, y)
 						if v.shape:testPoint(0, 0, 0, localx, localy) then
 							if v.body:getType() ~= "static" then
+								if currentLevel == "1" then if isScientistPart(v.fixture) then return end end
 								if mouseJoint ~= nil then
 									mouseJoint:destroy()
 									mouseJoint = nil

@@ -1,4 +1,5 @@
 function AI(dt)
+	if objectList["scientist"] == nil then return false end
 	for uid = 1, objectList["scientist"] do
 		if removedObjects["scientist"] ~= nil and removedObjects["scientist"][uid] ~= nil then else
 			ScientistAI(uid, dt)
@@ -68,16 +69,6 @@ function ScientistAI(uid, dt)
 	scientist = objects["scientist"][uid]
 	if not scientist then return end
 
-	-- if binKick == false and scientist.rightarm.body:getX() > 230 and objects["bin"] ~= nil then 
-	-- 	--kickReset[uid] = 1
-	-- 	scientist.rightleg.body:applyAngularImpulse(-1000000)
-	-- 	scientist.torso.body:applyLinearImpulse(2000, -800) 
-	-- 	binKick = true
-	-- 	dazedImmune[uid] = 5
-	-- 	objects["bin"][1].body:applyLinearImpulse(10000, -10000)
-	-- 	objects["bin"][1].body:applyAngularImpulse(-50000)
-	-- end
-
 	if kickReset[uid] == nil then kickReset[uid] = 0 end
 	if dazedImmune[uid] == nil then dazedImmune[uid] = 0 end
 	if dazedImmune[uid] > 0 then dazedImmune[uid] = dazedImmune[uid] - dt end
@@ -141,6 +132,81 @@ function ScientistAI(uid, dt)
 			-- addInfo("Feet On Ground ("..uid.."): "..foot_touching_ground[uid])
 			-- addInfo("Touching Ground ("..uid.."): "..touching_ground[uid])
 			-- addInfo("Dazed ("..uid.."): "..dazed[uid])
+	end
+end
+
+function scientistBeginContact(a, b, coll)
+	if isScientistPart(a) or isScientistPart(b) then
+		if isScientistPart(a) then
+			if touching_ground[isScientistPart(a)] == nil then touching_ground[isScientistPart(a)] = 0 end
+			if foot_touching_ground[isScientistPart(a)] == nil then foot_touching_ground[isScientistPart(a)] = 0 end
+		elseif isScientistPart(b) then
+			if touching_ground[isScientistPart(b)] == nil then touching_ground[isScientistPart(b)] = 0 end
+			if foot_touching_ground[isScientistPart(b)] == nil then foot_touching_ground[isScientistPart(b)] = 0 end
+		end
+	end
+
+	if isScientistPart(a) then
+		if isFoot(a) then
+			if b == ground.fixture then
+				foot_touching_ground[isScientistPart(a)] = foot_touching_ground[isScientistPart(a)] + 1
+			end
+		else
+			if b == ground.fixture then
+				touching_ground[isScientistPart(a)] = touching_ground[isScientistPart(a)] + 1
+			end
+		end
+	elseif isScientistPart(b) then
+		if isFoot(b) then
+			if a == ground.fixture then
+				foot_touching_ground[isScientistPart(b)] = foot_touching_ground[isScientistPart(b)] + 1
+			end
+		else
+			if a == ground.fixture then
+				touching_ground[isScientistPart(b)] = touching_ground[isScientistPart(b)] + 1
+			end
+		end
+	end
+
+
+	if isScientistPart(a) then
+		if maxvel > 800 then
+			uid = isScientistPart(a)
+			if dazed[uid] == nil then dazed[uid] = 0 end
+			dazed[uid] = math.abs(math.min(dazed[uid] + ((maxvel-1000)/1000), 3))
+		end
+	end
+	if isScientistPart(b) then
+		if maxvel > 800 then
+			uid = isScientistPart(b)
+			if dazed[uid] == nil then dazed[uid] = 0 end
+			dazed[uid] = math.abs(math.min(dazed[uid] + ((maxvel-1000)/1000), 3))
+		end
+	end
+
+end
+
+function scientistEndContact(a, b, coll)
+if isScientistPart(a) then
+		if isFoot(a) then
+			if b == ground.fixture then
+				foot_touching_ground[isScientistPart(a)] = foot_touching_ground[isScientistPart(a)] - 1
+			end
+		else
+			if b == ground.fixture then
+				touching_ground[isScientistPart(a)] = touching_ground[isScientistPart(a)] - 1
+			end
+		end
+	elseif isScientistPart(b) then
+		if isFoot(b) then
+			if a == ground.fixture then
+				foot_touching_ground[isScientistPart(b)] = foot_touching_ground[isScientistPart(b)] - 1
+			end
+		else
+			if a == ground.fixture then
+				touching_ground[isScientistPart(b)] = touching_ground[isScientistPart(b)] - 1
+			end
+		end
 	end
 end
 

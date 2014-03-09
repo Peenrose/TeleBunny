@@ -8,10 +8,6 @@ secondCounter = {}
 touching = {}
 binKick = false
 dazedImmune = {}
-frozenSyringe = true
-frozenMicroscope = true
-frozenPotato = true
-frozenPipe = true
 
 potatoX = 648
 potatoY = 560
@@ -22,7 +18,11 @@ microscopeY = 403
 syringeX = 1547
 syringeY = 575
 
+thrownObjects = -1
+transition = 0
+
 function load()
+	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	love.window.setTitle("Telekinetic Bunny")
 	setFontSize(14)
 
@@ -50,13 +50,13 @@ function load()
 	addObject("window", 1)
 end
 
-function updateLevel(dt)
+function updateLevelOne(dt)
 	--
 	--if playtime > 1 then addInfo(objects["bin"][1].body:getX()..":"..objects["bin"][1].body:getY()) end
 	if objects["bunny"][1] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
 	love.graphics.draw(windowSprite, window.body:getX(), window.body:getY(), 1, 1)
 
-	if frozenPotato and objects["potato"] ~= nil and objects["potato"][1] ~= nil then
+	if frozenPotato == true then --and objects["potato"] ~= nil and objects["potato"][1] ~= nil then
 		objects["potato"][1].body:setX(potatoX)
 		objects["potato"][1].body:setY(potatoY)
 		objects["potato"][1].body:setLinearVelocity(0,0)
@@ -83,7 +83,12 @@ function updateLevel(dt)
 		objects["pipe"][1].body:setLinearVelocity(0,0)
 		objects["pipe"][1].body:setAngle(0)
 	end
-
+	if thrownObjects == 5 then
+		transition = transition + dt
+		if transition >= 5 then
+			loadLevel("2")
+		end
+	end
 end
 
 function isScientistPart(fix)
@@ -115,84 +120,67 @@ function beginContact(a, b, coll)
 	bvel = math.abs(b:getBody():getLinearVelocity())
 
 	maxvel = math.abs(math.max(avel, bvel))
-	scientistparts = 0
-	if isScientistPart(a) then scientistparts = scientistparts + 1 end
-	if isScientistPart(b) then scientistparts = scientistparts + 1 end
 
-	--if scientistparts ~= 2 then if maxvel > 750 then addInfo("Collision! Velocity: "..maxvel, 4) end end
+	scientistBeginContact(a, b, coll)
 
-
-	if isScientistPart(a) or isScientistPart(b) then
-
-		if isScientistPart(a) then
-			if touching_ground[isScientistPart(a)] == nil then touching_ground[isScientistPart(a)] = 0 end
-			if foot_touching_ground[isScientistPart(a)] == nil then foot_touching_ground[isScientistPart(a)] = 0 end
-		elseif isScientistPart(b) then
-			if touching_ground[isScientistPart(b)] == nil then touching_ground[isScientistPart(b)] = 0 end
-			if foot_touching_ground[isScientistPart(b)] == nil then foot_touching_ground[isScientistPart(b)] = 0 end
+	if objects["pipe"][1] ~= nil and fadeOut["pipe"] == nil then
+		if a == objects["pipe"][1].fixture then
+			if isScientistPart(b) then
+				fadeOutObject("scientist", isScientistPart(b), 1)
+				fadeOutObject("pipe", 1, 1)
+			end
+		elseif b == objects["pipe"][1].fixture then
+			if isScientistPart(a) then
+				fadeOutObject("scientist", isScientistPart(a), 1)
+				fadeOutObject("pipe", 1, 1)
+			end
 		end
 	end
 
 	if isScientistPart(a) then
-		if isFoot(a) then
-			if b == ground.fixture then
-				foot_touching_ground[isScientistPart(a)] = foot_touching_ground[isScientistPart(a)] + 1
-			end
-		else
-			if b == ground.fixture then
-				touching_ground[isScientistPart(a)] = touching_ground[isScientistPart(a)] + 1
-			end
-		end
+		local uid = isScientistPart(a)
+		other = b
 	elseif isScientistPart(b) then
-		if isFoot(b) then
-			if a == ground.fixture then
-				foot_touching_ground[isScientistPart(b)] = foot_touching_ground[isScientistPart(b)] + 1
-			end
-		else
-			if a == ground.fixture then
-				touching_ground[isScientistPart(b)] = touching_ground[isScientistPart(b)] + 1
-			end
-		end
+		local uid = isScientistPart(b)
+		other = a
 	end
 
-	if isScientistPart(a) then
-		if maxvel > 800 then
-			uid = isScientistPart(a)
-			if dazed[uid] == nil then dazed[uid] = 0 end
-			dazed[uid] = math.abs(math.min(dazed[uid] + ((maxvel-1000)/1000), 3))
+	if uid ~= nil and other ~= nil and objects ~= nil then
+		if objects["potato"] ~= nil and objects["potato"][1] ~= nil and other == objects["potato"][1].fixture and maxvel > 3000 then
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			fadeOutObject("potato", 1, 1.5)
+			thrownObjects = thrownObjects + 1
 		end
-	end
-	if isScientistPart(b) then
-		if maxvel > 800 then
-			uid = isScientistPart(b)
-			if dazed[uid] == nil then dazed[uid] = 0 end
-			dazed[uid] = math.abs(math.min(dazed[uid] + ((maxvel-1000)/1000), 3))
+		if objects["beaker"] ~= nil and objects["beaker"][1] ~= nil and other == objects["beaker"][1].fixture and maxvel > 2000 then
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			fadeOutObject("beaker", 1, 1.5)
+			thrownObjects = thrownObjects + 1
+		end
+		if objects["carrot"] ~= nil and objects["carrot"][1] ~= nil and other == objects["carrot"][1].fixture and maxvel > 3000 then
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			fadeOutObject("carrot", 1, 1.5)
+			thrownObjects = thrownObjects + 1
+		end
+		if objects["syringe"] ~= nil and objects["syringe"][1] ~= nil and other == objects["syringe"][1].fixture and maxvel > 3000 then
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			fadeOutObject("syringe", 1, 1.5)
+			thrownObjects = thrownObjects + 1
+		end
+		if objects["microscope"] ~= nil and objects["microscope"][1] ~= nil and other == objects["microscope"][1].fixture and maxvel > 1800 then
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			fadeOutObject("microscope", 1, 1.5)
+			thrownObjects = thrownObjects + 1
+		end
+		if objects["bin"] ~= nil and objects["bin"][1] ~= nil and other == objects["bin"][1].fixture and maxvel > 600 then
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			fadeOutObject("bin", 1, 1.5)
+			thrownObjects = thrownObjects + 1
 		end
 	end
 end
 
 function endContact(a, b, coll)
-	if isScientistPart(a) then
-		if isFoot(a) then
-			if b == ground.fixture then
-				foot_touching_ground[isScientistPart(a)] = foot_touching_ground[isScientistPart(a)] - 1
-			end
-		else
-			if b == ground.fixture then
-				touching_ground[isScientistPart(a)] = touching_ground[isScientistPart(a)] - 1
-			end
-		end
-	elseif isScientistPart(b) then
-		if isFoot(b) then
-			if a == ground.fixture then
-				foot_touching_ground[isScientistPart(b)] = foot_touching_ground[isScientistPart(b)] - 1
-			end
-		else
-			if a == ground.fixture then
-				touching_ground[isScientistPart(b)] = touching_ground[isScientistPart(b)] - 1
-			end
-		end
-	end
+	scientistEndContact(a, b, coll)
 end
 
 function preSolve(a, b, coll) end

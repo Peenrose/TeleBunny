@@ -57,6 +57,7 @@ function love.update(dt)
 		--addInfo("Current Level: "..currentLevel)
 		if world ~= nil then world:update(dt) end
 		if updateLevel ~= nil then updateLevel(dt) end
+		if currentLevel == "1" and updateLevelOne ~= nil then updateLevelOne(dt) end
 		runAI(dt)
 	end
 end
@@ -186,7 +187,7 @@ function love.mousepressed(x, y, button)
 								end
 
 								mouseJoint = love.physics.newMouseJoint(v.body, love.mouse.getPosition())
-								mouseJoint:setMaxForce(15000)
+								mouseJoint:setMaxForce(8000)
 							end
 							if v.click ~= nil and type(v.click) == "function" then 
 								v.click()
@@ -280,34 +281,34 @@ end
 function drawAll()
 	love.graphics.setColor(255,255,255)
 	if background ~= nil then love.graphics.draw(background, 0, 0) end
-	if objects["bunny"][1] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
+	if objects ~= nil and objects["bunny"][1] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
 	if objects ~= nil then
 		for name, amount in pairs(objectList) do
 			love.graphics.setColor(255,255,255)
 			if fadeOut[name] ~= nil and fadeOut[name][1] ~= nil then love.graphics.setColor(255,255,255, fadeOut[name][1].cur) end
 			if name == "window" then
 				objects["window"][1].draw(1)
-			elseif name == "potato" and frozenPotato then 
+			elseif name == "potato" and frozenPotato then
 				objects["potato"][1].draw(1)
-			elseif name == "syringe" and frozenSyringe then 
+			elseif name == "syringe" and frozenSyringe then
 				objects["syringe"][1].draw(1)
-			elseif name == "microscope" and frozenMicroscope then 
+			elseif name == "microscope" and frozenMicroscope then
 				objects["microscope"][1].draw(1)
-			elseif name == "pipe" and frozenPipe then 
+			elseif name == "pipe" and frozenPipe then
 				objects["pipe"][1].draw(1)
 			end
 		end
 		for name, amount in pairs(objectList) do
 			love.graphics.setColor(255,255,255)
 			if fadeOut[name] ~= nil and fadeOut[name][1] ~= nil then love.graphics.setColor(255,255,255, fadeOut[name][1].cur) end
-			if name == "potato" and not frozenPotato then 
-				objects["potato"][1].draw(1)
+			if name == "potato" and not frozenPotato then
+				if objects["potato"][1] ~= nil then objects["potato"][1].draw(1) end
 			elseif name == "syringe" and not frozenSyringe then
-				objects["syringe"][1].draw(1)
+				if objects["syringe"][1] ~= nil then objects["syringe"][1].draw(1) end
 			elseif name == "microscope" and not frozenMicroscope then
-				objects["microscope"][1].draw(1)
+				if objects["microscope"][1] ~= nil then objects["microscope"][1].draw(1) end
 			elseif name == "pipe" and not frozenPipe then
-				objects["pipe"][1].draw(1)
+				if objects["pipe"][1] ~= nil then objects["pipe"][1].draw(1) end
 			else
 				for uid = 1, objectList[name] do
 					if objects[name][uid] ~= nil then

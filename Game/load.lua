@@ -18,7 +18,9 @@ function loadLevelRaw(levelToLoad)
 	LevelForeground = nil
 	touching_ground = {}
 	foot_touching_ground = {}
-	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe = true, true, true, true
+	thrownObjects = -1
+	transition = 0
+	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)
 	load()
 	load = nil
@@ -95,31 +97,27 @@ function removeObject(name, uid)
 		objects[name][uid] = nil
 		if removedObjects[name] == nil then removedObjects[name] = {} end
 		removedObjects[name][uid] = true
+		grabbed = "none"
+		grabbedV = nil
 end
 
 function updateFadeOut(dt)
 	for name, things in pairs(fadeOut) do --name
 		for k, v in pairs(things) do --uid
 			v.cur = v.cur - v.aps*dt
-
 			if v.cur <= 0 then
 				removeObject(name, k)
 				fadeOut[name][k] = nil
 			end
 		end
 	end
-	if fadeOut["scientist"] == nil then
-		fadeOut["scientist"] = {}
-fadeOut["scientist"][1] = {cur=255, aps=10}
-	end
-	if fadeOut["scientist"][1] ~= nil then addInfo(fadeOut["scientist"][1].cur) end
 end
 
 function fadeOutObject(name, uid, seconds)
-	if objects[name] ~= nil and objects[name][uid] ~= nil then
-		obj = objects[name][uid]
-		if fadeOut[name] == nil then fadeOut[name] = {} end
-		fadeOut[name][uid] = {aps=255/seconds, cur=255}
+	if fadeOut[name] == nil then fadeOut[name] = {} end
+	if fadeOut[name][uid] == nil then
+		addInfo("Fading Out: "..name.." #"..tostring(uid), seconds*2)
+		fadeOut[name][uid] = {cur=255, aps=255/seconds}
 	end
 end
 

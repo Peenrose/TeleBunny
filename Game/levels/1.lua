@@ -121,7 +121,7 @@ function binKick(uid)
 	if binKicked >= 2 then
 		fadeOutObject("bin", 1, 1)
 		thrownObjects = thrownObjects + 1
-		if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+		--if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 	end
 end
 

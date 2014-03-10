@@ -50,7 +50,7 @@ function love.update(dt)
 		--addInfo("Current Level: "..currentLevel)
 		if world ~= nil then world:update(dt) end
 		if updateLevel ~= nil then updateLevel(dt) end
-		if currentLevel == "1" and updateLevelOne ~= nil then updateLevelOne(dt) end
+		if currentLevel == "1" and updateLevelOne ~= nil and bunnyHealth > 0 then updateLevelOne(dt) end
 		runAI(dt)
 	end
 end
@@ -275,7 +275,7 @@ end
 function drawAll()
 	love.graphics.setColor(255,255,255)
 	if background ~= nil then love.graphics.draw(background, 0, 0) end
-	if objects ~= nil and objects["bunny"][1] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
+	if objects ~= nil and objects["bunny"] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
 	if objects ~= nil then
 		for name, amount in pairs(objectList) do
 			love.graphics.setColor(255,255,255)

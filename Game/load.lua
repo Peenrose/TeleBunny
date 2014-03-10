@@ -21,6 +21,16 @@ function loadLevelRaw(levelToLoad)
 	thrownObjects = -1
 	transition = 0
 	binKicked = 0
+	bunnyHealth = 3
+	bunnyInDanger = false
+	love.mouse.setCursor(bunnyCursor)
+	if mouseJoint ~= nil then
+		mouseJoint:destroy()
+		mouseJoint = nil
+	end
+	updateLevelOne = nil
+	background = nil
+	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)
 	load()

@@ -22,6 +22,9 @@ thrownObjects = -1
 transition = 0
 binKicked = 0
 
+bunnyHealth = 3
+bunnyInDanger = false
+
 function load()
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	love.window.setTitle("Telekinetic Bunny")
@@ -41,23 +44,31 @@ function load()
 	addObject("walls")
 	addObject("bunny")
 	addObject("scientist", 3)
-	addObject("carrot", 1)
+	addObject("carrot")
 	addObject("bin")
 	addObject("beaker")
 	addObject("syringe")
 	addObject("microscope")
 	addObject("potato")
-	addObject("pipe", 1)
-	addObject("window", 1)
+	addObject("pipe")
+	addObject("window")
 end
 
 function updateLevelOne(dt)
-	--
-	--if playtime > 1 then addInfo(objects["bin"][1].body:getX()..":"..objects["bin"][1].body:getY()) end
+
 	if objects["bunny"][1] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
 	love.graphics.draw(windowSprite, window.body:getX(), window.body:getY(), 1, 1)
 
-	if frozenPotato == true then --and objects["potato"] ~= nil and objects["potato"][1] ~= nil then
+	if bunnyInDanger then
+		bunnyHealth = bunnyHealth - dt
+		if bunnyHealth < 0 then
+			updateLevelOne = nil
+			loadLevel("game_over")
+		end
+	end
+
+	if objects["potato"] == nil then return end
+	if frozenPotato == true then
 		objects["potato"][1].body:setX(potatoX)
 		objects["potato"][1].body:setY(potatoY)
 		objects["potato"][1].body:setLinearVelocity(0,0)
@@ -133,6 +144,12 @@ function beginContact(a, b, coll)
 
 	scientistBeginContact(a, b, coll)
 
+	if isScientistPart(a) and b == objects["bunny"][1].fixture then
+		bunnyInDanger = true
+	elseif isScientistPart(b) and a == objects["bunny"][1].fixture then
+		bunnyInDanger = true
+	end
+
 	for uid = 1, 3 do
 		if kickReset[uid] == nil then kickReset[uid] = 0 end
 		if kickReset[uid] > 0.8 then
@@ -204,6 +221,12 @@ end
 
 function endContact(a, b, coll)
 	scientistEndContact(a, b, coll)
+
+	if isScientistPart(a) and b == objects["bunny"][1].fixture then
+		bunnyInDanger = false
+	elseif isScientistPart(b) and a == objects["bunny"][1].fixture then
+		bunnyInDanger = false
+	end
 end
 
 function preSolve(a, b, coll) end

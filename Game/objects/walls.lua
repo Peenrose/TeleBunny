@@ -23,7 +23,7 @@ topwall = {
 	shape = love.physics.newRectangleShape(settings.window.width*2, 0),
 }
 
-if currentLevel == "1" then
+if currentLevel == 1 then
 	shelf = {
 		body = love.physics.newBody(world, 240, 375, "static"),
 		shape = love.physics.newRectangleShape(330, 12)

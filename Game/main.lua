@@ -28,10 +28,14 @@ function love.load()
 
 	setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen)
 
-	loadLevel("1")
+	loadLevel(1)
 end
 
 function love.update(dt)
+
+	addInfo("Number One: "..tostring(currentLevel == 1))
+	addInfo("String One: "..tostring(currentLevel == "1"))
+	addInfo("hi", 1)
 	if not paused then
 		dt = math.min(dt, 0.05)
 		updateFPS(dt)
@@ -50,7 +54,7 @@ function love.update(dt)
 		--addInfo("Current Level: "..currentLevel)
 		if world ~= nil then world:update(dt) end
 		if updateLevel ~= nil then updateLevel(dt) end
-		if currentLevel == "1" and updateLevelOne ~= nil and bunnyHealth > 0 then updateLevelOne(dt) end
+		if currentLevel == 1 and updateLevelOne ~= nil and bunnyHealth > 0 then updateLevelOne(dt) end
 		runAI(dt)
 	end
 end
@@ -59,6 +63,7 @@ function love.draw()
 	love.graphics.push()
 	love.graphics.scale(resolutionX/1920,resolutionY/1080)
 
+	if drawGameOver ~= nil then drawGameOver() end
 	drawAll()
 	if paused == false then
 		drawInfo(deltatime)
@@ -135,6 +140,7 @@ end
 function love.mousepressed(x, y, button)
 	x = x/(resolutionX/1920)
 	y = y/(resolutionY/1080)
+	if currentLevel == "game_over" then loadLevel("1") end
 	if paused == false then
 		clickedon = ""
 		clickedamount = 0
@@ -145,7 +151,7 @@ function love.mousepressed(x, y, button)
 						localx, localy = v.body:getLocalPoint(x, y)
 						if v.shape:testPoint(0, 0, 0, localx, localy) then
 							if v.body:getType() ~= "static" then
-								if currentLevel == "1" then if isScientistPart(v.fixture) then return end end
+								if currentLevel == 1 then if isScientistPart(v.fixture) then return end end
 								if mouseJoint ~= nil then
 									mouseJoint:destroy()
 									mouseJoint = nil
@@ -161,7 +167,7 @@ function love.mousepressed(x, y, button)
 								clickX, clickY = v.body:getLocalPoint(love.mouse.getPosition())
 								--v.fixture:setMask()
 								grabbedV = v
-								if currentLevel == "1" then
+								if currentLevel == 1 then
 									if k == "potato #1" then
 										frozenPotato = false
 										v.fixture:setMask()
@@ -282,26 +288,26 @@ function drawAll()
 			if fadeOut[name] ~= nil and fadeOut[name][1] ~= nil then love.graphics.setColor(255,255,255, fadeOut[name][1].cur) end
 			if name == "window" then
 				objects["window"][1].draw(1)
-			elseif name == "potato" and frozenPotato then
+			elseif name == "potato" and not frozenPotato then
 				objects["potato"][1].draw(1)
-			elseif name == "syringe" and frozenSyringe then
+			elseif name == "syringe" and not frozenSyringe then
 				objects["syringe"][1].draw(1)
-			elseif name == "microscope" and frozenMicroscope then
+			elseif name == "microscope" and not frozenMicroscope then
 				objects["microscope"][1].draw(1)
-			elseif name == "pipe" and frozenPipe then
+			elseif name == "pipe" and not frozenPipe then
 				objects["pipe"][1].draw(1)
 			end
 		end
 		for name, amount in pairs(objectList) do
 			love.graphics.setColor(255,255,255)
 			if fadeOut[name] ~= nil and fadeOut[name][1] ~= nil then love.graphics.setColor(255,255,255, fadeOut[name][1].cur) end
-			if name == "potato" and not frozenPotato then
+			if name == "potato" and frozenPotato then
 				if objects["potato"][1] ~= nil then objects["potato"][1].draw(1) end
-			elseif name == "syringe" and not frozenSyringe then
+			elseif name == "syringe" and frozenSyringe then
 				if objects["syringe"][1] ~= nil then objects["syringe"][1].draw(1) end
-			elseif name == "microscope" and not frozenMicroscope then
+			elseif name == "microscope" and frozenMicroscope then
 				if objects["microscope"][1] ~= nil then objects["microscope"][1].draw(1) end
-			elseif name == "pipe" and not frozenPipe then
+			elseif name == "pipe" and frozenPipe then
 				if objects["pipe"][1] ~= nil then objects["pipe"][1].draw(1) end
 			else
 				for uid = 1, objectList[name] do
@@ -320,7 +326,7 @@ end
 
 function addInfo(toAdd, time)
 	if time == nil then
-		table.insert(info, toAdd)
+		table.insert(infoMessages, toAdd)
 	else
 		table.insert(infoMessages, {message=toAdd, time=time})
 	end

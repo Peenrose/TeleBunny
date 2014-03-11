@@ -122,7 +122,7 @@ healthRemaining = {}
 feetTouching = {}
 
 
-bunnyCursor = love.mouse.newCursor("images/cursor.png", 0, 0)
+bunnyCursor = love.mouse.newCursor("images/cursor.png", 7, 7)
 blankCursor = love.mouse.newCursor("images/blank.png", 0, 0)
 
 grabImg = love.graphics.newImage("images/grab.png")

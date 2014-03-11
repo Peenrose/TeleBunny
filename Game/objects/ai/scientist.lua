@@ -9,7 +9,7 @@ end
 
 function approachBunny(uid)
 	scientist = objects["scientist"][uid]
-	scientist.torso.body:setLinearVelocity(240, -180)
+	scientist.torso.body:setLinearVelocity(160, -210)
 	scientist.rightleg.body:applyAngularImpulse(-2500)
 end
 

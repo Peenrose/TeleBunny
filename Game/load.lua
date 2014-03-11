@@ -1,4 +1,5 @@
 function loadLevelRaw(levelToLoad)
+	levelToLoad = levelToLoad
 	lastLevel = currentLevel
 	currentLevel = levelToLoad
 	for name, data in pairs(objects) do
@@ -6,7 +7,7 @@ function loadLevelRaw(levelToLoad)
 			removeObject(name, uid)
 		end
 	end
-
+	love.mousereleased()
 	if world ~= nil then world:destroy() world = nil end
 	objects = nil
 	grabbed = "none"
@@ -30,6 +31,7 @@ function loadLevelRaw(levelToLoad)
 	end
 	updateLevelOne = nil
 	background = nil
+	drawGameOver = nil
 	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)
@@ -55,12 +57,13 @@ end
 function loadLevel(name)
 	result, err = pcall(loadLevelRaw, name)
 	if not result then 
-		addInfo("error: "..tostring(err), 20)
+		error("error: "..tostring(err), 20)
 		paused = false
 	else 
 		levelToLoad = nil
 		addInfo("Level Loaded: "..name, 5)
 		currentLevel = name
+		if currentLevel == "1" then currentLevel = 1 end
 	end
 end
 

@@ -4,10 +4,17 @@ function load()
 
 	world = love.physics.newWorld(0, 9.81*64, true)
 	objects = {}
-	--background = love.graphics.newImage("images/game_over.png")
+	deathBackground = love.graphics.newImage("images/gameover.png")
 end
 
-function updateGameOver(dt) end
+function updateGameOver(dt)
+
+end
+function drawGameOver()
+	love.graphics.setColor(255,255,255)
+	love.graphics.rectangle("fill", 0, 0, 1920, 1080)
+	love.graphics.draw(deathBackground, 0, 0)
+end
 function beginContact(a, b, coll) end
 function endContact(a, b, coll) end
 function preSolve(a, b, coll) end

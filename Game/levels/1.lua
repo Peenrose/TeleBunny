@@ -67,7 +67,7 @@ function updateLevelOne(dt)
 		end
 	end
 
-	if objects["potato"] == nil then return end
+	if objects ~= nil and objects["potato"] == nil then return end
 	if frozenPotato == true then
 		objects["potato"][1].body:setX(potatoX)
 		objects["potato"][1].body:setY(potatoY)

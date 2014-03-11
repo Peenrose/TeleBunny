@@ -1,4 +1,5 @@
 function loadLevelRaw(levelToLoad)
+	if tonumber(levelToLoad) ~= nil then levelToLoad = tonumber(levelToLoad) end
 	levelToLoad = levelToLoad
 	lastLevel = currentLevel
 	currentLevel = levelToLoad

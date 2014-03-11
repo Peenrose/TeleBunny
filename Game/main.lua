@@ -140,7 +140,7 @@ end
 function love.mousepressed(x, y, button)
 	x = x/(resolutionX/1920)
 	y = y/(resolutionY/1080)
-	if currentLevel == "game_over" then loadLevel("1") end
+	if currentLevel == "game_over" then loadLevel(1) end
 	if paused == false then
 		clickedon = ""
 		clickedamount = 0
@@ -288,26 +288,26 @@ function drawAll()
 			if fadeOut[name] ~= nil and fadeOut[name][1] ~= nil then love.graphics.setColor(255,255,255, fadeOut[name][1].cur) end
 			if name == "window" then
 				objects["window"][1].draw(1)
-			elseif name == "potato" and not frozenPotato then
+			elseif name == "potato" and frozenPotato then
 				objects["potato"][1].draw(1)
-			elseif name == "syringe" and not frozenSyringe then
+			elseif name == "syringe" and frozenSyringe then
 				objects["syringe"][1].draw(1)
-			elseif name == "microscope" and not frozenMicroscope then
+			elseif name == "microscope" and frozenMicroscope then
 				objects["microscope"][1].draw(1)
-			elseif name == "pipe" and not frozenPipe then
+			elseif name == "pipe" and frozenPipe then
 				objects["pipe"][1].draw(1)
 			end
 		end
 		for name, amount in pairs(objectList) do
 			love.graphics.setColor(255,255,255)
 			if fadeOut[name] ~= nil and fadeOut[name][1] ~= nil then love.graphics.setColor(255,255,255, fadeOut[name][1].cur) end
-			if name == "potato" and frozenPotato then
+			if name == "potato" and not frozenPotato then
 				if objects["potato"][1] ~= nil then objects["potato"][1].draw(1) end
-			elseif name == "syringe" and frozenSyringe then
+			elseif name == "syringe" and not frozenSyringe then
 				if objects["syringe"][1] ~= nil then objects["syringe"][1].draw(1) end
-			elseif name == "microscope" and frozenMicroscope then
+			elseif name == "microscope" and not frozenMicroscope then
 				if objects["microscope"][1] ~= nil then objects["microscope"][1].draw(1) end
-			elseif name == "pipe" and frozenPipe then
+			elseif name == "pipe" and not frozenPipe then
 				if objects["pipe"][1] ~= nil then objects["pipe"][1].draw(1) end
 			else
 				for uid = 1, objectList[name] do
@@ -326,14 +326,14 @@ end
 
 function addInfo(toAdd, time)
 	if time == nil then
-		table.insert(infoMessages, toAdd)
+		table.insert(info, message)
 	else
 		table.insert(infoMessages, {message=toAdd, time=time})
 	end
 end
 
 function drawInfo(dt)
-	if settingsItems[2].value then
+	if settingsItems[3].value then
 		setFontSize(15)
 
 		for k, v in pairs(infoMessages) do

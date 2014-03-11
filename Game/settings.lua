@@ -44,7 +44,7 @@ settingsItems = {
 	title = "Settings",
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
 	{title = "Fullscreen", action = function() settings.displayFlags.fullscreen = not settings.displayFlags.fullscreen; setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen) end},
-	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = true},
+	{title = "Debug Log", action = function() settingsItems[3].value = not settingsItems[3].value end, value = true},
 	
 }
 
@@ -52,8 +52,8 @@ levelItems = {
 	title = "Load Level",
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
 	{title = "Menu", action = function() loadLevel("menu") end},
-	{title = "Level One", action = function() loadLevel("1") end},
-	{title = "Level Two", action = function() loadLevel("2") end},
+	{title = "Level One", action = function() loadLevel(1) end},
+	{title = "Level Two", action = function() loadLevel(2) end},
 }
 
 function togglePause()
@@ -116,7 +116,7 @@ ais = {}
 objects = {}
 objectList = {}
 removedObjects = {}
-
+info = {}
 healthRemaining = {}
 
 feetTouching = {}

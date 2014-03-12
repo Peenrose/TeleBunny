@@ -35,7 +35,6 @@ function love.update(dt)
 
 	addInfo("Number One: "..tostring(currentLevel == 1))
 	addInfo("String One: "..tostring(currentLevel == "1"))
-	addInfo("hi", 1)
 	if not paused then
 		dt = math.min(dt, 0.05)
 		updateFPS(dt)
@@ -337,7 +336,7 @@ function drawInfo(dt)
 		setFontSize(15)
 
 		for k, v in pairs(infoMessages) do
-			addInfo(v.message)
+			table.insert(info, v.message)
 			v.time = v.time - dt
 			if v.time <= 0 then
 				table.remove(infoMessages, k)
@@ -349,7 +348,6 @@ function drawInfo(dt)
 			if #v > #x then x = v end
 			y = k*16
 		end
-
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("fill", 0, 0, font:getWidth(x), y)
 		love.graphics.setColor(255,255,255)

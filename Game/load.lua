@@ -25,12 +25,12 @@ function loadLevelRaw(levelToLoad)
 	binKicked = 0
 	bunnyHealth = 3
 	bunnyInDanger = false
+	binKicked = 0
 	love.mouse.setCursor(bunnyCursor)
 	if mouseJoint ~= nil then
 		mouseJoint:destroy()
 		mouseJoint = nil
 	end
-	updateLevelOne = nil
 	background = nil
 	drawGameOver = nil
 	if grabbedV ~= nil then grabbedV = nil end

@@ -172,6 +172,11 @@ function beginContact(a, b, coll)
 				fadeOutObject("scientist", isScientistPart(a), 1)
 				fadeOutObject("pipe", 1, 1)
 				thrownObjects = thrownObjects + 1
+				ct = 0
+				if objects["scientist"][1] ~= nil then ct = ct + 1 end
+				if objects["scientist"][2] ~= nil then ct = ct + 1 end
+				if objects["scientist"][3] ~= nil then ct = ct + 1 end
+				if ct == 0 then thrownObjects = 5 end
 			end
 		end
 	end

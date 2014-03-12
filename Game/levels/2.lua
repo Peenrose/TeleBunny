@@ -9,10 +9,8 @@ function load()
 	addObject("walls")
 	addObject("bunny")
 	--addObject("scientist")
-	--addObject("carrot")
-	addObject("level1objects")
-	touching_ground = 0
-	foot_touching_ground = 0
+
+	
 end
 
 function updateLevel(dt)

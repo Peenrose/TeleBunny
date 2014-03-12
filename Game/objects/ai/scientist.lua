@@ -146,7 +146,7 @@ function scientistBeginContact(a, b, coll)
 	end
 
 	if isScientistPart(a) then
-		if isFoot(a) then
+		if isScientistFoot(a) then
 			if b == ground.fixture then
 				foot_touching_ground[isScientistPart(a)] = foot_touching_ground[isScientistPart(a)] + 1
 			end
@@ -156,7 +156,7 @@ function scientistBeginContact(a, b, coll)
 			end
 		end
 	elseif isScientistPart(b) then
-		if isFoot(b) then
+		if isScientistFoot(b) then
 			if a == ground.fixture then
 				foot_touching_ground[isScientistPart(b)] = foot_touching_ground[isScientistPart(b)] + 1
 			end
@@ -187,7 +187,7 @@ end
 
 function scientistEndContact(a, b, coll)
 if isScientistPart(a) then
-		if isFoot(a) then
+		if isScientistFoot(a) then
 			if b == ground.fixture then
 				foot_touching_ground[isScientistPart(a)] = foot_touching_ground[isScientistPart(a)] - 1
 			end
@@ -197,7 +197,7 @@ if isScientistPart(a) then
 			end
 		end
 	elseif isScientistPart(b) then
-		if isFoot(b) then
+		if isScientistFoot(b) then
 			if a == ground.fixture then
 				foot_touching_ground[isScientistPart(b)] = foot_touching_ground[isScientistPart(b)] - 1
 			end

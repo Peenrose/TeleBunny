@@ -116,7 +116,7 @@ function isScientistPart(fix)
 	return false
 end
 
-function isFoot(fix)
+function isScientistFoot(fix)
 	if objects["scientist"] ~= nil then
 		for k, v in pairs(objects["scientist"]) do
 			if fix == v.leftleg.fixture then return k end

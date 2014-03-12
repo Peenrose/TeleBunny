@@ -28,7 +28,7 @@ function love.load()
 
 	setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen)
 
-	loadLevel(1)
+	loadLevel(2)
 end
 
 function love.update(dt)
@@ -88,7 +88,6 @@ end
 function love.keypressed(key)
 	if key == "escape" then togglePause() end
 	if key == "rctrl" then debug.debug() end
-	if key == "r" then removeObject("scientist", 1) end
 end
 
 function love.mousereleased()

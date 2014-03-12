@@ -1,4 +1,4 @@
-function joinhazmat()
+function joinHazmat()
 	local joints = {}
 	joints.head = love.physics.newRevoluteJoint(    hazmat.torso.body, hazmat.head.body,     392-150, 590, false)
 	joints.head2 = love.physics.newRevoluteJoint(   hazmat.torso.body, hazmat.head.body,     321-150, 583, false)
@@ -9,7 +9,15 @@ function joinhazmat()
 	hazmat.joints = joints
 end
 
-function drawhazmatOutline()
+function drawHazmat(uid)
+	--error("hazmat Object: \n"..to_string(objects["hazmat"][uid]))
+	love.graphics.draw(hazmatSprites.leftleg,  objects["hazmat"][uid].leftleg.body:getX(),  objects["hazmat"][uid].leftleg.body:getY(),  objects["hazmat"][uid].leftleg.body:getAngle(),  0.078*2, 0.078*2)
+	love.graphics.draw(hazmatSprites.rightleg, objects["hazmat"][uid].rightleg.body:getX(), objects["hazmat"][uid].rightleg.body:getY(), objects["hazmat"][uid].rightleg.body:getAngle(), 0.078*2, 0.078*2)
+	love.graphics.draw(hazmatSprites.leftarm,  objects["hazmat"][uid].leftarm.body:getX(),  objects["hazmat"][uid].leftarm.body:getY(),  objects["hazmat"][uid].leftarm.body:getAngle(),  0.078*2, 0.078*2)
+	love.graphics.draw(hazmatSprites.rightarm, objects["hazmat"][uid].rightarm.body:getX(), objects["hazmat"][uid].rightarm.body:getY(), objects["hazmat"][uid].rightarm.body:getAngle(), 0.078*2, 0.078*2)
+	love.graphics.draw(hazmatSprites.torso,    objects["hazmat"][uid].torso.body:getX(),    objects["hazmat"][uid].torso.body:getY(),    objects["hazmat"][uid].torso.body:getAngle(),    0.078*2, 0.078*2)
+	love.graphics.draw(hazmatSprites.head,     objects["hazmat"][uid].head.body:getX(),     objects["hazmat"][uid].head.body:getY(),     objects["hazmat"][uid].head.body:getAngle(),0.078*2*4.16, 0.078*2*3.91)
+
 	love.graphics.setColor(0,0,0)
 	love.graphics.polygon("line", hazmat.leftleg.body:getWorldPoints(hazmat.leftleg.shape:getPoints()))
 	love.graphics.polygon("line", hazmat.rightleg.body:getWorldPoints(hazmat.rightleg.shape:getPoints()))
@@ -19,35 +27,19 @@ function drawhazmatOutline()
 	love.graphics.polygon("line", hazmat.head.body:getWorldPoints(hazmat.head.shape:getPoints()))
 end
 
-function drawhazmat(uid)
-	--error("hazmat Object: \n"..to_string(objects["hazmat"][uid]))
-	love.graphics.draw(hazmatSprites.leftleg,  objects["hazmat"][uid].leftleg.body:getX(),  objects["hazmat"][uid].leftleg.body:getY(),  objects["hazmat"][uid].leftleg.body:getAngle(),  0.078*2, 0.078*2)
-	love.graphics.draw(hazmatSprites.rightleg, objects["hazmat"][uid].rightleg.body:getX(), objects["hazmat"][uid].rightleg.body:getY(), objects["hazmat"][uid].rightleg.body:getAngle(), 0.078*2, 0.078*2)
-	love.graphics.draw(hazmatSprites.leftarm,  objects["hazmat"][uid].leftarm.body:getX(),  objects["hazmat"][uid].leftarm.body:getY(),  objects["hazmat"][uid].leftarm.body:getAngle(),  0.078*2, 0.078*2)
-	love.graphics.draw(hazmatSprites.rightarm, objects["hazmat"][uid].rightarm.body:getX(), objects["hazmat"][uid].rightarm.body:getY(), objects["hazmat"][uid].rightarm.body:getAngle(), 0.078*2, 0.078*2)
-	love.graphics.draw(hazmatSprites.torso,    objects["hazmat"][uid].torso.body:getX(),    objects["hazmat"][uid].torso.body:getY(),    objects["hazmat"][uid].torso.body:getAngle(),    0.078*2, 0.078*2)
-	love.graphics.draw(objects["hazmat"][uid].headSprite,objects["hazmat"][uid].head.body:getX(),objects["hazmat"][uid].head.body:getY(),objects["hazmat"][uid].head.body:getAngle(),     0.078*2*4.16, 0.078*2*3.91)
-end
-
 hazmatWidth = 277*2
 hazmatHeight = 329*2
 
-headSprites = {
-	normal = love.graphics.newImage("images/hazmat/hazmat_head.png"),
-	dazed = love.graphics.newImage("images/hazmat/hazmat_head_dazed.png"),
-	worried = love.graphics.newImage("images/hazmat/hazmat_head_worried.png"),
-}
 hazmatSprites = {
-	torso = love.graphics.newImage("images/hazmat/torso.png"),
-	head = headSprites.worried,
-	leftarm = love.graphics.newImage("images/hazmat/left_arm.png"),
-	rightarm = love.graphics.newImage("images/hazmat/right_arm.png"),
-	leftleg = love.graphics.newImage("images/hazmat/left_leg.png"),
-	rightleg = 	love.graphics.newImage("images/hazmat/right_leg.png"),
+	torso = love.graphics.newImage("images/Scientist/Hazmat/torso.png"),
+	head = love.graphics.newImage("images/Scientist/Hazmat/head.png"),
+	leftarm = love.graphics.newImage("images/Scientist/Hazmat/left_arm.png"),
+	rightarm = love.graphics.newImage("images/Scientist/Hazmat/right_arm.png"),
+	leftleg = love.graphics.newImage("images/Scientist/Hazmat/left_leg.png"),
+	rightleg = 	love.graphics.newImage("images/Scientist/Hazmat/right_leg.png"),
 }
 hazmat = {}
-hazmat.draw = drawhazmat
-hazmat.headSprite = headSprites.normal
+hazmat.draw = drawHazmat
 hazmat.torso = {
 	body = love.physics.newBody(world, 300-150, settings.window.height-500, "dynamic"),
 	shape = love.physics.newPolygonShape(4.99*2,0, 50.23*2,71.76*2, 77.69*2,7.18*2, 92.04*2,66.14*2, 54.9*2,74.5*2, 0,71.76*2),
@@ -99,7 +91,7 @@ hazmat.torso.body:setBullet(true)
 hazmat.head.body:setBullet(true)
 hazmat.leftarm.body:setBullet(true)
 hazmat.rightarm.body:setBullet(true)
-joinhazmat()
+joinHazmat()
 function loadObject(uid)
 	-- hazmat.torso.body:setX((hazmat.torso.body:getX()-(objectList["hazmat"]*700))-80)
 	-- hazmat.leftarm.body:setX((hazmat.leftarm.body:getX()-(objectList["hazmat"]*700))-80)

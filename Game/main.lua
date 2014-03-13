@@ -362,7 +362,7 @@ end
 
 function endContactMain(a, b, coll) 
 	if endContact ~= nil then endContact(a, b, coll) end
-	if currentLevel == 1 then endContactOne(a, b, coll) end
+	if currentLevel == 1 and endContactOne ~= nil then endContactOne(a, b, coll) end
 end
 
 function preSolveMain(a, b, coll) 

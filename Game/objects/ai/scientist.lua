@@ -64,73 +64,73 @@ function kick(uid)
 end
 
 function ScientistAI(uid, dt)
-	dt = dt * 1.5
-	scientist = objects["scientist"][uid]
-	if not scientist then return end
+	if objects["scientist"] ~= nil and objects["scientist"][uid] ~= nil then
+		dt = dt * 1.5
+		scientist = objects["scientist"][uid]
 
-	if kickReset[uid] == nil then kickReset[uid] = 0 end
-	if dazedImmune[uid] == nil then dazedImmune[uid] = 0 end
-	if dazedImmune[uid] > 0 then dazedImmune[uid] = dazedImmune[uid] - dt end
-	if dazedImmune[uid] < 0 then dazedImmune[uid] = 0 end
-	
-	if scientist.torso ~= nil and scientist.leftleg ~= nil then
-		x,head_y = scientist.head.body:getPosition()
-		xvel, yvel = scientist.head.body:getLinearVelocity()
+		if kickReset[uid] == nil then kickReset[uid] = 0 end
+		if dazedImmune[uid] == nil then dazedImmune[uid] = 0 end
+		if dazedImmune[uid] > 0 then dazedImmune[uid] = dazedImmune[uid] - dt end
+		if dazedImmune[uid] < 0 then dazedImmune[uid] = 0 end
 		
-		maxvel = math.max(math.abs(xvel), math.abs(yvel))
-
-		if kickReset[uid] > 0 then 
-			kickReset[uid] = kickReset[uid] - dt 
-			if kickReset[uid] < 0 then
-				scientist.rightleg.body:applyAngularImpulse(200000)
-				kickReset[uid] = 0
-			end
-		end
-		if secondCounter[uid] == nil then secondCounter[uid] = 0 end
-		if dazed[uid] == -1 then secondCounter[uid] = secondCounter[uid] + dt*0.75 end
-		if secondCounter[uid] >= 5 then
-			secondCounter[uid] = 0
-			local X = scientist.torso.body:getX()
-			if lastx[uid] == nil then lastx[uid] = 0 end
-			if X > lastx[uid] then
-				moved = X - lastx[uid]
-			elseif X <= lastx[uid] then
-				moved = lastx[uid] - X
-			end
-			if moved < 75 then kick(uid) end
-			lastx[uid] = X
-			traveledLastSecond[uid] = 0
-		end
-		
-		if dazed[uid] == nil then dazed[uid] = 0 end
-		if touching_ground[uid] == nil then touching_ground[uid] = 0 end
-
-		if dazed[uid] > -0.95 then
-			dazed[uid] = dazed[uid] - dt*0.6
-			objects["scientist"][uid].headSprite = headSprites.dazed
-		end
-
-		if dazed[uid] <= 0 then
-			if isScientistPart(grabbed.fixture) then
-				objects["scientist"][uid].headSprite = headSprites.worried
-				return
-			elseif touching_ground[uid] ~= 0 then
-				objects["scientist"][uid].headSprite = headSprites.normal
-			end
-		end
-
-		if dazed[uid] <= -0.95 then dazed[uid] = -1 end
-		if foot_touching_ground[uid] == nil then foot_touching_ground[uid] = 0 end
-
-		if dazed[uid] == -1 or dazedImmune[uid] > 0 then
-			objects["scientist"][uid].headSprite = headSprites.normal
-			spinUpright(uid)
+		if scientist.torso ~= nil and scientist.leftleg ~= nil then
+			x,head_y = scientist.head.body:getPosition()
+			xvel, yvel = scientist.head.body:getLinearVelocity()
 			
-			if isRotating(uid) == false and foot_touching_ground[uid] == 2 then approachBunny(uid) end
+			maxvel = math.max(math.abs(xvel), math.abs(yvel))
+
+			if kickReset[uid] > 0 then 
+				kickReset[uid] = kickReset[uid] - dt 
+				if kickReset[uid] < 0 then
+					scientist.rightleg.body:applyAngularImpulse(200000)
+					kickReset[uid] = 0
+				end
+			end
+			if secondCounter[uid] == nil then secondCounter[uid] = 0 end
+			if dazed[uid] == -1 then secondCounter[uid] = secondCounter[uid] + dt*0.75 end
+			if secondCounter[uid] >= 5 then
+				secondCounter[uid] = 0
+				local X = scientist.torso.body:getX()
+				if lastx[uid] == nil then lastx[uid] = 0 end
+				if X > lastx[uid] then
+					moved = X - lastx[uid]
+				elseif X <= lastx[uid] then
+					moved = lastx[uid] - X
+				end
+				if moved < 75 then kick(uid) end
+				lastx[uid] = X
+				traveledLastSecond[uid] = 0
+			end
+			
+			if dazed[uid] == nil then dazed[uid] = 0 end
+			if touching_ground[uid] == nil then touching_ground[uid] = 0 end
+
+			if dazed[uid] > -0.95 then
+				dazed[uid] = dazed[uid] - dt*0.6
+				objects["scientist"][uid].headSprite = headSprites.dazed
+			end
+
+			if dazed[uid] <= 0 then
+				if isScientistPart(grabbed.fixture) then
+					objects["scientist"][uid].headSprite = headSprites.worried
+					return
+				elseif touching_ground[uid] ~= 0 then
+					objects["scientist"][uid].headSprite = headSprites.normal
+				end
+			end
+
+			if dazed[uid] <= -0.95 then dazed[uid] = -1 end
+			if foot_touching_ground[uid] == nil then foot_touching_ground[uid] = 0 end
+
+			if dazed[uid] == -1 or dazedImmune[uid] > 0 then
+				objects["scientist"][uid].headSprite = headSprites.normal
+				spinUpright(uid)
+				if isRotating(uid) == false and foot_touching_ground[uid] == 2 then approachBunny(uid) end
+			end
+				-- addInfo("Feet On Ground ("..uid.."): "..foot_touching_ground[uid])
+				-- addInfo("Touching Ground ("..uid.."): "..touching_ground[uid])
+				-- addInfo("Dazed ("..uid.."): "..dazed[uid])
 		end
-			-- addInfo("Feet On Ground ("..uid.."): "..foot_touching_ground[uid])
-			-- addInfo("Touching Ground ("..uid.."): "..touching_ground[uid])
-			-- addInfo("Dazed ("..uid.."): "..dazed[uid])
 	end
 end
 

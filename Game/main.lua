@@ -372,6 +372,7 @@ end
 
 function beginContactMain(a, b, coll)
 	if beginContact ~= nil then beginContact(a, b, coll) end
+	if currentLevel == 1 then beginContactOne(a, b, coll) end
 	--if healthRemaining[a]
 end
 
@@ -382,6 +383,7 @@ end
 
 function endContactMain(a, b, coll) 
 	if endContact ~= nil then endContact(a, b, coll) end
+	if currentLevel == 1 then endContactOne(a, b, coll) end
 end
 
 function preSolveMain(a, b, coll) 

@@ -61,10 +61,10 @@ function updateLevelOne(dt)
 	if bunnyInDanger then
 		bunnyHealth = bunnyHealth - dt
 		if bunnyHealth < 0 then
-			updateLevelOne = nil
 			loadLevel("game_over")
 		end
 	end
+	if getScientistsLeft() == 0 then thrownObjects = 5 end
 
 	if objects ~= nil and objects["potato"] == nil then return end
 	if frozenPotato == true then
@@ -135,7 +135,15 @@ function binKick(uid)
 	end
 end
 
-function beginContact(a, b, coll)
+function getScientistsLeft()
+	ct = 0
+	if objects["scientist"][1] ~= nil then ct = ct + 1 end
+	if objects["scientist"][2] ~= nil then ct = ct + 1 end
+	if objects["scientist"][3] ~= nil then ct = ct + 1 end
+	return ct
+end
+
+function beginContactOne(a, b, coll)
 	avel = math.abs(a:getBody():getLinearVelocity())
 	bvel = math.abs(b:getBody():getLinearVelocity())
 
@@ -172,10 +180,7 @@ function beginContact(a, b, coll)
 				fadeOutObject("scientist", isScientistPart(a), 1)
 				fadeOutObject("pipe", 1, 1)
 				thrownObjects = thrownObjects + 1
-				ct = 0
-				if objects["scientist"][1] ~= nil then ct = ct + 1 end
-				if objects["scientist"][2] ~= nil then ct = ct + 1 end
-				if objects["scientist"][3] ~= nil then ct = ct + 1 end
+
 				if ct == 0 then thrownObjects = 5 end
 			end
 		end
@@ -223,7 +228,7 @@ function beginContact(a, b, coll)
 	end
 end
 
-function endContact(a, b, coll)
+function endContactOne(a, b, coll)
 	scientistEndContact(a, b, coll)
 
 	if isScientistPart(a) and b == objects["bunny"][1].fixture then

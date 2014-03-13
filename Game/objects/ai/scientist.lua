@@ -28,20 +28,22 @@ function getAngle(uid)
 end
 
 function spinUpright(uid)
-	scientist = objects["scientist"][uid]
-	angle = getAngle(uid)
-	if math.abs(angle) > 1 then
-		scientist.torso.body:applyAngularImpulse(angle*-35000)
-	else
-		scientist.torso.body:applyAngularImpulse(angle*-30000)
-	end
-	
-	if math.abs(angle) < 0.5 then 
-		scientist.torso.body:applyAngularImpulse((angle-0.1)*-200000) 
-	end
+	if objects["scientist"] ~= nil and objects["scientist"][uid] ~= nil then
+		scientist = objects["scientist"][uid]
+		angle = getAngle(uid)
+		if math.abs(angle) > 1 then
+			scientist.torso.body:applyAngularImpulse(angle*-35000)
+		else
+			scientist.torso.body:applyAngularImpulse(angle*-30000)
+		end
+		
+		if math.abs(angle) < 0.5 then 
+			scientist.torso.body:applyAngularImpulse((angle-0.1)*-200000) 
+		end
 
-	if angle < 0.2 then
-		scientist.rightleg.body:applyAngularImpulse(-750)
+		if angle < 0.2 then
+			scientist.rightleg.body:applyAngularImpulse(-750)
+		end
 	end
 end
 

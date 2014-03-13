@@ -136,11 +136,15 @@ function binKick(uid)
 end
 
 function getScientistsLeft()
-	ct = 0
-	if objects["scientist"][1] ~= nil then ct = ct + 1 end
-	if objects["scientist"][2] ~= nil then ct = ct + 1 end
-	if objects["scientist"][3] ~= nil then ct = ct + 1 end
+	if objects["scientist"] ~= nil then
+		ct = 0
+		if objects["scientist"][1] ~= nil then ct = ct + 1 end
+		if objects["scientist"][2] ~= nil then ct = ct + 1 end
+		if objects["scientist"][3] ~= nil then ct = ct + 1 end
 	return ct
+	else
+		return 0
+	end
 end
 
 function beginContactOne(a, b, coll)

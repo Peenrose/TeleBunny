@@ -14,17 +14,19 @@ function approachBunny(uid)
 end
 
 function getAngle(uid)
-	scientist = objects["scientist"][uid]
-	angle = scientist.torso.body:getAngle()
-	local pos = 1
-	if angle < 0 then
-		while angle < -(2*math.pi) do angle = angle + (2*math.pi) end
-		pos = 1
-	elseif angle > 0 then
-		while angle > (2*math.pi) do angle = angle - (2*math.pi) end
-		pos = -1
+	if objects["scientist"] ~= nil and objects["scientist"][uid] ~= nil then
+		scientist = objects["scientist"][uid]
+		angle = scientist.torso.body:getAngle()
+		local pos = 1
+		if angle < 0 then
+			while angle < -(2*math.pi) do angle = angle + (2*math.pi) end
+			pos = 1
+		elseif angle > 0 then
+			while angle > (2*math.pi) do angle = angle - (2*math.pi) end
+			pos = -1
+		end
+		return angle
 	end
-	return angle
 end
 
 function spinUpright(uid)

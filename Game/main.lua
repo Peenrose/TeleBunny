@@ -1,5 +1,4 @@
 function setResolution(x, y, fullscreen)
-	--love.window.setMode(x, y, {fullscreen=fullscreen})
 	local scrx, scry = love.window.getDesktopDimensions()
 	if scrx == x and scry == y then 
 		full = true
@@ -32,25 +31,17 @@ function love.load()
 end
 
 function love.update(dt)
-
-	addInfo("Number One: "..tostring(currentLevel == 1))
-	addInfo("String One: "..tostring(currentLevel == "1"))
 	if not paused then
 		dt = math.min(dt, 0.05)
 		updateFPS(dt)
 		updateGrabbed()
 		info = {}
-		if currentLevel ~= "menu" and fps < 50 then
-			--addInfo("FPS: "..math.floor(fps))
-		end
-		
 		updateFadeOut(dt)
-
 		for k, v in pairs(toWeld) do
 			weld = love.physics.newWeldJoint(v.a, v.b, v.x, v.y, v.coll)
 			table.insert(welds, weld)
 		end
-		--addInfo("Current Level: "..currentLevel)
+		addInfo(love.timer.getFPS(), 0)
 		if world ~= nil then world:update(dt) end
 		if updateLevel ~= nil then updateLevel(dt) end
 		if currentLevel == 1 and updateLevelOne ~= nil and bunnyHealth > 0 then updateLevelOne(dt) end
@@ -61,7 +52,6 @@ end
 function love.draw()
 	love.graphics.push()
 	love.graphics.scale(resolutionX/1920,resolutionY/1080)
-
 	if drawGameOver ~= nil then drawGameOver() end
 	drawAll()
 	if paused == false then
@@ -77,11 +67,9 @@ function love.draw()
 				grabbedAgo = nil
 			end
 		end
-
 		local x, y = grabbedV.body:getWorldPoint(clickX, clickY)
 		love.graphics.draw(grabImg, x, y, grabbedV.body:getAngle(), 1, 1, 25, 21)
 	end
-
 	love.graphics.pop()
 end
 
@@ -106,9 +94,7 @@ function getObjects()
 	collected = {}
 	for name, amount in pairs(objectList) do --all types
 		for uid = 1, amount do -- all per type
-			if removedObjects[name] ~= nil and removedObjects[name][uid] ~= nil then
-
-			else
+			if removedObjects[name] ~= nil and removedObjects[name][uid] ~= nil then else
 				if objects[name] == nil or objects[name][uid] == nil then break end
 				if objects[name][uid].fixture then
 					local objectName = name.." #"..uid
@@ -124,7 +110,6 @@ function getObjects()
 			end
 		end
 	end
-	--error(to_string(objects["scientist"]))
 	return collected
 end
 
@@ -160,7 +145,6 @@ function love.mousepressed(x, y, button)
 										grabbed = k 
 									end
 								end
-								
 								grabbedTime = playtime
 								clickX, clickY = v.body:getLocalPoint(love.mouse.getPosition())
 								--v.fixture:setMask()
@@ -183,7 +167,6 @@ function love.mousepressed(x, y, button)
 										v.fixture:setMask()
 									end
 								end
-
 								mouseJoint = love.physics.newMouseJoint(v.body, love.mouse.getPosition())
 								mouseJoint:setMaxForce(8000)
 							end
@@ -226,10 +209,6 @@ end
 
 function love.quit()
 
-end
-
-function schedule(func, time)
-	table.insert(scheduled, {time=time, func=func})
 end
 
 function checkObject(k, v)
@@ -392,11 +371,6 @@ end
 
 function postSolveMain(a, b, coll) 
 	if postSolve ~= nil then postSolve(a, b, coll) end
-end
-
-function round(num, idp)
-  local mult = 10^(idp or 0)
-  return math.floor(num * mult + 0.5) / mult
 end
 
 function round(num, idp)

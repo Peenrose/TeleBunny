@@ -14,7 +14,12 @@ function load()
 end
 
 function updateLevel(dt)
-
+	if bunnyInDanger then
+		bunnyHealth = bunnyHealth - dt
+		if bunnyHealth < 0 then
+			loadLevel("game_over")
+		end
+	end
 end
 
 function isHazmatPart(fix)

@@ -20,6 +20,9 @@ return function(dt)
 		bunnyFrame = 4
 	end
 
+	if bunnyInDanger then
+		bunnyFrame = math.random(3,4)
+	end
 	
 	addInfo("Grab Time: "..grabbedTime, 0)
 	if bunnyFrame == nil then bunnyFrame = 1 end

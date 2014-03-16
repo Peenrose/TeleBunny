@@ -1,7 +1,7 @@
 function joinHazmat()
 	local joints = {}
-	joints.head = love.physics.newRevoluteJoint(    hazmat.torso.body, hazmat.head.body,     223, 152, false)
-	joints.head2 = love.physics.newRevoluteJoint(   hazmat.torso.body, hazmat.head.body,     317, 163, false)
+	joints.head = love.physics.newWeldJoint(    hazmat.torso.body, hazmat.head.body,     223, 152, false)
+	joints.head2 = love.physics.newWeldJoint(   hazmat.torso.body, hazmat.head.body,     317, 163, false)
 	joints.leftarm = love.physics.newRevoluteJoint( hazmat.torso.body, hazmat.leftarm.body,  213, 185, false)
 	joints.rightarm = love.physics.newRevoluteJoint(hazmat.torso.body, hazmat.rightarm.body, 341, 192, false)
 	joints.leftleg = love.physics.newRevoluteJoint( hazmat.torso.body, hazmat.leftleg.body,  250, 311, false)
@@ -97,6 +97,5 @@ function loadObject(uid)
 	-- hazmat.head.body:setX((hazmat.head.body:getX()-(objectList["hazmat"]*700))-80)
 	-- hazmat.leftleg.body:setX((hazmat.leftleg.body:getX()-(objectList["hazmat"]*700))-80)
 	-- hazmat.rightleg.body:setX((hazmat.rightleg.body:getX()-(objectList["hazmat"]*700))-80)
-
 	return hazmat
 end

@@ -116,7 +116,7 @@ end
 function love.mousepressed(x, y, button)
 	x = x/(resolutionX/1920)
 	y = y/(resolutionY/1080)
-	if currentLevel == "game_over" then loadLevel(1) end
+	if currentLevel == "game_over" then loadLevel(lastLevel) end
 	if paused == false then
 		clickedon = ""
 		clickedamount = 0

@@ -60,13 +60,6 @@ function love.draw()
 		drawPauseScreen()
 	end
 	if grabbed ~= "none" then
-		if grabbedTime ~= nil then
-			local grabbedAgo = playtime - grabbedTime
-			if grabbedAgo > 0 then
-				--love.mouse.setCursor(blankCursor)
-				grabbedAgo = nil
-			end
-		end
 		local x, y = grabbedV.body:getWorldPoint(clickX, clickY)
 		love.graphics.draw(grabImg, x, y, grabbedV.body:getAngle(), 1, 1, 25, 21)
 	end
@@ -145,7 +138,6 @@ function love.mousepressed(x, y, button)
 										grabbed = k 
 									end
 								end
-								grabbedTime = playtime
 								clickX, clickY = v.body:getLocalPoint(love.mouse.getPosition())
 								--v.fixture:setMask()
 								grabbedV = v

@@ -33,6 +33,7 @@ end
 function love.update(dt)
 	if not paused then
 		dt = math.min(dt, 0.05)
+		if bunnyHealth < 3 and bunnyInDanger then dt = math.max(dt*bunnyHealth/3, 0.5*dt) end
 		updateFPS(dt)
 		updateGrabbed()
 		info = {}
@@ -72,7 +73,6 @@ function love.keypressed(key)
 end
 
 function love.mousereleased()
-	love.mouse.setCursor(bunnyCursor)
 	if mouseJoint ~= nil then
 		mouseJoint:destroy()
 		mouseJoint = nil

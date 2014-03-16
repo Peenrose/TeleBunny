@@ -50,15 +50,17 @@ function spinUpright(uid)
 end
 
 function isRotating(uid)
-	if math.abs(getAngle(uid)) < 0.4 then
-		return false
-	else 
-		return true
+	if objects["scientist"] ~= nil and objects["scientist"][uid] ~= nil then
+		if math.abs(getAngle(uid)) < 0.4 then
+			return false
+		else 
+			return true
+		end
 	end
 end
 
 function kick(uid)
-	if dazed[uid] == -1 then
+	if objects["scientist"] ~= nil and objects["scientist"][uid] ~= nil and dazed[uid] == -1 then
 		scientist = objects["scientist"][uid]
 		kickReset[uid] = 1
 		scientist.rightleg.body:applyAngularImpulse(-1000000)

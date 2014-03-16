@@ -1,30 +1,30 @@
 function joinHazmat()
 	local joints = {}
-	joints.head = love.physics.newRevoluteJoint(    hazmat.torso.body, hazmat.head.body,     392-150, 590, false)
-	joints.head2 = love.physics.newRevoluteJoint(   hazmat.torso.body, hazmat.head.body,     321-150, 583, false)
-	joints.leftarm = love.physics.newRevoluteJoint( hazmat.torso.body, hazmat.leftarm.body,  308-150, 624, false)
-	joints.rightarm = love.physics.newRevoluteJoint(hazmat.torso.body, hazmat.rightarm.body, 460-150, 639, false)
-	joints.leftleg = love.physics.newRevoluteJoint( hazmat.torso.body, hazmat.leftleg.body,  344-150, 729, false)
-	joints.rightleg = love.physics.newRevoluteJoint(hazmat.torso.body, hazmat.rightleg.body, 447-150, 720, false)
+	joints.head = love.physics.newRevoluteJoint(    hazmat.torso.body, hazmat.head.body,     223, 152, false)
+	joints.head2 = love.physics.newRevoluteJoint(   hazmat.torso.body, hazmat.head.body,     317, 163, false)
+	joints.leftarm = love.physics.newRevoluteJoint( hazmat.torso.body, hazmat.leftarm.body,  213, 185, false)
+	joints.rightarm = love.physics.newRevoluteJoint(hazmat.torso.body, hazmat.rightarm.body, 341, 192, false)
+	joints.leftleg = love.physics.newRevoluteJoint( hazmat.torso.body, hazmat.leftleg.body,  250, 311, false)
+	joints.rightleg = love.physics.newRevoluteJoint(hazmat.torso.body, hazmat.rightleg.body, 330, 306, false)
 	hazmat.joints = joints
 end
 
 function drawHazmat(uid)
 	--error("hazmat Object: \n"..to_string(objects["hazmat"][uid]))
-	love.graphics.draw(hazmatSprites.leftleg,  objects["hazmat"][uid].leftleg.body:getX(),  objects["hazmat"][uid].leftleg.body:getY(),  objects["hazmat"][uid].leftleg.body:getAngle(),  0.078*2, 0.078*2)
-	love.graphics.draw(hazmatSprites.rightleg, objects["hazmat"][uid].rightleg.body:getX(), objects["hazmat"][uid].rightleg.body:getY(), objects["hazmat"][uid].rightleg.body:getAngle(), 0.078*2, 0.078*2)
-	love.graphics.draw(hazmatSprites.leftarm,  objects["hazmat"][uid].leftarm.body:getX(),  objects["hazmat"][uid].leftarm.body:getY(),  objects["hazmat"][uid].leftarm.body:getAngle(),  0.078*2, 0.078*2)
-	love.graphics.draw(hazmatSprites.rightarm, objects["hazmat"][uid].rightarm.body:getX(), objects["hazmat"][uid].rightarm.body:getY(), objects["hazmat"][uid].rightarm.body:getAngle(), 0.078*2, 0.078*2)
-	love.graphics.draw(hazmatSprites.torso,    objects["hazmat"][uid].torso.body:getX(),    objects["hazmat"][uid].torso.body:getY(),    objects["hazmat"][uid].torso.body:getAngle(),    0.078*2, 0.078*2)
-	love.graphics.draw(hazmatSprites.head,     objects["hazmat"][uid].head.body:getX(),     objects["hazmat"][uid].head.body:getY(),     objects["hazmat"][uid].head.body:getAngle(),0.078*2*4.16, 0.078*2*3.91)
+	love.graphics.draw(hazmatSprites.leftleg,  objects["hazmat"][uid].leftleg.body:getX(),  objects["hazmat"][uid].leftleg.body:getY(),  objects["hazmat"][uid].leftleg.body:getAngle(),  1*0.6, 1*0.6)
+	love.graphics.draw(hazmatSprites.rightleg, objects["hazmat"][uid].rightleg.body:getX(), objects["hazmat"][uid].rightleg.body:getY(), objects["hazmat"][uid].rightleg.body:getAngle(), 1*0.6, 1*0.6)
+	love.graphics.draw(hazmatSprites.leftarm,  objects["hazmat"][uid].leftarm.body:getX(),  objects["hazmat"][uid].leftarm.body:getY(),  objects["hazmat"][uid].leftarm.body:getAngle(),  1*0.6, 1*0.6)
+	love.graphics.draw(hazmatSprites.rightarm, objects["hazmat"][uid].rightarm.body:getX(), objects["hazmat"][uid].rightarm.body:getY(), objects["hazmat"][uid].rightarm.body:getAngle(), 1*0.6, 1*0.6)
+	love.graphics.draw(hazmatSprites.torso,    objects["hazmat"][uid].torso.body:getX(),    objects["hazmat"][uid].torso.body:getY(),    objects["hazmat"][uid].torso.body:getAngle(),    1*0.6, 1*0.6)
+	love.graphics.draw(hazmatSprites.head,     objects["hazmat"][uid].head.body:getX(),     objects["hazmat"][uid].head.body:getY(),     objects["hazmat"][uid].head.body:getAngle(),     1*0.6, 1*0.6)
 
-	love.graphics.setColor(0,0,0)
-	love.graphics.polygon("line", hazmat.leftleg.body:getWorldPoints(hazmat.leftleg.shape:getPoints()))
-	love.graphics.polygon("line", hazmat.rightleg.body:getWorldPoints(hazmat.rightleg.shape:getPoints()))
-	love.graphics.polygon("line", hazmat.leftarm.body:getWorldPoints(hazmat.leftarm.shape:getPoints()))
-	love.graphics.polygon("line", hazmat.rightarm.body:getWorldPoints(hazmat.rightarm.shape:getPoints()))
-	love.graphics.polygon("line", hazmat.torso.body:getWorldPoints(hazmat.torso.shape:getPoints()))
-	love.graphics.polygon("line", hazmat.head.body:getWorldPoints(hazmat.head.shape:getPoints()))
+	-- love.graphics.setColor(0,0,0)
+	-- love.graphics.polygon("line", hazmat.leftleg.body:getWorldPoints(hazmat.leftleg.shape:getPoints()))
+	-- love.graphics.polygon("line", hazmat.rightleg.body:getWorldPoints(hazmat.rightleg.shape:getPoints()))
+	-- love.graphics.polygon("line", hazmat.leftarm.body:getWorldPoints(hazmat.leftarm.shape:getPoints()))
+	-- love.graphics.polygon("line", hazmat.rightarm.body:getWorldPoints(hazmat.rightarm.shape:getPoints()))
+	-- love.graphics.polygon("line", hazmat.torso.body:getWorldPoints(hazmat.torso.shape:getPoints()))
+	-- love.graphics.polygon("line", hazmat.head.body:getWorldPoints(hazmat.head.shape:getPoints()))
 end
 
 hazmatWidth = 277*2
@@ -41,45 +41,43 @@ hazmatSprites = {
 hazmat = {}
 hazmat.draw = drawHazmat
 hazmat.torso = {
-	body = love.physics.newBody(world, 300-150, settings.window.height-500, "dynamic"),
-	shape = love.physics.newPolygonShape(4.99*2,0, 50.23*2,71.76*2, 77.69*2,7.18*2, 92.04*2,66.14*2, 54.9*2,74.5*2, 0,71.76*2),
+	body = love.physics.newBody(world, 200,140, "dynamic"),
+	shape = love.physics.newPolygonShape(2*0.6,2*0.6, 235*0.6,32*0.6, 270*0.6,267*0.6, 168*0.6,292*0.6, 6*0.6,282*0.6),
 	draw = function()
 		drawhazmat()
 	end,
-	click = function() end,
-	touching_ground = false,
 }
 hazmat.head = {
-	body = love.physics.newBody(world, 250-150, settings.window.height-725, "dynamic"),
-	shape = love.physics.newPolygonShape(43.0*2,4.7*2, 95.0*2,6.3*2, 124.5*2,37.1*2, 117.0*2,117.9*2, 81.6*2,120.5*2, 30.8*2,111.3*2, 19.6*2,100.3*2, 19.4*2,27.7*2),
+	body = love.physics.newBody(world, 200,0, "dynamic"),
+	shape = love.physics.newPolygonShape(2*0.6,22*0.6, 236*0.6,18*0.6, 235*0.6,280*0.6, 3*0.6,251*0.6),
 	draw = function() end,
 	click = function() end,
 	touching_ground = false,
 }
 hazmat.leftarm = {
-	body = love.physics.newBody(world, 159-150, 605, "dynamic"),
-	shape = love.physics.newPolygonShape(20.4*2,7.2*2, 78.6*2,0, 79.4*2,28.3*2, 35.0*2,39.5*2, 17.6*2,45.3*2, 2.0*2,33.9*2, .8*2,24.0*2, 12.5*2,9.8*2),
+	body = love.physics.newBody(world, 45,160, "dynamic"),
+	shape = love.physics.newPolygonShape(274*0.6,2*0.6, 296*0.6,109*0.6, 132*0.6,179*0.6, 84*0.6,225*0.6, 14*0.6,196*0.6, 3*0.6,156*0.6, 28*0.6,88*0.6),
 	draw = function() end,
 	click = function() end,
 	touching_ground = false,
 }
 hazmat.rightarm = {
-	body = love.physics.newBody(world, 430-150, 600, "dynamic"),
-	shape = love.physics.newPolygonShape(10.3*2,.9*2, 61.2*2,27.6*2, 70.1*2,46.2*2, 66.0*2,55.8*2, 51.7*2,60.8*2, 0,29.0*2),
+	body = love.physics.newBody(world, 310,170, "dynamic"),
+	shape = love.physics.newPolygonShape(38*0.6,3*0.6, 245*0.6,116*0.6, 273*0.6,170*0.6, 260*0.6,207*0.6, 199*0.6,232*0.6, 153*0.6,192*0.6, 3*0.6,116*0.6),
 	draw = function() end,
 	click = function() end,
 	touching_ground = false,
 }
 hazmat.leftleg = {
-	body = love.physics.newBody(world, 294-150, 707, "dynamic"),
-	shape = love.physics.newPolygonShape(4.2*2,2.8*2, 42.3*2,.6*2, 41.4*2,44.3*2, 45.3*2,50.8*2, 46.8*2,63.3*2, 9.4*2,64.2*2, .5*2,61.1*2, 7.9*2,27.5*2),
+	body = love.physics.newBody(world, 200,300, "dynamic"),
+	shape = love.physics.newPolygonShape(4*0.6,11*0.6, 144*0.6,3*0.6, 151*0.6,94*0.6, 144*0.6,182*0.6, 161*0.6,251*0.6, 12*0.6,257*0.6, 16*0.6,110*0.6),
 	draw = function() end,
 	click = function() end,
 	touching_ground = false,
 }
 hazmat.rightleg = {
-	body = love.physics.newBody(world, 408-150, 697, "dynamic"),
-	shape = love.physics.newPolygonShape(.9*2,3.8*2, 28.4*2,.7*2, 38.5*2,21.6*2, 44.3*2,43.3*2, 47.8*2,48.3*2, 52.6*2,66.2*2, 11.4*2,67.9*2, 10.7*2,31.3*2),
+	body = love.physics.newBody(world, 290,280, "dynamic"),
+	shape = love.physics.newPolygonShape(105*0.6,3*0.6, 149*0.6,93*0.6, 171*0.6,188*0.6, 189*0.6,211*0.6, 198*0.6,268*0.6, 51*0.6,276*0.6, 37*0.6,117*0.6, 1*0.6,15*0.6),
 	draw = function() end,
 	click = function() end,
 	touching_ground = false,

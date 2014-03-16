@@ -10,7 +10,8 @@ end
 function hazmatApproachBunny(uid)
 	hazmat = objects["hazmat"][uid]
 	hazmat.torso.body:setLinearVelocity(160, -210)
-	hazmat.rightleg.body:applyAngularImpulse(-2500)
+	hazmat.rightleg.body:applyAngularImpulse(-4000)
+	hazmat.torso.body:applyAngularImpulse(-10000)
 end
 
 function getAngle(uid)
@@ -117,23 +118,6 @@ function hazmatBeginContact(a, b, coll)
 			end
 		end
 	end
-
-
-	if isHazmatPart(a) then
-		if maxvel > 800 then
-			uid = isHazmatPart(a)
-			if dazed[uid] == nil then dazed[uid] = 0 end
-			dazed[uid] = math.abs(math.min(dazed[uid] + ((maxvel-1000)/1000), 3))
-		end
-	end
-	if isHazmatPart(b) then
-		if maxvel > 800 then
-			uid = isHazmatPart(b)
-			if dazed[uid] == nil then dazed[uid] = 0 end
-			dazed[uid] = math.abs(math.min(dazed[uid] + ((maxvel-1000)/1000), 3))
-		end
-	end
-
 end
 
 function hazmatEndContact(a, b, coll)

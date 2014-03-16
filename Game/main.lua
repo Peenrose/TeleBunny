@@ -258,7 +258,7 @@ end
 function drawAll()
 	love.graphics.setColor(255,255,255)
 	if background ~= nil then love.graphics.draw(background, 0, 0) end
-	if objects ~= nil and objects["bunny"] ~= nil then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
+	if objects ~= nil and objects["bunny"] ~= nil and currentLevel == 1 then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
 	if objects ~= nil then
 		for name, amount in pairs(objectList) do
 			love.graphics.setColor(255,255,255)
@@ -351,7 +351,7 @@ end
 
 function beginContactMain(a, b, coll)
 	if beginContact ~= nil then beginContact(a, b, coll) end
-	if currentLevel == 1 then beginContactOne(a, b, coll) end
+	if currentLevel == 1 and beginContactOne ~= nil then beginContactOne(a, b, coll) end
 	--if healthRemaining[a]
 end
 

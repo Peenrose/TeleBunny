@@ -42,10 +42,11 @@ function love.update(dt)
 			weld = love.physics.newWeldJoint(v.a, v.b, v.x, v.y, v.coll)
 			table.insert(welds, weld)
 		end
-		addInfo(love.timer.getFPS(), 0)
+		addInfo("FPS: "..love.timer.getFPS(), 0)
 		if world ~= nil then world:update(dt) end
-		if updateLevel ~= nil then updateLevel(dt) end
-		if currentLevel == 1 and updateLevelOne ~= nil and bunnyHealth > 0 then updateLevelOne(dt) end
+		--if updateLevel ~= nil then updateLevel(dt) end
+		if currentLevel == 1 then updateLevelOne(dt) end
+		if currentLevel == 2 then updateLevelTwo(dt) end
 		runAI(dt)
 	end
 end
@@ -158,9 +159,27 @@ function love.mousepressed(x, y, button)
 										frozenPipe = false
 										v.fixture:setMask()
 									end
+								elseif currentLevel == 2 then
+									if k == "beaker_3 #1" then
+										frozenBeaker_3 = false
+										v.fixture:setMask()
+									end
+									if k == "beaker_4 #1" then
+										frozenBeaker_4 = false
+										v.fixture:setMask()
+									end
+									if k == "beaker_5 #1" then
+										frozenBeaker_5 = false
+										v.fixture:setMask()
+									end
 								end
+
 								mouseJoint = love.physics.newMouseJoint(v.body, love.mouse.getPosition())
-								mouseJoint:setMaxForce(8000)
+								if currentLevel == 1 then
+									mouseJoint:setMaxForce(8000)
+								elseif currentLevel == 2 then
+									mouseJoint:setMaxForce(12000)
+								end
 							end
 							if v.click ~= nil and type(v.click) == "function" then 
 								v.click()
@@ -250,7 +269,7 @@ end
 function drawAll()
 	love.graphics.setColor(255,255,255)
 	if background ~= nil then love.graphics.draw(background, 0, 0) end
-	if objects ~= nil and objects["bunny"] ~= nil and currentLevel == 1 then uid = 1 love.graphics.draw(cageOpen, objects["bunny"][uid].body:getX()-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
+	if objects ~= nil and objects["bunny"] ~= nil and currentLevel == 1 then uid = 1 love.graphics.draw(cageOpen, 1720-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
 	if objects ~= nil then
 		for name, amount in pairs(objectList) do
 			love.graphics.setColor(255,255,255)
@@ -265,6 +284,13 @@ function drawAll()
 				objects["microscope"][1].draw(1)
 			elseif name == "pipe" and frozenPipe then
 				objects["pipe"][1].draw(1)
+
+			elseif name == "beaker_3" and frozenBeaker_3 then
+				objects["beaker_3"][1].draw(1)
+			elseif name == "beaker_4" and frozenBeaker_4 then
+				objects["beaker_4"][1].draw(1)
+			elseif name == "beaker_5" and frozenBeaker_5 then
+				objects["beaker_5"][1].draw(1)
 			end
 		end
 		for name, amount in pairs(objectList) do
@@ -278,10 +304,19 @@ function drawAll()
 				if objects["microscope"][1] ~= nil then objects["microscope"][1].draw(1) end
 			elseif name == "pipe" and not frozenPipe then
 				if objects["pipe"][1] ~= nil then objects["pipe"][1].draw(1) end
+
+
+			elseif name == "beaker_3" and not frozenBeaker_3 then
+				if objects["beaker_3"][1] ~= nil then objects["beaker_3"][1].draw(1) end
+			elseif name == "beaker_4" and not frozenBeaker_4 then
+				if objects["beaker_4"][1] ~= nil then objects["beaker_4"][1].draw(1) end
+			elseif name == "beaker_5" and not frozenBeaker_5 then
+				if objects["beaker_5"][1] ~= nil then objects["beaker_5"][1].draw(1) end
+
 			else
 				for uid = 1, objectList[name] do
-					if objects[name][uid] ~= nil then
-						if objects[name][uid].draw ~= nil and name ~= "window" and name ~= "syringe" and name ~= "microscope" and name ~= "pipe" and name ~= "potato" then
+					if objects[name]~= nil and objects[name][uid] ~= nil then
+						if objects[name][uid].draw ~= nil and name ~= "window" and name ~= "syringe" and name ~= "microscope" and name ~= "pipe" and name ~= "potato" and name ~= "beaker_3" and name ~= "beaker_4" and name ~= "beaker_5" then
 							love.graphics.setColor(255,255,255)
 							if fadeOut[name] ~= nil and fadeOut[name][uid] ~= nil then love.graphics.setColor(255,255,255, fadeOut[name][uid].cur) end
 							objects[name][uid].draw(uid)
@@ -329,11 +364,9 @@ function drawInfo(dt)
 end
 
 function updateFPS(dt)
-	fps = (0.80*lastfps)+(0.20*fps)
 	deltatime = dt
 	playtime = playtime + dt
 	lastdt = dt
-	lastfps = 1/dt
 end
 
 function setFontSize(size)
@@ -344,6 +377,7 @@ end
 function beginContactMain(a, b, coll)
 	if beginContact ~= nil then beginContact(a, b, coll) end
 	if currentLevel == 1 and beginContactOne ~= nil then beginContactOne(a, b, coll) end
+	if currentLevel == 2 and beginContactTwo ~= nil then beginContactTwo(a, b, coll) end
 	--if healthRemaining[a]
 end
 
@@ -355,6 +389,7 @@ end
 function endContactMain(a, b, coll) 
 	if endContact ~= nil then endContact(a, b, coll) end
 	if currentLevel == 1 and endContactOne ~= nil then endContactOne(a, b, coll) end
+	if currentLevel == 2 and endContactTwo ~= nil then endContactTwo(a, b, coll) end
 end
 
 function preSolveMain(a, b, coll) 

@@ -23,7 +23,5 @@ return function(dt)
 	if bunnyInDanger then
 		bunnyFrame = math.random(3,4)
 	end
-	
-	addInfo("Grab Time: "..grabbedTime, 0)
 	if bunnyFrame == nil then bunnyFrame = 1 end
 end

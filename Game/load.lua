@@ -27,6 +27,9 @@ function loadLevelRaw(levelToLoad)
 	bunnyInDanger = false
 	binKicked = 0
 	ais = {}
+	frozenBeaker_3 = true
+	frozenBeaker_4 = true
+	frozenBeaker_5 = true
 	love.mouse.setCursor(bunnyCursor)
 	if mouseJoint ~= nil then
 		mouseJoint:destroy()
@@ -34,6 +37,9 @@ function loadLevelRaw(levelToLoad)
 	end
 	background = nil
 	drawGameOver = nil
+	levelTime = 0
+	hazmatFlail = false
+	fadeOut["hazmat"] = {}
 	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)
@@ -100,6 +106,13 @@ function removeObject(name, uid)
 		if objects[name] ~= nil and objects[name][uid] ~= nil then else return end
 		if objects[name][uid].body ~= nil then objects[name][uid].body:setActive(false) end
 		if name == "scientist" then
+			objects[name][uid].torso.body:setActive(false)
+			objects[name][uid].head.body:setActive(false)
+			objects[name][uid].leftarm.body:setActive(false)
+			objects[name][uid].rightarm.body:setActive(false)
+			objects[name][uid].leftleg.body:setActive(false)
+			objects[name][uid].rightleg.body:setActive(false)
+		elseif name == "hazmat" then
 			objects[name][uid].torso.body:setActive(false)
 			objects[name][uid].head.body:setActive(false)
 			objects[name][uid].leftarm.body:setActive(false)
@@ -196,7 +209,9 @@ function to_string( tbl )
 end
 
 function runAI(dt)
-	for k, v in pairs(ais) do 
-		ais[k](dt)
+	for k, v in pairs(ais) do
+		if levelTime ~= nil and levelTime < 10 and k == "hazmat" then else
+			ais[k](dt)
+		end
 	end 
 end

@@ -10,7 +10,8 @@ end
 function hazmatApproachBunny(uid)
 	hazmat = objects["hazmat"][uid]
 	hazmat.torso.body:setLinearVelocity(160, -210)
-	hazmat.rightleg.body:applyAngularImpulse(-4000)
+	hazmat.rightleg.body:applyAngularImpulse(-10000)
+	hazmat.leftleg.body:applyAngularImpulse(-2000)
 	hazmat.torso.body:applyAngularImpulse(-10000)
 end
 
@@ -64,11 +65,29 @@ function kick(uid)
 	end
 end
 
+function hazmatFlailFunction()
+	if not objects["hazmat"] then return end
+	hazmat = objects["hazmat"][1]
+	if not hazmat then return end
+	hazmatFlail = true
+	hazmat.leftarm.body:applyAngularImpulse(300000)
+	hazmat.rightarm.body:applyAngularImpulse(-300000)
+	hazmat.rightleg.body:applyAngularImpulse(-200000)
+	hazmat.torso.body:applyLinearImpulse(3000, -10000)
+	if levelTime < 8 then levelTime = 8 end
+end
+
 function HazmatAI(uid, dt)
 	dt = dt * 1.5
 	hazmat = objects["hazmat"][uid]
 	if not hazmat then return end
 	
+	if levelTime == nil then levelTime = 0 end
+	if hazmatFlail == nil then hazmatFlail = false end
+	if levelTime > 8 and not hazmatFlail and uid == 1 then
+		hazmatFlailFunction()
+	end
+
 	if hazmat.torso ~= nil and hazmat.leftleg ~= nil then
 		x,head_y = hazmat.head.body:getPosition()
 		xvel, yvel = hazmat.head.body:getLinearVelocity()
@@ -121,7 +140,7 @@ function hazmatBeginContact(a, b, coll)
 end
 
 function hazmatEndContact(a, b, coll)
-if isHazmatPart(a) then
+	if isHazmatPart(a) then
 		if isHazmatFoot(a) then
 			if b == ground.fixture then
 				foot_touching_ground[isHazmatPart(a)] = foot_touching_ground[isHazmatPart(a)] - 1

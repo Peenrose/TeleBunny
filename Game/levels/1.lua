@@ -46,7 +46,7 @@ function load()
 	addObject("scientist", 3)
 	addObject("carrot")
 	addObject("bin")
-	addObject("beaker")
+	addObject("beaker_1")
 	addObject("syringe")
 	addObject("microscope")
 	addObject("potato")
@@ -94,10 +94,14 @@ function updateLevelOne(dt)
 		objects["pipe"][1].body:setLinearVelocity(0,0)
 		objects["pipe"][1].body:setAngle(0)
 	end
-	if thrownObjects == 5 then
+	if objects["scientist"] ~= nil then if objects["scientist"][1] == nil and objects["scientist"][2] == nil and objects["scientist"][3] == nil then objects["scientist"] = nil love.mousereleased() end end
+	if objects["scientist"] == nil then
 		transition = transition + dt
-		if transition >= 5 then
-			loadLevel("2")
+		if transition >= 10 then
+			loadLevel(2)
+		end
+		if transition > 5 then
+			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
 		end
 	end
 end
@@ -131,7 +135,7 @@ function binKick(uid)
 	if binKicked >= 2 then
 		fadeOutObject("bin", 1, 1)
 		thrownObjects = thrownObjects + 1
-		--if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+		if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 	end
 end
 
@@ -200,34 +204,40 @@ function beginContactOne(a, b, coll)
 
 	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["scientist"][uid] == nil then
 		if objects["potato"] ~= nil and objects["potato"][1] ~= nil and other == objects["potato"][1].fixture and maxvel > 3000 then
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			fadeOutObject("potato", 1, 1.5)
 			thrownObjects = thrownObjects + 1
-		end
-		if objects["beaker"] ~= nil and objects["beaker"][1] ~= nil and other == objects["beaker"][1].fixture and maxvel > 2000 then
 			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
-			fadeOutObject("beaker", 1, 1.5)
+			if grabbedV == objects["potato"][1] then love.mousereleased() end
+		end
+		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 2000 then
+			fadeOutObject("beaker_1", 1, 1.5)
 			thrownObjects = thrownObjects + 1
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if grabbedV == objects["beaker_1"][1] then love.mousereleased() end
 		end
 		if objects["carrot"] ~= nil and objects["carrot"][1] ~= nil and other == objects["carrot"][1].fixture and maxvel > 3000 then
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			fadeOutObject("carrot", 1, 1.5)
 			thrownObjects = thrownObjects + 1
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if grabbedV == objects["carrot"][1] then love.mousereleased() end
 		end
 		if objects["syringe"] ~= nil and objects["syringe"][1] ~= nil and other == objects["syringe"][1].fixture and maxvel > 3000 then
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			fadeOutObject("syringe", 1, 1.5)
 			thrownObjects = thrownObjects + 1
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if grabbedV == objects["syringe"][1] then love.mousereleased() end
 		end
 		if objects["microscope"] ~= nil and objects["microscope"][1] ~= nil and other == objects["microscope"][1].fixture and maxvel > 1800 then
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			fadeOutObject("microscope", 1, 1.5)
 			thrownObjects = thrownObjects + 1
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if grabbedV == objects["microscope"][1] then love.mousereleased() end
 		end
 		if objects["bin"] ~= nil and objects["bin"][1] ~= nil and other == objects["bin"][1].fixture and maxvel > 600 then
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			fadeOutObject("bin", 1, 1.5)
 			thrownObjects = thrownObjects + 1
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if grabbedV == objects["bin"][1] then love.mousereleased() end
 		end
 	end
 end

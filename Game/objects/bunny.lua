@@ -31,7 +31,13 @@ function loadObject(uid)
 		shape = love.physics.newRectangleShape(bunnywidth, bunnyheight),
 		draw = function()
 			--love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints())) --hitbox
-			
+			if transition == 0 then
+				local red = math.min((255-((bunnyHealth/3)*255)), 255) / 1.2
+				love.graphics.setColor(255, 255-red, 255-red)
+			else
+				local green = math.min((255-((transition/10)*255)), 255) / 1.2
+				love.graphics.setColor(green, 255, green)
+			end
 			love.graphics.draw(bunnyFrames[bunnyFrame], objects["bunny"][uid].body:getX(), objects["bunny"][uid].body:getY(), objects["bunny"][uid].body:getAngle(), bunnysx, bunnysy, 580, 888)
 		end,
 		click = function() end

@@ -37,20 +37,6 @@ elseif currentLevel == 2 then
 		shape = love.physics.newRectangleShape(355, 12)
 	}
 	shelf1.fixture = love.physics.newFixture(shelf1.body, shelf1.shape)
-
-	-- shelf2 = {
-	-- 	body = love.physics.newBody(world, 1590, 520, "static"),
-	-- 	shape = love.physics.newRectangleShape(355, 12)
-	-- }
-	-- shelf2.fixture = love.physics.newFixture(shelf2.body, shelf2.shape)
-
-	-- shelf3 = {
-	-- 	body = love.physics.newBody(world, 1590, 655, "static"),
-	-- 	shape = love.physics.newRectangleShape(355, 12)
-	-- }
-	-- shelf3.fixture = love.physics.newFixture(shelf3.body, shelf3.shape)
-
-
 end
 
 ground.fixture = love.physics.newFixture(ground.body, ground.shape)

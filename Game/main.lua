@@ -27,7 +27,7 @@ function love.load()
 
 	setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen)
 
-	loadLevel(2)
+	loadLevel(3)
 end
 
 function love.update(dt)
@@ -47,6 +47,7 @@ function love.update(dt)
 		--if updateLevel ~= nil then updateLevel(dt) end
 		if currentLevel == 1 then updateLevelOne(dt) end
 		if currentLevel == 2 then updateLevelTwo(dt) end
+		if currentLevel == 3 then updateLevelThree(dt) end
 		runAI(dt)
 	end
 end
@@ -177,7 +178,7 @@ function love.mousepressed(x, y, button)
 								mouseJoint = love.physics.newMouseJoint(v.body, love.mouse.getPosition())
 								if currentLevel == 1 then
 									mouseJoint:setMaxForce(8000)
-								elseif currentLevel == 2 then
+								elseif currentLevel == 2 or 3 then
 									mouseJoint:setMaxForce(12000)
 								end
 							end
@@ -378,6 +379,7 @@ function beginContactMain(a, b, coll)
 	if beginContact ~= nil then beginContact(a, b, coll) end
 	if currentLevel == 1 and beginContactOne ~= nil then beginContactOne(a, b, coll) end
 	if currentLevel == 2 and beginContactTwo ~= nil then beginContactTwo(a, b, coll) end
+	if currentLevel == 3 and beginContactThree ~= nil then beginContactThree(a, b, coll) end
 	--if healthRemaining[a]
 end
 
@@ -390,6 +392,7 @@ function endContactMain(a, b, coll)
 	if endContact ~= nil then endContact(a, b, coll) end
 	if currentLevel == 1 and endContactOne ~= nil then endContactOne(a, b, coll) end
 	if currentLevel == 2 and endContactTwo ~= nil then endContactTwo(a, b, coll) end
+	if currentLevel == 3 and endContactThree ~= nil then endContactThree(a, b, coll) end
 end
 
 function preSolveMain(a, b, coll) 

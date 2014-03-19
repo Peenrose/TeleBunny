@@ -54,6 +54,7 @@ levelItems = {
 	{title = "Menu", action = function() loadLevel("menu") end},
 	{title = "Level One", action = function() loadLevel(1) end},
 	{title = "Level Two", action = function() loadLevel(2) end},
+	{title = "Level Three", action = function() loadLevel(3) end},
 }
 
 function togglePause()

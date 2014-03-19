@@ -1,5 +1,5 @@
 function getGroundHeight()
-	if currentLevel == "2" then return 1020 end
+	if currentLevel == 2 then return 1020 end
 	return 980
 end
 ground = {
@@ -7,7 +7,7 @@ ground = {
 	shape = love.physics.newRectangleShape(10000, 10),
 	draw = function()
 		love.graphics.setColor(0,0,0)
-		love.graphics.rectangle("line", objects.ground.body:getWorldPoints(objects.ground.shape:getPoints()))
+		love.graphics.rectangle("line", ground.body:getWorldPoints(ground.shape:getPoints()))
 	end,
 }
 rightwall = {
@@ -16,7 +16,7 @@ rightwall = {
 }
 topwall = {
 	body = love.physics.newBody(world, 0,0, "static"),
-	shape = love.physics.newRectangleShape(settings.window.width*2, 0),
+	shape = love.physics.newRectangleShape(10000, 0),
 }
 
 if currentLevel == 1 then
@@ -30,7 +30,6 @@ if currentLevel == 1 then
 		shape = love.physics.newRectangleShape(355, 12)
 	}
 	shelf.fixture = love.physics.newFixture(shelf.body, shelf.shape)
-	--shelf.fixture:setMask(2)
 elseif currentLevel == 2 then
 	shelf1 = {
 		body = love.physics.newBody(world, 1590, 390, "static"),
@@ -45,7 +44,6 @@ topwall.fixture = love.physics.newFixture(topwall.body, topwall.shape)
 
 topwall.fixture:setRestitution(0.1)
 rightwall.fixture:setRestitution(0.1)
---leftwall.fixture:setRestitution(0.1)
 ground.fixture:setFriction(1.2)
 
 loadObject = function() end

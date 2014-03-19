@@ -105,14 +105,7 @@ end
 function removeObject(name, uid)
 		if objects[name] ~= nil and objects[name][uid] ~= nil then else return end
 		if objects[name][uid].body ~= nil then objects[name][uid].body:setActive(false) end
-		if name == "scientist" then
-			objects[name][uid].torso.body:setActive(false)
-			objects[name][uid].head.body:setActive(false)
-			objects[name][uid].leftarm.body:setActive(false)
-			objects[name][uid].rightarm.body:setActive(false)
-			objects[name][uid].leftleg.body:setActive(false)
-			objects[name][uid].rightleg.body:setActive(false)
-		elseif name == "hazmat" then
+		if name == "scientist" or name =="hazmat" or name == "swat" then
 			objects[name][uid].torso.body:setActive(false)
 			objects[name][uid].head.body:setActive(false)
 			objects[name][uid].leftarm.body:setActive(false)

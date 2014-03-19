@@ -63,13 +63,13 @@ function updateLevelTwo(dt)
 	if thrownObjects >= 4 then
 		transition = transition + dt
 		if transition >= 10 then
-			loadLevel(2)
+			loadLevel(3)
 		end
 		if transition > 5 then
 			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
 		end
 	end
-	if objects["hazmat"][1] == nil then
+	if objects["hazmat"] ~= nil and objects["hazmat"][1] == nil then
 		if objects["hazmat"][2] == nil then
 			if objects["hazmat"][3] == nil then
 				if objects["hazmat"][4] == nil then

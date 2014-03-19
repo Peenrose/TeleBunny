@@ -35,8 +35,8 @@ function loadObject(uid)
 				local red = math.min((255-((bunnyHealth/3)*255)), 255) / 1.2
 				love.graphics.setColor(255, 255-red, 255-red)
 			else
-				local green = math.min((255-((transition/10)*255)), 255) / 1.2
-				love.graphics.setColor(green, 255, green)
+				--local green = math.min((255-((transition/10)*255)), 255) / 1.2
+				--love.graphics.setColor(green, 255, green)
 			end
 			love.graphics.draw(bunnyFrames[bunnyFrame], objects["bunny"][uid].body:getX(), objects["bunny"][uid].body:getY(), objects["bunny"][uid].body:getAngle(), bunnysx, bunnysy, 580, 888)
 		end,

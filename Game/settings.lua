@@ -55,6 +55,8 @@ levelItems = {
 	{title = "Level One", action = function() loadLevel(1) end},
 	{title = "Level Two", action = function() loadLevel(2) end},
 	{title = "Level Three", action = function() loadLevel(3) end},
+	{title = "Level Four", action = function() levelItems[6].value = "nope" end},
+	{title = "Black Holeeee..", action = function() loadLevel(5) end},
 }
 
 function togglePause()
@@ -77,6 +79,8 @@ function changePauseMenu(menu)
 		end
 	end
 end
+
+fontSize = 14
 
 pauseHitboxes = {}
 

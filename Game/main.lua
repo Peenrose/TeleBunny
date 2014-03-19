@@ -48,6 +48,7 @@ function love.update(dt)
 		if currentLevel == 1 then updateLevelOne(dt) end
 		if currentLevel == 2 then updateLevelTwo(dt) end
 		if currentLevel == 3 then updateLevelThree(dt) end
+		if currentLevel == 5 then updateLevelFive(dt) end
 		runAI(dt)
 	end
 end
@@ -259,8 +260,10 @@ function drawPauseScreen()
 			setFontSize(40)
 			love.graphics.printf(v.title, 0, y+10, settings.window.width, "center")
 			if v.value ~= nil then
+				--last = getFontSize()
 				setFontSize(18)
 				love.graphics.printf(tostring(v.value), 0, y+50, settings.window.width, "center")
+				setFontSize(lastFontSize)
 			end
 			pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}
 		end
@@ -371,10 +374,12 @@ function updateFPS(dt)
 end
 
 function setFontSize(size)
+	lastFontSize = getFontSize()
+	fontSize = size
 	font = love.graphics.newFont(size)
 	love.graphics.setFont(font)
 end
-
+function getFontSize() return fontSize end
 function beginContactMain(a, b, coll)
 	if beginContact ~= nil then beginContact(a, b, coll) end
 	if currentLevel == 1 and beginContactOne ~= nil then beginContactOne(a, b, coll) end

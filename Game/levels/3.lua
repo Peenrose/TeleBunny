@@ -9,6 +9,8 @@ traveledLastSecond = {}
 secondCounter = {}
 
 bunnyHealth = 3
+frozenCouch = true
+frozenPainting = true
 
 function load()
 	love.window.setTitle("Telekinetic Bunny")
@@ -21,7 +23,20 @@ function load()
 	addObject("walls")
 	addObject("bunny")
 	
-	addObject("swat")
+	addObject("swat", 5)
+
+	--addObject("fan")
+	addObject("lava_lamp")
+	addObject("8_ball")
+	
+	addObject("couch")
+	addObject("painting")
+	addObject("table")
+
+	--addObject("book_1")
+	--addObject("book_2")
+	--addObject("book_3")
+	addObject("book_4")
 
 	fadeOut["swat"] = {}
 end
@@ -48,7 +63,23 @@ function updateLevelThree(dt)
 			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
 		end
 	end
-
+	-- if frozenCouch and objects["couch"] ~= nil and objects["couch"][1] ~= nil then
+	-- 	objects["couch"][1].body:setX(590)
+	-- 	objects["couch"][1].body:setY(658)
+	-- 	objects["couch"][1].body:setLinearVelocity(0,0)
+	-- 	objects["couch"][1].body:setAngle(0)
+	-- end
+	if frozenPainting and objects["painting"] ~= nil and objects["painting"][1] ~= nil then
+		objects["painting"][1].body:setX(212)
+		objects["painting"][1].body:setY(206)
+		objects["painting"][1].body:setLinearVelocity(0,0)
+		objects["painting"][1].body:setAngle(0)
+	end
+	if mouseJoint ~= nil then
+		strength = math.min(10000+levelTime*100, 40000)
+		mouseJoint:setMaxForce(strength)
+		addInfo(strength, 0)
+	end
 end
 
 function isSwatPart(fix)

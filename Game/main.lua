@@ -131,6 +131,10 @@ function love.mousepressed(x, y, button)
 						if v.shape:testPoint(0, 0, 0, localx, localy) then
 							if v.body:getType() ~= "static" then
 								if currentLevel == 1 then if isScientistPart(v.fixture) then return end end
+								if currentLevel == 3 then 
+									--if v.fixture == objects["couch"][1].fixture then return end
+									--if v.fixture == objects["painting"][1].fixture then return end
+								end
 								if mouseJoint ~= nil then
 									mouseJoint:destroy()
 									mouseJoint = nil

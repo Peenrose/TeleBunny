@@ -39,6 +39,8 @@ function loadLevelRaw(levelToLoad)
 	drawGameOver = nil
 	levelTime = 0
 	hazmatFlail = false
+	frozenCouch = true
+	frozenPainting = true
 	fadeOut["hazmat"] = {}
 	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true

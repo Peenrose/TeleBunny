@@ -109,12 +109,12 @@ swat.leftleg.fixture:setDensity(swat.leftleg.fixture:getDensity()*3)
 swat.rightarm.fixture:setDensity(swat.rightarm.fixture:getDensity()*3)
 swat.rightleg.fixture:setDensity(swat.rightleg.fixture:getDensity()*3)
 
--- swat.torso.body:setX((swat.torso.body:getX()-(objectList["swat"]*700))-80)
--- swat.leftarm.body:setX((swat.leftarm.body:getX()-(objectList["swat"]*700))-80)
--- swat.rightarm.body:setX((swat.rightarm.body:getX()-(objectList["swat"]*700))-80)
--- swat.head.body:setX((swat.head.body:getX()-(objectList["swat"]*700))-80)
--- swat.leftleg.body:setX((swat.leftleg.body:getX()-(objectList["swat"]*700))-80)
--- swat.rightleg.body:setX((swat.rightleg.body:getX()-(objectList["swat"]*700))-80)
+swat.torso.body:setX((swat.torso.body:getX()-(objectList["swat"]*700))-80)
+swat.leftarm.body:setX((swat.leftarm.body:getX()-(objectList["swat"]*700))-80)
+swat.rightarm.body:setX((swat.rightarm.body:getX()-(objectList["swat"]*700))-80)
+swat.head.body:setX((swat.head.body:getX()-(objectList["swat"]*700))-80)
+swat.leftleg.body:setX((swat.leftleg.body:getX()-(objectList["swat"]*700))-80)
+swat.rightleg.body:setX((swat.rightleg.body:getX()-(objectList["swat"]*700))-80)
 
 function loadObject(uid)
 	return swat

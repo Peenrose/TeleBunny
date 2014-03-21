@@ -2,7 +2,7 @@ eightBallSprite = love.graphics.newImage("images/8ball.png")
 
 function loadObject(uid)
 	local eightBall = {
-		body = love.physics.newBody(world, 440,441, "dynamic"),
+		body = love.physics.newBody(world, 440,241, "dynamic"),
 		shape = love.physics.newCircleShape(23),
 		draw = function()
 			--love.graphics.circle("line", objects["8_ball"][uid].body:getX(), objects["8_ball"][uid].body:getY(), 25)

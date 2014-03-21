@@ -128,7 +128,7 @@ function beginContactThree(a, b, coll)
 
 	if uid ~= nil and other ~= nil and forceA+forceB > 4000 and isSwatPart(other) == false then
 		addInfo("Scientist Collision: "..forceA.." : "..forceB, 2)
-		if math.random(1, 15) == 15 then fadeOutObject("swat", uid, 10) end
+		if math.random(1, 25) == 25 then fadeOutObject("swat", uid, 3) end
 	end
 
 

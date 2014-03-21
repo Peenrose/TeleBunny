@@ -7,7 +7,6 @@ function loadObject(uid)
 		draw = function()
 			love.graphics.draw(paintingSprite, objects["painting"][uid].body:getX(), objects["painting"][uid].body:getY(), objects["painting"][uid].body:getAngle())
 		end,
-		click = function() end,
 	}
 	painting.fixture = love.physics.newFixture(painting.body, painting.shape)
 	painting.fixture:setMask(1)

@@ -1,7 +1,7 @@
 TeleBunny
 =========
 
-An interactive game made by team SART for TSA video game design 2014.
+An interactive game made by Andrew and Simon for TSA video game design 2014.
 
 Controls
 --------

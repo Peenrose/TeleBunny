@@ -28,18 +28,32 @@ function drawSwat(uid)
 	love.graphics.draw(swatSprites.torso,    objects["swat"][uid].torso.body:getX(),    objects["swat"][uid].torso.body:getY(),    objects["swat"][uid].torso.body:getAngle(), 0.6, 0.6)
 	love.graphics.draw(swatSprites.head,     objects["swat"][uid].head.body:getX(),     objects["swat"][uid].head.body:getY(),     objects["swat"][uid].head.body:getAngle(), 0.6, 0.6)
 end
+if swatArms == nil then swatArms = {} end
+function setSwatArm(uid, name)
+	if swatArms[uid] ~= nil then objects["swat"][uid].rightarm.body:setActive(false) world:update(0) objects["swat"][uid].rightarm = nil end
+	if name == "riot" then
+		swatSprites.rightarm = swatRiotArm
+		swatArms[uid] = "riot"
+	elseif name == "normal" then
+		swatSprites.rightarm = swatArm
+		swatArms[uid] = "normal"
+	end
+end
 
 swatWidth = 277*2
 swatHeight = 329*2
 
+swatRiotArm = love.graphics.newImage("images/Scientist/Swat/riot_arm.png")
+swatArm = love.graphics.newImage("images/Scientist/Swat/right_arm.png")
 swatSprites = {
 	torso = love.graphics.newImage("images/Scientist/Swat/torso.png"),
 	head = love.graphics.newImage("images/Scientist/Swat/head.png"),
 	leftarm = love.graphics.newImage("images/Scientist/Swat/left_arm.png"),
-	rightarm = love.graphics.newImage("images/Scientist/Swat/right_arm.png"),
+	rightarm = swatArm,
 	leftleg = love.graphics.newImage("images/Scientist/Swat/left_leg.png"),
 	rightleg = 	love.graphics.newImage("images/Scientist/Swat/right_leg.png"),
 }
+
 swat = {}
 swat.draw = drawSwat
 swat.torso = {

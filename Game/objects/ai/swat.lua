@@ -1,5 +1,6 @@
 function AI(dt)
 	if objectList["swat"] == nil then return false end
+	if secondCounterMax == nil then secondCounterMax = {} end
 	for uid = 1, objectList["swat"] do
 		if removedObjects["swat"] ~= nil and removedObjects["swat"][uid] ~= nil then else
 			SwatAI(uid, dt)
@@ -64,7 +65,7 @@ function kick(uid)
 		swat = objects["swat"][uid]
 		kickReset[uid] = 1
 		swat.rightleg.body:applyAngularImpulse(-10000)
-		swat.torso.body:applyLinearImpulse(10000, 0)
+		swat.torso.body:applyLinearImpulse(10000, -15000)
 	end
 end
 
@@ -72,7 +73,7 @@ function SwatAI(uid, dt)
 	if objects["swat"] ~= nil and objects["swat"][uid] ~= nil then
 		dt = dt * 1.5
 		swat = objects["swat"][uid]
-
+		if secondCounterMax[uid] == nil then secondCounterMax[uid] = math.random(3, 6) end
 		if kickReset[uid] == nil then kickReset[uid] = 0 end
 		
 		if swat.torso ~= nil and swat.leftleg ~= nil then
@@ -90,8 +91,9 @@ function SwatAI(uid, dt)
 			end
 			if secondCounter[uid] == nil then secondCounter[uid] = 0 end
 			secondCounter[uid] = secondCounter[uid] + dt
-			if secondCounter[uid] >= 5 then
+			if secondCounter[uid] >= secondCounterMax[uid] then
 				secondCounter[uid] = 0
+				secondCounterMax[uid] = nil
 				local X = swat.torso.body:getX()
 				if lastx[uid] == nil then lastx[uid] = 0 end
 				if X > lastx[uid] then

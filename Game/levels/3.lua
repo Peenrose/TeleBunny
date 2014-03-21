@@ -71,7 +71,7 @@ function updateLevelThree(dt)
 	-- end
 	if frozenPainting and objects["painting"] ~= nil and objects["painting"][1] ~= nil then
 		objects["painting"][1].body:setX(1280)
-		objects["painting"][1].body:setY(206)
+		objects["painting"][1].body:setY(100)
 		objects["painting"][1].body:setLinearVelocity(0,0)
 		objects["painting"][1].body:setAngle(0)
 	end
@@ -111,6 +111,10 @@ function beginContactThree(a, b, coll)
 	bvel = math.abs(b:getBody():getLinearVelocity())
 
 	maxvel = math.abs(math.max(avel, bvel))
+	maxmass = math.abs(math.max(a:getBody():getMass(), b:getBody():getMass()))
+
+	forceA = avel*a:getBody():getMass()
+	forceB = bvel*b:getBody():getMass()
 
 	swatBeginContact(a, b, coll)
 
@@ -122,16 +126,9 @@ function beginContactThree(a, b, coll)
 		other = a
 	end
 
-	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["swat"][uid] == nil and maxvel > 400 then
-
-		-- if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 1000 then
-		-- 	if math.random(1, 5) == 4 then
-		-- 		fadeOutObject("swat", uid, 2)
-		-- 		fadeOutObject("beaker_1", 1, 1.5)
-		-- 		thrownObjects = thrownObjects + 1
-		-- 		if grabbedV == objects["beaker_1"][1] then love.mousereleased() end
-		-- 	end
-		-- end
+	if uid ~= nil and other ~= nil and forceA+forceB > 4000 and isSwatPart(other) == false then
+		addInfo("Scientist Collision: "..forceA.." : "..forceB, 2)
+		if math.random(1, 15) == 15 then fadeOutObject("swat", uid, 10) end
 	end
 
 

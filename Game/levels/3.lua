@@ -31,7 +31,6 @@ function load()
 	addObject("8_ball")
 	
 	addObject("couch")
-	addObject("painting")
 	addObject("table")
 
 	--addObject("book_1")

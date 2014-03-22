@@ -11,6 +11,7 @@ secondCounter = {}
 bunnyHealth = 3
 frozenCouch = true
 frozenPainting = true
+killedHazmat = 0
 
 function load()
 	love.window.setTitle("Telekinetic Bunny")
@@ -52,23 +53,19 @@ function updateLevelThree(dt)
 		end
 	end
 
-	if thrownObjects < 4 and objects["bunny"] ~= nil then objects["bunny"][1].body:setX(math.max(2000-levelTime*100, 1720)) end
+	if killedHazmat < 5 and objects["bunny"] ~= nil then objects["bunny"][1].body:setX(math.max(2000-levelTime*100, 1720)) end
 
-	if thrownObjects >= 4 then
+	if killedHazmat >= 5 then
 		transition = transition + dt
 		if transition >= 10 then
-			loadLevel(2)
+			loadLevel(4)
 		end
 		if transition > 5 then
+			objects["bunny"][1].fixture:setMask(1)
 			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
 		end
 	end
-	-- if frozenCouch and objects["couch"] ~= nil and objects["couch"][1] ~= nil then
-	-- 	objects["couch"][1].body:setX(590)
-	-- 	objects["couch"][1].body:setY(658)
-	-- 	objects["couch"][1].body:setLinearVelocity(0,0)
-	-- 	objects["couch"][1].body:setAngle(0)
-	-- end
+	addInfo(killedHazmat, 0)
 	if frozenPainting and objects["painting"] ~= nil and objects["painting"][1] ~= nil then
 		objects["painting"][1].body:setX(1280)
 		objects["painting"][1].body:setY(100)
@@ -76,9 +73,8 @@ function updateLevelThree(dt)
 		objects["painting"][1].body:setAngle(0)
 	end
 	if mouseJoint ~= nil then
-		strength = math.min(10000+levelTime*100, 40000)
+		strength = math.min(10000+levelTime*200, 20000)
 		mouseJoint:setMaxForce(strength)
-		addInfo(strength, 0)
 	end
 end
 
@@ -127,8 +123,7 @@ function beginContactThree(a, b, coll)
 	end
 
 	if uid ~= nil and other ~= nil and forceA+forceB > 4000 and isSwatPart(other) == false then
-		addInfo("Scientist Collision: "..forceA.." : "..forceB, 2)
-		if math.random(1, 25) == 25 then fadeOutObject("swat", uid, 3) end
+		if math.random(1, 20) == 20 then fadeOutObject("swat", uid, 3) killedHazmat = killedHazmat + 1 end
 	end
 
 

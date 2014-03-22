@@ -41,6 +41,7 @@ function loadLevelRaw(levelToLoad)
 	hazmatFlail = false
 	frozenCouch = true
 	frozenPainting = true
+	killedHazmat = 0
 	fadeOut["hazmat"] = {}
 	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true

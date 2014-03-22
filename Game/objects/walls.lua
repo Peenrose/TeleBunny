@@ -3,8 +3,8 @@ function getGroundHeight()
 	return 980
 end
 ground = {
-	body = love.physics.newBody(world, settings.window.width, getGroundHeight(), "static"),
-	shape = love.physics.newRectangleShape(10000, 10),
+	body = love.physics.newBody(world, 0, getGroundHeight(), "static"),
+	shape = love.physics.newRectangleShape(100000, 10),
 	draw = function()
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("line", ground.body:getWorldPoints(ground.shape:getPoints()))

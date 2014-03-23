@@ -55,7 +55,7 @@ levelItems = {
 	{title = "Level One", action = function() loadLevel(1) end},
 	{title = "Level Two", action = function() loadLevel(2) end},
 	{title = "Level Three", action = function() loadLevel(3) end},
-	{title = "Level Four", action = function() levelItems[6].value = "nope" end},
+	{title = "Level Four", action = function() loadLevel(4) end},
 	{title = "Black Holeeee..", action = function() loadLevel(5) end},
 }
 

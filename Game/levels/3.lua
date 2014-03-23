@@ -2,13 +2,12 @@ thrownObjects = 0
 
 touching_ground = {}
 foot_touching_ground = {}
-dazed = {}
 kickReset = {}
 lastx = {}
 traveledLastSecond = {}
 secondCounter = {}
 
-bunnyHealth = 3
+bunnyHealth = 2
 frozenCouch = true
 frozenPainting = true
 killedHazmat = 0
@@ -64,7 +63,6 @@ function updateLevelThree(dt)
 			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
 		end
 	end
-	addInfo(killedHazmat, 0)
 	if frozenPainting and objects["painting"] ~= nil and objects["painting"][1] ~= nil then
 		objects["painting"][1].body:setX(1280)
 		objects["painting"][1].body:setY(100)
@@ -102,8 +100,10 @@ function isSwatFoot(fix)
 end
 
 function beginContactThree(a, b, coll)
-	avel = math.abs(a:getBody():getLinearVelocity())
-	bvel = math.abs(b:getBody():getLinearVelocity())
+	avelx, avely = a:getBody():getLinearVelocity()
+	bvelx, bvely = b:getBody():getLinearVelocity()
+	avel = math.abs(avelx) + math.abs(avely)
+	bvel = math.abs(bvelx) + math.abs(bvely)
 
 	maxvel = math.abs(math.max(avel, bvel))
 	maxmass = math.abs(math.max(a:getBody():getMass(), b:getBody():getMass()))
@@ -121,7 +121,7 @@ function beginContactThree(a, b, coll)
 		other = a
 	end
 
-	if uid ~= nil and other ~= nil and forceA+forceB > 4000 and isSwatPart(other) == false then
+	if uid ~= nil and other ~= nil and forceA+forceB > 3000 and isSwatPart(other) == false then
 		if math.random(1, 20) == 20 then fadeOutObject("swat", uid, 3) killedHazmat = killedHazmat + 1 end
 	end
 

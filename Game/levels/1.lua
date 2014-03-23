@@ -152,8 +152,10 @@ function getScientistsLeft()
 end
 
 function beginContactOne(a, b, coll)
-	avel = math.abs(a:getBody():getLinearVelocity())
-	bvel = math.abs(b:getBody():getLinearVelocity())
+	avelx, avely = a:getBody():getLinearVelocity()
+	bvelx, bvely = b:getBody():getLinearVelocity()
+	avel = math.abs(avelx) + math.abs(avely)
+	bvel = math.abs(bvelx) + math.abs(bvely)
 
 	maxvel = math.abs(math.max(avel, bvel))
 

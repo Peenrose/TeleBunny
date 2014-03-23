@@ -14,10 +14,14 @@ rightwall = {
 	body = love.physics.newBody(world, settings.window.width, settings.window.height/2, "static"),
 	shape = love.physics.newRectangleShape(0, settings.window.height),
 }
-topwall = {
-	body = love.physics.newBody(world, 0,0, "static"),
-	shape = love.physics.newRectangleShape(10000, 0),
-}
+if currentLevel ~= 4 and currentLevel ~= 5 then
+	topwall = {
+		body = love.physics.newBody(world, 0,0, "static"),
+		shape = love.physics.newRectangleShape(10000, 0),
+	}
+	topwall.fixture = love.physics.newFixture(topwall.body, topwall.shape)
+	topwall.fixture:setRestitution(0.1)
+end
 
 if currentLevel == 1 then
 	leftwall = {
@@ -46,9 +50,6 @@ end
 
 ground.fixture = love.physics.newFixture(ground.body, ground.shape)
 rightwall.fixture = love.physics.newFixture(rightwall.body, rightwall.shape)
-topwall.fixture = love.physics.newFixture(topwall.body, topwall.shape)
-
-topwall.fixture:setRestitution(0.1)
 rightwall.fixture:setRestitution(0.1)
 ground.fixture:setFriction(1.2)
 

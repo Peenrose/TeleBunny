@@ -19,7 +19,8 @@ function load()
 	
 	addObject("walls")
 	addObject("bunny")
-	
+	addObject("tree")	
+
 	riot = true
 	addObject("swatcar")
 	fadeOut["swat"] = {}

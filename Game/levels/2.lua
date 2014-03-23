@@ -24,6 +24,7 @@ function load()
 	addObject("beaker_3")
 	addObject("beaker_4")
 	addObject("beaker_5")
+	addObject("ducky")
 
 end
 

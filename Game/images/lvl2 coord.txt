@@ -15,7 +15,7 @@ beaker:
 beaker phat:
 (863,492)
 
-duck:
+ducky:
 (292,810)
 
 
@@ -24,7 +24,7 @@ item colisions (x,y)
 light:
 **use file limits
 
-duck:
+ducky:
 (16,37)(90,2)(135,25)(133,129)(236,136)(220,217)(33,236)(2,193)
 
 beaker phat: 

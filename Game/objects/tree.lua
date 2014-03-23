@@ -10,7 +10,7 @@ function loadObject(uid)
 		end,
 		click = function() end,
 	}
-	--couch.fixture = love.physics.newFixture(tree.body, tree.shape)
-	--couch.fixture:setMask(1)
+	--tree.fixture = love.physics.newFixture(tree.body, tree.shape)
+	--tree.fixture:setMask(1)
 	return tree
 end

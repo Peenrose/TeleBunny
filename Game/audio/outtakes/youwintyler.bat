@@ -1,2 +1,2 @@
-start %0|%0
-pause
+YOUR PETTY FORKBOMBS DO NOT FOOL ME
+SCUM

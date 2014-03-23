@@ -25,26 +25,34 @@ settings.window.width, settings.window.height = love.window.getDesktopDimensions
 
 pauseItems = {
 	title = "",
-
 	{title = "Resume Game", action = function() togglePause() end},
 	{title = "Quit Game", action = function() love.event.push("quit") end},
 	{title = "Reset Level", action = function() loadLevel(currentLevel) end},
 	{title = "Settings", action = function() changePauseMenu(settingsItems) end},
 	{title = "Load Level", action = function() changePauseMenu(levelItems) end},
-	--{title = "Add Object", action = function() changePauseMenu(addObjectSettings) end},
-	--{title = "Cage Bunny", action = function() bunnyInCage = not bunnyInCage; pauseItems[6].value = not pauseItems[6].value end, value = false}
+	{title = "Video Settings", action = function() changePauseMenu(videoItems) end},
 }
 
--- addObjectSettings = {
--- 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
+videoItems = {
+	title = "Video Settings",
+	{title = "Back", action = function() changePauseMenu(pauseItems) end},
+	{title = "Toggle Fullscreen", action = function() settings.displayFlags.fullscreen = not settings.displayFlags.fullscreen; setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen) end},
+	{title = "Resolution", action = function() changePauseMenu(resolutionItems) end},
+}
 
--- }
-
+resolutionItems = {
+	title = "Resolution",
+	{title = "Back", action = function() changePauseMenu(videoItems) end},
+	{title = "1080p", action = function() setResolution(1920, 1080) end},
+	{title = "900p", action = function() setResolution(1600, 900) end},
+	{title = "720p", action = function() setResolution(1280, 720) end},
+	{title = "576p", action = function() setResolution(1024, 576) end},
+	{title = "360p", action = function() setResolution(640, 360) end},
+}
 settingsItems = {
 	title = "Settings",
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
-	{title = "Fullscreen", action = function() settings.displayFlags.fullscreen = not settings.displayFlags.fullscreen; setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen) end},
-	{title = "Debug Log", action = function() settingsItems[3].value = not settingsItems[3].value end, value = true},
+	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = true},
 	
 }
 
@@ -56,7 +64,7 @@ levelItems = {
 	{title = "Level Two", action = function() loadLevel(2) end},
 	{title = "Level Three", action = function() loadLevel(3) end},
 	{title = "Level Four", action = function() loadLevel(4) end},
-	{title = "Black Holeeee..", action = function() loadLevel(5) end},
+	{title = "Level Five", action = function() loadLevel(5) end},
 }
 
 function togglePause()

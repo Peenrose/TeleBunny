@@ -1,5 +1,10 @@
 function setResolution(x, y, fullscreen)
+	if x%16==0 and y%9==0 then else
+		setResolution(1024, 576)
+	end
+
 	local scrx, scry = love.window.getDesktopDimensions()
+	love.mouse.setGrabbed(true)
 	if scrx == x and scry == y then 
 		full = true
 		resolutionX, resolutionY = x, y
@@ -14,6 +19,7 @@ function setResolution(x, y, fullscreen)
 		end
 	end
 	if full == true and fullscreen == false then full = false end
+	settings.displayFlags.fullscreen = full
 	love.window.setMode(resolutionX, resolutionY, {fullscreen=full})
 end
 
@@ -284,7 +290,6 @@ function drawPauseScreen()
 		end
 	end
 end
-
 function drawAll()
 	love.graphics.setColor(255,255,255)
 	if background ~= nil then love.graphics.draw(background, 0, 0) end
@@ -359,7 +364,7 @@ function addInfo(toAdd, time)
 end
 
 function drawInfo(dt)
-	if settingsItems[3].value then
+	if settingsItems[2].value then
 		setFontSize(15)
 
 		for k, v in pairs(infoMessages) do
@@ -392,6 +397,8 @@ function updateFPS(dt)
 end
 
 function setFontSize(size)
+	size = tonumber(size)
+	if size == fontSize then return end
 	lastFontSize = getFontSize()
 	fontSize = size
 	font = love.graphics.newFont(size)

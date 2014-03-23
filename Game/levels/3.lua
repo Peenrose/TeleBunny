@@ -63,12 +63,6 @@ function updateLevelThree(dt)
 			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
 		end
 	end
-	if frozenPainting and objects["painting"] ~= nil and objects["painting"][1] ~= nil then
-		objects["painting"][1].body:setX(1280)
-		objects["painting"][1].body:setY(100)
-		objects["painting"][1].body:setLinearVelocity(0,0)
-		objects["painting"][1].body:setAngle(0)
-	end
 	if mouseJoint ~= nil then
 		strength = math.min(10000+levelTime*200, 20000)
 		mouseJoint:setMaxForce(strength)

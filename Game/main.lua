@@ -181,8 +181,9 @@ function love.mousepressed(x, y, button)
 										v.fixture:setMask()
 									end
 								elseif currentLevel == 4 then
-									if k == "swatcar #1" then
-										frozenCar = false
+									if k == "tree #1" then
+										frozenTree = false
+										v.fixture:setMask()
 									end
 								end
 
@@ -331,7 +332,7 @@ function drawAll()
 			elseif name == "beaker_5" and not frozenBeaker_5 then
 				if objects["beaker_5"][1] ~= nil then objects["beaker_5"][1].draw(1) end
 
-			else
+			elseif name ~= "swatcar" then
 				for uid = 1, objectList[name] do
 					if objects[name]~= nil and objects[name][uid] ~= nil then
 						if objects[name][uid].draw ~= nil and name ~= "window" and name ~= "syringe" and name ~= "microscope" and name ~= "pipe" and name ~= "potato" and name ~= "beaker_3" and name ~= "beaker_4" and name ~= "beaker_5" then
@@ -341,6 +342,9 @@ function drawAll()
 						end
 					end
 				end
+			end
+			if objects["swatcar"] ~= nil then
+				objects["swatcar"][1].draw()
 			end
 		end
 	end

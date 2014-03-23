@@ -8,6 +8,8 @@ traveledLastSecond = {}
 secondCounter = {}
 
 bunnyHealth = 2
+frozenTree = true
+killedRiot = 0
 
 function load()
 	love.window.setTitle("Telekinetic Bunny")
@@ -40,15 +42,20 @@ function updateLevelFour(dt)
 			loadLevel("game_over")
 		end
 	end
-
+	if frozenTree and objects["tree"] ~= nil and objects["tree"][1] ~= nil then
+		objects["tree"][1].body:setX(1042)
+		objects["tree"][1].body:setY(90)
+		objects["tree"][1].body:setLinearVelocity(0,0)
+		objects["tree"][1].body:setAngle(0)
+	end
 	if thrownObjects < 4 and objects["bunny"] ~= nil then
 		objects["bunny"][1].body:setX(math.max(2000-levelTime*100, 1800))
 	end
 
-	if thrownObjects >= 4 then
+	if killedRiot >= 6 then
 		transition = transition + dt
 		if transition >= 10 then
-			loadLevel(2)
+			loadLevel(5)
 		end
 		if transition > 5 then
 			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
@@ -107,9 +114,9 @@ function beginContactFour(a, b, coll)
 		other = a
 	end
 
-	if uid ~= nil and other ~= nil and forceA+forceB > 8000 then
+	if uid ~= nil and other ~= nil and forceA+forceB > 10000 then
 		addInfo("Scientist Collision: "..forceA.." : "..forceB, 2)
-		if math.random(1, 50) == 50 then fadeOutObject("swat", uid, 3) end
+		if math.random(1, 50) == 50 then fadeOutObject("swat", uid, 3) killedRiot = killedRiot + 1 end
 	end
 
 	if isSwatPart(a) and b == objects["bunny"][1].fixture then
@@ -117,6 +124,8 @@ function beginContactFour(a, b, coll)
 	elseif isSwatPart(b) and a == objects["bunny"][1].fixture then
 		bunnyInDanger = true
 	end
+	uid = nil
+	other = nil
 end
 
 function endContactFour(a, b, coll)

@@ -23,7 +23,9 @@ function loadLevelRaw(levelToLoad)
 	thrownObjects = -1
 	transition = 0
 	binKicked = 0
-	bunnyHealth = 3
+	if currentLevel == 1 or currentLevel == 2 then
+		bunnyHealth = 3
+	else bunnyHealth = 2 end
 	bunnyInDanger = false
 	binKicked = 0
 	ais = {}
@@ -43,6 +45,8 @@ function loadLevelRaw(levelToLoad)
 	frozenPainting = true
 	killedHazmat = 0
 	fadeOut["hazmat"] = {}
+	frozenCar = true
+	riot = false
 	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)
@@ -74,7 +78,6 @@ function loadLevel(name)
 		levelToLoad = nil
 		addInfo("Level Loaded: "..name, 5)
 		currentLevel = name
-		if currentLevel == "1" then currentLevel = 1 end
 	end
 end
 

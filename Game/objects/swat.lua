@@ -28,17 +28,6 @@ function drawSwat(uid)
 	love.graphics.draw(swatSprites.torso,    objects["swat"][uid].torso.body:getX(),    objects["swat"][uid].torso.body:getY(),    objects["swat"][uid].torso.body:getAngle(), 0.6, 0.6)
 	love.graphics.draw(swatSprites.head,     objects["swat"][uid].head.body:getX(),     objects["swat"][uid].head.body:getY(),     objects["swat"][uid].head.body:getAngle(), 0.6, 0.6)
 end
-if swatArms == nil then swatArms = {} end
-function setSwatArm(uid, name)
-	if swatArms[uid] ~= nil then objects["swat"][uid].rightarm.body:setActive(false) world:update(0) objects["swat"][uid].rightarm = nil end
-	if name == "riot" then
-		swatSprites.rightarm = swatRiotArm
-		swatArms[uid] = "riot"
-	elseif name == "normal" then
-		swatSprites.rightarm = swatArm
-		swatArms[uid] = "normal"
-	end
-end
 
 swatWidth = 277*2
 swatHeight = 329*2
@@ -49,12 +38,12 @@ swatSprites = {
 	torso = love.graphics.newImage("images/Scientist/Swat/torso.png"),
 	head = love.graphics.newImage("images/Scientist/Swat/head.png"),
 	leftarm = love.graphics.newImage("images/Scientist/Swat/left_arm.png"),
-	rightarm = swatArm,
 	leftleg = love.graphics.newImage("images/Scientist/Swat/left_leg.png"),
 	rightleg = 	love.graphics.newImage("images/Scientist/Swat/right_leg.png"),
 }
 
 swat = {}
+--swat.draw = function(uid) drawSwat(uid) drawSwatOutline(uid) end
 swat.draw = drawSwat
 swat.torso = {
 	body = love.physics.newBody(world, 300-150, settings.window.height-500, "dynamic"),
@@ -79,13 +68,25 @@ swat.leftarm = {
 	click = function() end,
 	touching_ground = false,
 }
-swat.rightarm = {
-	body = love.physics.newBody(world, 430-150, 620, "dynamic"),
-	shape = love.physics.newPolygonShape(10.3*2,.9*2, 61.2*2,27.6*2, 70.1*2,46.2*2, 66.0*2,55.8*2, 51.7*2,60.8*2, 0,29.0*2),
-	draw = function() end,
-	click = function() end,
-	touching_ground = false,
-}
+if riot == nil or riot == false then
+	swat.rightarm = {
+		body = love.physics.newBody(world, 430-150, 620, "dynamic"),
+		shape = love.physics.newPolygonShape(10.3*2,.9*2, 61.2*2,27.6*2, 70.1*2,46.2*2, 66.0*2,55.8*2, 51.7*2,60.8*2, 0,29.0*2),
+		draw = function() end,
+		click = function() end,
+		touching_ground = false,
+	}
+	swatSprites.rightarm = swatArm
+else
+	swat.rightarm = {
+		body = love.physics.newBody(world, 430-160, 450, "dynamic"),
+		shape = love.physics.newPolygonShape(0*0.6,333*0.6, 136*0.6,200*0.6, 258*0.6,159, 325*0.6,525*0.6, 203*0.6,506*0.6),
+		draw = function() end,
+		click = function() end,
+		touching_ground = false,
+	}
+	swatSprites.rightarm = swatRiotArm
+end
 swat.leftleg = {
 	body = love.physics.newBody(world, 305-150, 707, "dynamic"),
 	shape = love.physics.newPolygonShape(4.2*2,2.8*2, 42.3*2,.6*2, 41.4*2,44.3*2, 45.3*2,50.8*2, 46.8*2,63.3*2, 9.4*2,64.2*2, .5*2,61.1*2, 7.9*2,27.5*2),

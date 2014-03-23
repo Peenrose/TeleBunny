@@ -102,6 +102,7 @@ function updateLevelOne(dt)
 		end
 		if transition > 5 then
 			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
+			objects["bunny"][1].fixture:setMask(1)
 		end
 	end
 end
@@ -205,7 +206,7 @@ function beginContactOne(a, b, coll)
 	end
 
 	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["scientist"][uid] == nil then
-		if objects["potato"] ~= nil and objects["potato"][1] ~= nil and other == objects["potato"][1].fixture and maxvel > 3000 then
+		if objects["potato"] ~= nil and objects["potato"][1] ~= nil and other == objects["potato"][1].fixture and maxvel > 6000 then
 			fadeOutObject("potato", 1, 1.5)
 			thrownObjects = thrownObjects + 1
 			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
@@ -217,13 +218,13 @@ function beginContactOne(a, b, coll)
 			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			if grabbedV == objects["beaker_1"][1] then love.mousereleased() end
 		end
-		if objects["carrot"] ~= nil and objects["carrot"][1] ~= nil and other == objects["carrot"][1].fixture and maxvel > 3000 then
+		if objects["carrot"] ~= nil and objects["carrot"][1] ~= nil and other == objects["carrot"][1].fixture and maxvel > 5000 then
 			fadeOutObject("carrot", 1, 1.5)
 			thrownObjects = thrownObjects + 1
 			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			if grabbedV == objects["carrot"][1] then love.mousereleased() end
 		end
-		if objects["syringe"] ~= nil and objects["syringe"][1] ~= nil and other == objects["syringe"][1].fixture and maxvel > 3000 then
+		if objects["syringe"] ~= nil and objects["syringe"][1] ~= nil and other == objects["syringe"][1].fixture and maxvel > 4000 then
 			fadeOutObject("syringe", 1, 1.5)
 			thrownObjects = thrownObjects + 1
 			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end

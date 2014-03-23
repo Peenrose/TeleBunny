@@ -33,6 +33,9 @@ end
 function spinUpright(uid)
 	if objects["swat"] ~= nil and objects["swat"][uid] ~= nil then
 		swat = objects["swat"][uid]
+		if riot then
+			swat.rightarm.body:applyAngularImpulse(-6000)
+		end
 		angle = getAngle(uid)
 		if math.abs(angle) > 1 then
 			swat.torso.body:applyAngularImpulse(angle*-35000)
@@ -150,23 +153,6 @@ function swatBeginContact(a, b, coll)
 			end
 		end
 	end
-
-
-	if isSwatPart(a) then
-		if maxvel > 800 then
-			uid = isSwatPart(a)
-			if dazed[uid] == nil then dazed[uid] = 0 end
-			dazed[uid] = math.abs(math.min(dazed[uid] + ((maxvel-1000)/1000), 3))
-		end
-	end
-	if isSwatPart(b) then
-		if maxvel > 800 then
-			uid = isSwatPart(b)
-			if dazed[uid] == nil then dazed[uid] = 0 end
-			dazed[uid] = math.abs(math.min(dazed[uid] + ((maxvel-1000)/1000), 3))
-		end
-	end
-
 end
 
 function swatEndContact(a, b, coll)

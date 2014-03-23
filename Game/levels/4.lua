@@ -2,15 +2,12 @@ thrownObjects = 0
 
 touching_ground = {}
 foot_touching_ground = {}
-dazed = {}
 kickReset = {}
 lastx = {}
 traveledLastSecond = {}
 secondCounter = {}
 
-bunnyHealth = 3
-frozenCouch = true
-frozenPainting = true
+bunnyHealth = 2
 
 function load()
 	love.window.setTitle("Telekinetic Bunny")
@@ -23,15 +20,19 @@ function load()
 	addObject("walls")
 	addObject("bunny")
 	
-	addObject("swat", 5)
-
+	riot = true
+	addObject("swatcar")
 	fadeOut["swat"] = {}
 end
 
 function updateLevelFour(dt)
 	if levelTime == nil then levelTime = 0 end
 	levelTime = levelTime + dt
-
+	if frozenCar and objects["swatcar"] ~= nil then
+		objects["swatcar"][1].body:setFixedRotation(true)
+	elseif frozenCar == false and objects["swatcar"] ~= nil then
+		objects["swatcar"][1].body:setFixedRotation(false)
+	end
 	if bunnyInDanger then
 		bunnyHealth = bunnyHealth - dt
 		if bunnyHealth < 0 then
@@ -39,7 +40,9 @@ function updateLevelFour(dt)
 		end
 	end
 
-	if thrownObjects < 4 and objects["bunny"] ~= nil then objects["bunny"][1].body:setX(math.max(2000-levelTime*100, 1720)) end
+	if thrownObjects < 4 and objects["bunny"] ~= nil then
+		objects["bunny"][1].body:setX(math.max(2000-levelTime*100, 1800))
+	end
 
 	if thrownObjects >= 4 then
 		transition = transition + dt
@@ -50,11 +53,11 @@ function updateLevelFour(dt)
 			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
 		end
 	end
-	
-	if mouseJoint ~= nil then
-		strength = math.min(10000+levelTime*100, 40000)
-		mouseJoint:setMaxForce(strength)
-		addInfo(strength, 0)
+
+	if objects["swatcar"] ~= nil and levelTime > 5 and frozenCar then
+		if objects["swatcar"][1].body:getX() < 860 then
+			objects["swatcar"][1].body:setX(objects["swatcar"][1].body:getX()+100*dt)
+		end
 	end
 end
 
@@ -82,17 +85,18 @@ function isSwatFoot(fix)
 	return false
 end
 
-function beginContactThree(a, b, coll)
-	avel = math.abs(a:getBody():getLinearVelocity())
-	bvel = math.abs(b:getBody():getLinearVelocity())
-
+function beginContactFour(a, b, coll)
+	avelx, avely = a:getBody():getLinearVelocity()
+	bvelx, bvely = b:getBody():getLinearVelocity()
+	avel = math.abs(avelx) + math.abs(avely)
+	bvel = math.abs(bvelx) + math.abs(bvely)
 	maxvel = math.abs(math.max(avel, bvel))
 	maxmass = math.abs(math.max(a:getBody():getMass(), b:getBody():getMass()))
 
 	forceA = avel*a:getBody():getMass()
 	forceB = bvel*b:getBody():getMass()
 
-	swatBeginContact(a, b, coll)
+	if swatBeginContact ~= nil then swatBeginContact(a, b, coll) end
 
 	if isSwatPart(a) then
 		uid = isSwatPart(a)
@@ -102,23 +106,20 @@ function beginContactThree(a, b, coll)
 		other = a
 	end
 
-	if uid ~= nil and other ~= nil and forceA+forceB > 4000 and isSwatPart(other) == false then
+	if uid ~= nil and other ~= nil and forceA+forceB > 8000 then
 		addInfo("Scientist Collision: "..forceA.." : "..forceB, 2)
-		if math.random(1, 25) == 25 then fadeOutObject("swat", uid, 3) end
+		if math.random(1, 50) == 50 then fadeOutObject("swat", uid, 3) end
 	end
-
-
 
 	if isSwatPart(a) and b == objects["bunny"][1].fixture then
 		bunnyInDanger = true
 	elseif isSwatPart(b) and a == objects["bunny"][1].fixture then
 		bunnyInDanger = true
 	end
-
 end
 
-function endContactThree(a, b, coll)
-	swatEndContact(a, b, coll)
+function endContactFour(a, b, coll)
+	if swatEndContact ~= nil then swatEndContact(a, b, coll) end
 
 	if isSwatPart(a) and objects["bunny"][1] ~= nil and b == objects["bunny"][1].fixture then
 		bunnyInDanger = false

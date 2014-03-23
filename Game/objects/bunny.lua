@@ -13,6 +13,7 @@ bunnyFrames = {
 	love.graphics.newImage("images/Bunny/2.png"),
 	love.graphics.newImage("images/Bunny/3.png"),
 	love.graphics.newImage("images/Bunny/4.png"),
+	love.graphics.newImage("images/Bunny/5.png"),
 }
 
 cageOpen = love.graphics.newImage("images/cage_open.png")
@@ -32,11 +33,15 @@ function loadObject(uid)
 		draw = function()
 			--love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints())) --hitbox
 			if transition == 0 then
-				local red = math.min((255-((bunnyHealth/3)*255)), 255) / 1.2
+				addInfo(bunnyHealth, 0)
+				if currentLevel == 3 or currentLevel == 4 then
+					red = math.min((255-((bunnyHealth/2)*255)), 255) / 1.4
+				else
+					red = math.min((255-((bunnyHealth/3)*255)), 255) / 1.4
+				end
+				addInfo(red, 0)
 				love.graphics.setColor(255, 255-red, 255-red)
-			else
-				--local green = math.min((255-((transition/10)*255)), 255) / 1.2
-				--love.graphics.setColor(green, 255, green)
+				red = nil
 			end
 			love.graphics.draw(bunnyFrames[bunnyFrame], objects["bunny"][uid].body:getX(), objects["bunny"][uid].body:getY(), objects["bunny"][uid].body:getAngle(), bunnysx, bunnysy, 580, 888)
 		end,

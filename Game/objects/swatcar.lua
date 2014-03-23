@@ -10,7 +10,7 @@ function loadObject(uid)
 		end,
 		click = function() end,
 	}
-	--swatcar.fixture = love.physics.newFixture(swatcar.body, swatcar.shape)
-	--swatcar.fixture:setMask(1)
+	swatcar.fixture = love.physics.newFixture(swatcar.body, swatcar.shape)
+	swatcar.fixture:setDensity(swatcar.fixture:getDensity()*3)
 	return swatcar
 end

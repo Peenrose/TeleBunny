@@ -27,7 +27,7 @@ function love.load()
 
 	setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen)
 
-	loadLevel(3)
+	loadLevel(4)
 end
 
 function love.update(dt)
@@ -48,6 +48,7 @@ function love.update(dt)
 		if currentLevel == 1 then updateLevelOne(dt) end
 		if currentLevel == 2 then updateLevelTwo(dt) end
 		if currentLevel == 3 then updateLevelThree(dt) end
+		if currentLevel == 4 then updateLevelFour(dt) end
 		if currentLevel == 5 then updateLevelFive(dt) end
 		runAI(dt)
 	end
@@ -121,6 +122,7 @@ function love.mousepressed(x, y, button)
 	y = y/(resolutionY/1080)
 	if currentLevel == "game_over" then loadLevel(lastLevel) end
 	if paused == false then
+		if currentLevel == 4 and frozenCar == true then return end
 		clickedon = ""
 		clickedamount = 0
 		if objects ~= nil then
@@ -178,15 +180,21 @@ function love.mousepressed(x, y, button)
 										frozenBeaker_5 = false
 										v.fixture:setMask()
 									end
+								elseif currentLevel == 4 then
+									if k == "swatcar #1" then
+										frozenCar = false
+									end
 								end
 
 								mouseJoint = love.physics.newMouseJoint(v.body, love.mouse.getPosition())
 								if currentLevel == 1 then
-									mouseJoint:setMaxForce(8000)
+									mouseJoint:setMaxForce(5000)
 								elseif currentLevel == 2 then
 									mouseJoint:setMaxForce(12000)
 								elseif currentLevel == 3 then
 									mouseJoint:setMaxForce(15000)
+								elseif currentLevel == 4 then
+									mouseJoint:setMaxForce(45000)
 								end
 							end
 							if v.click ~= nil and type(v.click) == "function" then 
@@ -391,6 +399,8 @@ function beginContactMain(a, b, coll)
 	if currentLevel == 1 and beginContactOne ~= nil then beginContactOne(a, b, coll) end
 	if currentLevel == 2 and beginContactTwo ~= nil then beginContactTwo(a, b, coll) end
 	if currentLevel == 3 and beginContactThree ~= nil then beginContactThree(a, b, coll) end
+	if currentLevel == 4 and beginContactFour ~= nil then beginContactFour(a, b, coll) end
+	if currentLevel == 5 and beginContactFive ~= nil then beginContactFive(a, b, coll) end
 	--if healthRemaining[a]
 end
 
@@ -404,6 +414,8 @@ function endContactMain(a, b, coll)
 	if currentLevel == 1 and endContactOne ~= nil then endContactOne(a, b, coll) end
 	if currentLevel == 2 and endContactTwo ~= nil then endContactTwo(a, b, coll) end
 	if currentLevel == 3 and endContactThree ~= nil then endContactThree(a, b, coll) end
+	if currentLevel == 4 and endContactFour ~= nil then endContactFour(a, b, coll) end
+	if currentLevel == 5 and endContactFive ~= nil then endContactFive(a, b, coll) end
 end
 
 function preSolveMain(a, b, coll) 

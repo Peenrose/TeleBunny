@@ -67,6 +67,7 @@ function updateLevelTwo(dt)
 		end
 		if transition > 5 then
 			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
+			objects["bunny"][1].fixture:setMask(1)
 		end
 	end
 	if objects["hazmat"] ~= nil and objects["hazmat"][1] == nil then
@@ -104,6 +105,15 @@ function isHazmatFoot(fix)
 	return false
 end
 
+function beakerContact(beaker, uid)
+	if math.random(1, 10) == 10 and hazmatFlail == true then
+		fadeOutObject("hazmat", uid, 2)
+		fadeOutObject(beaker, 1, 1.5)
+		thrownObjects = thrownObjects + 1
+		if grabbedV == objects["beaker_1"][1] then love.mousereleased() end
+	end
+end
+
 function beginContactTwo(a, b, coll)
 	avelx, avely = a:getBody():getLinearVelocity()
 	bvelx, bvely = b:getBody():getLinearVelocity()
@@ -124,45 +134,20 @@ function beginContactTwo(a, b, coll)
 
 	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["hazmat"][uid] == nil and maxvel > 400 then
 
-		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 1000 then
-			if math.random(1, 5) == 4 then
-				fadeOutObject("hazmat", uid, 2)
-				fadeOutObject("beaker_1", 1, 1.5)
-				thrownObjects = thrownObjects + 1
-				if grabbedV == objects["beaker_1"][1] then love.mousereleased() end
-			end
+		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 2500 then
+			beakerContact("beaker_1", uid)
 		end
-		if objects["beaker_2"] ~= nil and objects["beaker_2"][1] ~= nil and other == objects["beaker_2"][1].fixture and maxvel > 1000 then
-			if math.random(1, 5) == 4 then
-				fadeOutObject("hazmat", uid, 2)
-				fadeOutObject("beaker_2", 1, 1.5)
-				thrownObjects = thrownObjects + 1
-				if grabbedV == objects["beaker_2"][1] then love.mousereleased() end
-			end
+		if objects["beaker_2"] ~= nil and objects["beaker_2"][1] ~= nil and other == objects["beaker_2"][1].fixture and maxvel > 2500 then
+			beakerContact("beaker_2", uid)
 		end
-		if objects["beaker_3"] ~= nil and objects["beaker_3"][1] ~= nil and other == objects["beaker_3"][1].fixture and maxvel > 1000 then
-			if math.random(1, 5) == 4 then
-				fadeOutObject("hazmat", uid, 2)
-				fadeOutObject("beaker_3", 1, 1.5)
-				thrownObjects = thrownObjects + 1
-				if grabbedV == objects["beaker_3"][1] then love.mousereleased() end
-			end
+		if objects["beaker_3"] ~= nil and objects["beaker_3"][1] ~= nil and other == objects["beaker_3"][1].fixture and maxvel > 2500 then
+			beakerContact("beaker_3", uid)
 		end
-		if objects["beaker_4"] ~= nil and objects["beaker_4"][1] ~= nil and other == objects["beaker_4"][1].fixture and maxvel > 1000 then
-			if math.random(1, 5) == 4 then
-				fadeOutObject("hazmat", uid, 2)
-				fadeOutObject("beaker_4", 1, 1.5)
-				thrownObjects = thrownObjects + 1
-				if grabbedV == objects["beaker_4"][1] then love.mousereleased() end
-			end
+		if objects["beaker_4"] ~= nil and objects["beaker_4"][1] ~= nil and other == objects["beaker_4"][1].fixture and maxvel > 2500 then
+			beakerContact("beaker_4", uid)
 		end
-		if objects["beaker_5"] ~= nil and objects["beaker_5"][1] ~= nil and other == objects["beaker_5"][1].fixture and maxvel > 1000 and math.random(1, 5) == 5 then
-			if math.random(1, 5) == 4 then
-				fadeOutObject("hazmat", uid, 2)
-				fadeOutObject("beaker_5", 1, 1.5)
-				thrownObjects = thrownObjects + 1
-				if grabbedV == objects["beaker_5"][1] then love.mousereleased() end
-			end
+		if objects["beaker_5"] ~= nil and objects["beaker_5"][1] ~= nil and other == objects["beaker_5"][1].fixture and maxvel > 2500 then
+			beakerContact("beaker_5", uid)
 		end
 		if hazmatFlail == false then hazmatFlailFunction() hazmatFlail = true end
 	end

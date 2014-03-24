@@ -6,7 +6,7 @@ settings = {
 	},
 
 	displayFlags = {
-		fullscreen = true,
+		fullscreen = false,
 		fullscreentype = "desktop",
 		vsync = true,
 		fsaa = 16,
@@ -71,9 +71,11 @@ function togglePause()
 	if paused == true then
 		paused = false
 		pausedMenu = false
+		love.mouse.setGrabbed(true)
 	elseif paused == false then
 		paused = true
 		pausedMenu = pauseItems
+		love.mouse.setGrabbed(false)
 	end
 end
 

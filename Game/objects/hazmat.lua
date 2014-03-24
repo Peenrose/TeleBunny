@@ -1,4 +1,4 @@
-heightOffset = 520
+heightOffset = 560
 function joinHazmat()
 	local joints = {}
 	joints.head = love.physics.newWeldJoint(    hazmat.torso.body, hazmat.head.body,     223, 152+heightOffset, false)

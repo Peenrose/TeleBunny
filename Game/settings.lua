@@ -6,7 +6,7 @@ settings = {
 	},
 
 	displayFlags = {
-		fullscreen = false,
+		fullscreen = true,
 		fullscreentype = "desktop",
 		vsync = true,
 		fsaa = 16,
@@ -150,5 +150,3 @@ pausebackground = love.graphics.newImage("images/pause.png")
 love.physics.setMeter(settings.physicsMeter)
 love.window.setTitle(settings.window.title)
 love.window.setIcon(love.image.newImageData("images/icon.png"))
-
-return settings

@@ -1,16 +1,13 @@
 function setResolution(x, y, fullscreen)
-	if x%16==0 and y%9==0 then else
-		setResolution(1024, 576)
-	end
-
+	--if (x%16==0 and y%9==0) == false then end
 	local scrx, scry = love.window.getDesktopDimensions()
 	love.mouse.setGrabbed(true)
 	if scrx == x and scry == y then 
 		full = true
 		resolutionX, resolutionY = x, y
-	elseif x > scrx or y > scry then
+	elseif x > scrx and y > scry then
 		full = true
-		resolutionX, resolutionY = love.graphics.getResolution()
+		resolutionX, resolutionY = love.window.getDesktopDimensions()
 	else
 		full = false
 		resolutionX, resolutionY = x, y
@@ -21,16 +18,12 @@ function setResolution(x, y, fullscreen)
 end
 
 function love.load()
-	settings = require "settings"
+	require "settings"
 	require "load"
-
-	if not love.graphics.isSupported("npot") then addInfo("Warning: your display adapter is susceptible to PO2 Syndrome", 20) end
-	assert(love.graphics.isSupported("shader"), "your display adapter does not support shaders")
-	assert(love.graphics.isSupported("canvas"), "your display adapter does not support canvas use")
 
 	setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen)
 
-	loadLevel(4)
+	loadLevel(1)
 end
 
 function love.update(dt)
@@ -116,13 +109,13 @@ end
 oldGetPosition = love.mouse.getPosition
 function love.mouse.getPosition()
 	x, y = oldGetPosition()
-	x, y = x/(resolutionX/scrx), y/(resolutionY/scry)
+	x, y = x/(resolutionX/1920), y/(resolutionY/1080)
 	return x,y
 end
 
 function love.mousepressed(x, y, button)
-	x = x/(resolutionX/scrx)
-	y = y/(resolutionY/scry)
+	x = x/(resolutionX/1920)
+	y = y/(resolutionY/1080)
 	if currentLevel == "game_over" then loadLevel(lastLevel) end
 	if paused == false then
 		if currentLevel == 4 and frozenCar == true then return end
@@ -263,24 +256,24 @@ function drawPauseScreen()
 	love.graphics.setColor(255,255,255,255)
 	love.graphics.draw(pausebackground)
 	setFontSize(80)
-	love.graphics.printf("Paused", 0, 100, settings.window.width, "center")
+	love.graphics.printf("Paused", 0, 100, 1920, "center")
 	setFontSize(30)
-	love.graphics.printf(pausedMenu.title, 0, 175, settings.window.width, "center")
+	love.graphics.printf(pausedMenu.title, 0, 175, 1920, "center")
 	y = 200
 	setFontSize(40)
 	for k, v in pairs(pausedMenu) do
 		if v.action ~= nil then
 			y = y + 100
-			x, y, mx, my = ((settings.window.width/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
+			x, y, mx, my = ((1920/2)-font:getWidth(v.title)/2)-10, y-10, font:getWidth(v.title)+20, font:getHeight(v.title)+20
 			love.graphics.setColor(127,127,127,200)
 			love.graphics.rectangle("fill", x, y, mx, my)
 			love.graphics.setColor(255,255,255)
 			setFontSize(40)
-			love.graphics.printf(v.title, 0, y+10, settings.window.width, "center")
+			love.graphics.printf(v.title, 0, y+10, 1920, "center")
 			if v.value ~= nil then
 				--last = getFontSize()
 				setFontSize(18)
-				love.graphics.printf(tostring(v.value), 0, y+50, settings.window.width, "center")
+				love.graphics.printf(tostring(v.value), 0, y+50, 1920, "center")
 				setFontSize(lastFontSize)
 			end
 			pauseHitboxes[k] = {x=x, y=y, mx=mx+x, my=my+y}

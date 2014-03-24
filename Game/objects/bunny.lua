@@ -6,7 +6,7 @@ if currentLevel == "2" then
 else
 	bunnyy = 1080-205
 end
-bunnyx = settings.window.width-200
+bunnyx = 1920-200
 
 bunnyFrames = {
 	love.graphics.newImage("images/Bunny/1.png"),
@@ -33,13 +33,11 @@ function loadObject(uid)
 		draw = function()
 			--love.graphics.polygon("line", objects.bunny.body:getWorldPoints(objects.bunny.shape:getPoints())) --hitbox
 			if transition == 0 then
-				addInfo(bunnyHealth, 0)
 				if currentLevel == 3 or currentLevel == 4 then
 					red = math.min((255-((bunnyHealth/2)*255)), 255) / 1.4
 				else
 					red = math.min((255-((bunnyHealth/3)*255)), 255) / 1.4
 				end
-				addInfo(red, 0)
 				love.graphics.setColor(255, 255-red, 255-red)
 				red = nil
 			end

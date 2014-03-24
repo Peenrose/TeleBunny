@@ -115,7 +115,7 @@ function beginContactThree(a, b, coll)
 		other = a
 	end
 
-	if uid ~= nil and other ~= nil and forceA+forceB > 3000 and isSwatPart(other) == false then
+	if uid ~= nil and other ~= nil and forceA+forceB > 3000 and isSwatPart(other) == false and fadeOut["swat"][uid] == nil then
 		if math.random(1, 20) == 20 then fadeOutObject("swat", uid, 3) killedHazmat = killedHazmat + 1 end
 	end
 

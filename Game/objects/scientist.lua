@@ -49,7 +49,7 @@ scientist = {}
 scientist.draw = drawScientist
 scientist.headSprite = headSprites.normal
 scientist.torso = {
-	body = love.physics.newBody(world, 300-150, settings.window.height-500, "dynamic"),
+	body = love.physics.newBody(world, 300-150, 1080-500, "dynamic"),
 	shape = love.physics.newPolygonShape(4.99*2,0, 50.23*2,71.76*2, 77.69*2,7.18*2, 92.04*2,66.14*2, 54.9*2,74.5*2, 0,71.76*2),
 	draw = function()
 		drawScientist()
@@ -58,7 +58,7 @@ scientist.torso = {
 	touching_ground = false,
 }
 scientist.head = {
-	body = love.physics.newBody(world, 250-150, settings.window.height-725, "dynamic"),
+	body = love.physics.newBody(world, 250-150, 1080-725, "dynamic"),
 	shape = love.physics.newPolygonShape(43.0*2,4.7*2, 95.0*2,6.3*2, 124.5*2,37.1*2, 117.0*2,117.9*2, 81.6*2,120.5*2, 30.8*2,111.3*2, 19.6*2,100.3*2, 19.4*2,27.7*2),
 	draw = function() end,
 	click = function() end,

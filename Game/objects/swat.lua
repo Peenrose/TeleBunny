@@ -26,7 +26,7 @@ function drawSwat(uid)
 	love.graphics.draw(swatSprites.leftarm,  objects["swat"][uid].leftarm.body:getX(),  objects["swat"][uid].leftarm.body:getY(),  objects["swat"][uid].leftarm.body:getAngle(), 0.6, 0.6)
 	love.graphics.setColor(255,255,255,255)
 	love.graphics.draw(swatSprites.rightarm, objects["swat"][uid].rightarm.body:getX(), objects["swat"][uid].rightarm.body:getY(), objects["swat"][uid].rightarm.body:getAngle(), 0.6, 0.6)
-	if type(fadeOut["swat"][uid]) == "table" then
+	if riot and type(fadeOut["swat"][uid]) == "table" then
 		love.graphics.setColor(255,255,255,fadeOut["swat"][uid].cur)
 	else
 		love.graphics.setColor(255,255,255,255)
@@ -52,7 +52,7 @@ swat = {}
 --swat.draw = function(uid) drawSwat(uid) drawSwatOutline(uid) end
 swat.draw = drawSwat
 swat.torso = {
-	body = love.physics.newBody(world, 300-150, settings.window.height-500, "dynamic"),
+	body = love.physics.newBody(world, 300-150, 1080-500, "dynamic"),
 	shape = love.physics.newPolygonShape(4*0.6,4*0.6, 146*0.6,22*0.6, 242*0.6,9*0.6, 267*0.6,217*0.6, 157*0.6,234*0.6, 27*0.6,229*0.6),
 	draw = function()
 		drawSwat()

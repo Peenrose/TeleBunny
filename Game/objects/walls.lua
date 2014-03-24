@@ -11,8 +11,8 @@ ground = {
 	end,
 }
 rightwall = {
-	body = love.physics.newBody(world, settings.window.width, settings.window.height/2, "static"),
-	shape = love.physics.newRectangleShape(0, settings.window.height),
+	body = love.physics.newBody(world, 1920, 1080/2, "static"),
+	shape = love.physics.newRectangleShape(0, 100000),
 }
 if currentLevel ~= 4 and currentLevel ~= 5 then
 	topwall = {

@@ -20,7 +20,7 @@ settings = {
 }
 scalex = 1
 scaley = 1
-
+scrx, scry = love.window.getDesktopDimensions()
 settings.window.width, settings.window.height = love.window.getDesktopDimensions()
 
 pauseItems = {

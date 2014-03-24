@@ -14,9 +14,6 @@ function setResolution(x, y, fullscreen)
 	else
 		full = false
 		resolutionX, resolutionY = x, y
-		if x/y ~= 1920/1080 then
-			addInfo("Incorrect aspect ratio")
-		end
 	end
 	if full == true and fullscreen == false then full = false end
 	settings.displayFlags.fullscreen = full
@@ -119,13 +116,13 @@ end
 oldGetPosition = love.mouse.getPosition
 function love.mouse.getPosition()
 	x, y = oldGetPosition()
-	x, y = x/(resolutionX/1920), y/(resolutionY/1080)
+	x, y = x/(resolutionX/scrx), y/(resolutionY/scry)
 	return x,y
 end
 
 function love.mousepressed(x, y, button)
-	x = x/(resolutionX/1920)
-	y = y/(resolutionY/1080)
+	x = x/(resolutionX/scrx)
+	y = y/(resolutionY/scry)
 	if currentLevel == "game_over" then loadLevel(lastLevel) end
 	if paused == false then
 		if currentLevel == 4 and frozenCar == true then return end

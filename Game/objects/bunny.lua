@@ -1,7 +1,7 @@
 bunnyheight = 200
 bunnywidth = 200
 
-if currentLevel == "2" then
+if currentLevel == 2 then
 	bunnyy = 1020-(205-90)
 else
 	bunnyy = 1080-205
@@ -14,6 +14,7 @@ bunnyFrames = {
 	love.graphics.newImage("images/Bunny/3.png"),
 	love.graphics.newImage("images/Bunny/4.png"),
 	love.graphics.newImage("images/Bunny/5.png"),
+	love.graphics.newImage("images/Bunny/6.png"),
 }
 
 cageOpen = love.graphics.newImage("images/cage_open.png")

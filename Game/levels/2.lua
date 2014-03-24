@@ -107,7 +107,7 @@ function isHazmatFoot(fix)
 end
 
 function beakerContact(beaker, uid)
-	if math.random(1, 10) == 10 and hazmatFlail == true then
+	if math.random(1, 12) == 12 and hazmatFlail == true then
 		fadeOutObject("hazmat", uid, 2)
 		fadeOutObject(beaker, 1, 1.5)
 		thrownObjects = thrownObjects + 1
@@ -135,19 +135,19 @@ function beginContactTwo(a, b, coll)
 
 	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["hazmat"][uid] == nil and maxvel > 400 then
 
-		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 2500 then
+		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 2000 then
 			beakerContact("beaker_1", uid)
 		end
-		if objects["beaker_2"] ~= nil and objects["beaker_2"][1] ~= nil and other == objects["beaker_2"][1].fixture and maxvel > 2500 then
+		if objects["beaker_2"] ~= nil and objects["beaker_2"][1] ~= nil and other == objects["beaker_2"][1].fixture and maxvel > 2000 then
 			beakerContact("beaker_2", uid)
 		end
-		if objects["beaker_3"] ~= nil and objects["beaker_3"][1] ~= nil and other == objects["beaker_3"][1].fixture and maxvel > 2500 then
+		if objects["beaker_3"] ~= nil and objects["beaker_3"][1] ~= nil and other == objects["beaker_3"][1].fixture and maxvel > 2000 then
 			beakerContact("beaker_3", uid)
 		end
-		if objects["beaker_4"] ~= nil and objects["beaker_4"][1] ~= nil and other == objects["beaker_4"][1].fixture and maxvel > 2500 then
+		if objects["beaker_4"] ~= nil and objects["beaker_4"][1] ~= nil and other == objects["beaker_4"][1].fixture and maxvel > 2000 then
 			beakerContact("beaker_4", uid)
 		end
-		if objects["beaker_5"] ~= nil and objects["beaker_5"][1] ~= nil and other == objects["beaker_5"][1].fixture and maxvel > 2500 then
+		if objects["beaker_5"] ~= nil and objects["beaker_5"][1] ~= nil and other == objects["beaker_5"][1].fixture and maxvel > 2000 then
 			beakerContact("beaker_5", uid)
 		end
 		if hazmatFlail == false then hazmatFlailFunction() hazmatFlail = true end

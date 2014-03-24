@@ -48,6 +48,7 @@ function loadLevelRaw(levelToLoad)
 	frozenCar = true
 	riot = false
 	killedRiot = 0
+	fadeOut["swat"] = {}
 	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)

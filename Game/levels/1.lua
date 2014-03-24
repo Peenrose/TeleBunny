@@ -206,25 +206,25 @@ function beginContactOne(a, b, coll)
 	end
 
 	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["scientist"][uid] == nil then
-		if objects["potato"] ~= nil and objects["potato"][1] ~= nil and other == objects["potato"][1].fixture and maxvel > 6000 then
+		if objects["potato"] ~= nil and objects["potato"][1] ~= nil and other == objects["potato"][1].fixture and maxvel > 4000 then
 			fadeOutObject("potato", 1, 1.5)
 			thrownObjects = thrownObjects + 1
 			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			if grabbedV == objects["potato"][1] then love.mousereleased() end
 		end
-		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 2000 then
+		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 1700 then
 			fadeOutObject("beaker_1", 1, 1.5)
 			thrownObjects = thrownObjects + 1
 			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			if grabbedV == objects["beaker_1"][1] then love.mousereleased() end
 		end
-		if objects["carrot"] ~= nil and objects["carrot"][1] ~= nil and other == objects["carrot"][1].fixture and maxvel > 5000 then
+		if objects["carrot"] ~= nil and objects["carrot"][1] ~= nil and other == objects["carrot"][1].fixture and maxvel > 4000 then
 			fadeOutObject("carrot", 1, 1.5)
 			thrownObjects = thrownObjects + 1
 			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
 			if grabbedV == objects["carrot"][1] then love.mousereleased() end
 		end
-		if objects["syringe"] ~= nil and objects["syringe"][1] ~= nil and other == objects["syringe"][1].fixture and maxvel > 4000 then
+		if objects["syringe"] ~= nil and objects["syringe"][1] ~= nil and other == objects["syringe"][1].fixture and maxvel > 3500 then
 			fadeOutObject("syringe", 1, 1.5)
 			thrownObjects = thrownObjects + 1
 			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end

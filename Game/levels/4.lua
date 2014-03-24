@@ -1,5 +1,3 @@
-thrownObjects = 0
-
 touching_ground = {}
 foot_touching_ground = {}
 kickReset = {}
@@ -116,7 +114,6 @@ function beginContactFour(a, b, coll)
 	end
 
 	if uid ~= nil and other ~= nil and forceA+forceB > 10000 and fadeOut["swat"][uid] == nil then
-		addInfo("Scientist Collision: "..forceA.." : "..forceB, 2)
 		if math.random(1, 50) == 50 then fadeOutObject("swat", uid, 3) killedRiot = killedRiot + 1 end
 	end
 

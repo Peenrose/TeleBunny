@@ -24,11 +24,11 @@ function drawSwat(uid)
 	love.graphics.draw(swatSprites.leftleg,  objects["swat"][uid].leftleg.body:getX(),  objects["swat"][uid].leftleg.body:getY(),  objects["swat"][uid].leftleg.body:getAngle(), 0.6, 0.6)
 	love.graphics.draw(swatSprites.rightleg, objects["swat"][uid].rightleg.body:getX(), objects["swat"][uid].rightleg.body:getY(), objects["swat"][uid].rightleg.body:getAngle(), 0.6, 0.6)
 	love.graphics.draw(swatSprites.leftarm,  objects["swat"][uid].leftarm.body:getX(),  objects["swat"][uid].leftarm.body:getY(),  objects["swat"][uid].leftarm.body:getAngle(), 0.6, 0.6)
-	love.graphics.setColor(255,255,255,255)
+	if riot then love.graphics.setColor(255,255,255,255) end
 	love.graphics.draw(swatSprites.rightarm, objects["swat"][uid].rightarm.body:getX(), objects["swat"][uid].rightarm.body:getY(), objects["swat"][uid].rightarm.body:getAngle(), 0.6, 0.6)
 	if riot and type(fadeOut["swat"][uid]) == "table" then
 		love.graphics.setColor(255,255,255,fadeOut["swat"][uid].cur)
-	else
+	elseif riot == true then
 		love.graphics.setColor(255,255,255,255)
 	end
 	love.graphics.draw(swatSprites.torso,    objects["swat"][uid].torso.body:getX(),    objects["swat"][uid].torso.body:getY(),    objects["swat"][uid].torso.body:getAngle(), 0.6, 0.6)

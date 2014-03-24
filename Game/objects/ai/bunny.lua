@@ -51,5 +51,6 @@ return function(dt)
 			end
 		end
 	end
+	if bunnyFrameSet ~= nil then bunnyFrame = bunnyFrameSet bunnyFrameSet = nil end
 	if bunnyFrame == nil then bunnyFrame = 1 end
 end

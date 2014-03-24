@@ -201,7 +201,7 @@ function love.mousepressed(x, y, button)
 								elseif currentLevel == 3 then
 									mouseJoint:setMaxForce(15000)
 								elseif currentLevel == 4 then
-									mouseJoint:setMaxForce(45000)
+									mouseJoint:setMaxForce(35000)
 								end
 							end
 							if v.click ~= nil and type(v.click) == "function" then 

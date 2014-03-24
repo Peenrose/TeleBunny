@@ -112,6 +112,12 @@ end
 function removeObject(name, uid)
 		if objects[name] ~= nil and objects[name][uid] ~= nil then else return end
 		if objects[name][uid].body ~= nil then objects[name][uid].body:setActive(false) end
+		if name == "swat" and riot == true then
+			shieldX = objects["swat"][uid].rightarm.body:getX()
+			shieldY = objects["swat"][uid].rightarm.body:getY()
+			shieldAngle = objects["swat"][uid].rightarm.body:getAngle()
+			addObject("shield")
+		end
 		if name == "scientist" or name =="hazmat" or name == "swat" then
 			objects[name][uid].torso.body:setActive(false)
 			objects[name][uid].head.body:setActive(false)

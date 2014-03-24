@@ -48,23 +48,24 @@ function updateLevelFour(dt)
 		objects["tree"][1].body:setLinearVelocity(0,0)
 		objects["tree"][1].body:setAngle(0)
 	end
-	if thrownObjects < 4 and objects["bunny"] ~= nil then
-		objects["bunny"][1].body:setX(math.max(2000-levelTime*100, 1800))
+	if killedRiot < 6 and objects["bunny"] ~= nil then
+		objects["bunny"][1].body:setX(math.max(2000-levelTime*200, 1800))
 	end
 
-	if killedRiot >= 6 then
+	if killedRiot == 6 then
 		transition = transition + dt
 		if transition >= 10 then
 			loadLevel(5)
 		end
 		if transition > 5 then
+			objects["bunny"][1].fixture:setMask(1)
 			objects["bunny"][1].body:setX(objects["bunny"][1].body:getX()-400*dt)
 		end
 	end
 
-	if objects["swatcar"] ~= nil and levelTime > 5 and frozenCar then
+	if objects["swatcar"] ~= nil and levelTime > 0.5 and frozenCar then
 		if objects["swatcar"][1].body:getX() < 860 then
-			objects["swatcar"][1].body:setX(objects["swatcar"][1].body:getX()+100*dt)
+			objects["swatcar"][1].body:setX(objects["swatcar"][1].body:getX()+500*dt)
 		end
 	end
 end
@@ -114,7 +115,7 @@ function beginContactFour(a, b, coll)
 		other = a
 	end
 
-	if uid ~= nil and other ~= nil and forceA+forceB > 10000 then
+	if uid ~= nil and other ~= nil and forceA+forceB > 10000 and fadeOut["swat"][uid] == nil then
 		addInfo("Scientist Collision: "..forceA.." : "..forceB, 2)
 		if math.random(1, 50) == 50 then fadeOutObject("swat", uid, 3) killedRiot = killedRiot + 1 end
 	end

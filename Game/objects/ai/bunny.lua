@@ -24,10 +24,17 @@ return function(dt)
 	if bunnyInDanger then
 		bunnyFrame = math.random(3,4)
 	end
-
+	if currentLevel == 4 then
+		if levelTime > 3.5 and levelTime < 4.2 then bunnyFrame = 5 end
+		if levelTime > 4.2 and levelTime < 4.25 then bunnyFrame = 4 end
+		if levelTime > 4.25 and levelTime < 4.3 then bunnyFrame = 3 end
+		if levelTime > 4.3 and levelTime < 4.35 then bunnyFrame = 2 end
+	end
 	if currentLevel == 4 and objects["swatcar"] ~= nil and powerBunny then
-		if levelTime > 7 then
-			bunnyFrame = math.min(math.floor(levelTime)-6, 5)
+		if levelTime > 2 then
+			bunnyFrame = math.floor((levelTime*2)-2)
+			if bunnyFrame > 5 then bunnyFrame = 5 end
+			if bunnyFrame < 1 then bunnyFrame = 1 end
 			if bunnyFrame == 5 and powerBunny then
 				if secTick == nil then secTick = 0 end
 				secTick = secTick + dt
@@ -35,8 +42,8 @@ return function(dt)
 					secTick = 1
 					frozenCar = false
 					love.update(0)
-					objects["swatcar"][1].body:applyLinearImpulse(-300000, -20000)
-					objects["swatcar"][1].body:applyAngularImpulse(-200000000)
+					objects["swatcar"][1].body:applyLinearImpulse(-300000, -30000)
+					objects["swatcar"][1].body:applyAngularImpulse(-250000000)
 					riot = true
 					addObject("swat", 6)
 					powerBunny = false

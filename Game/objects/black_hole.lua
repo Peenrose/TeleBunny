@@ -1,10 +1,10 @@
 blackHoleBG = love.graphics.newImage("images/black_hole_bg.png")
 blackHoleFront = love.graphics.newImage("images/black_hole_front.png")
-
+holeAdd = 0
 function getHoleScale()
-	btime = playtime
-	while btime > 2*math.pi do btime = btime - 2*math.pi end
-	return 0.075 + math.sin(btime)/80
+	if holeAdd > 0 then
+		return holeAdd + math.sin(playtime)/80
+	else return 0 end
 end
 
 loadObject = function() ob = {draw=function()

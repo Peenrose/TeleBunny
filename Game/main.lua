@@ -23,12 +23,25 @@ function love.load()
 
 	setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen)
 
-	loadLevel(1)
+	loadLevel(5)
 end
 
 function love.update(dt)
 	if not paused then
 		dt = math.min(dt, 0.05)
+		if currentLevel == 5 then 
+			if bunnyFrameSet == 1 then
+				dt = dt*0.8
+			elseif bunnyFrameSet == 2 then
+				dt = dt*0.6
+			elseif bunnyFrameSet == 3 then
+				dt = dt*0.4
+			elseif bunnyFrameSet == 4 then
+				dt = dt*0.2
+			elseif bunnyFrameSet == 5 then
+				dt = dt*0.1
+			end
+		end
 		if bunnyHealth < 3 and bunnyInDanger then dt = math.max(dt*bunnyHealth/3, 0.5*dt) end
 		updateFPS(dt)
 		updateGrabbed()
@@ -119,6 +132,7 @@ function love.mousepressed(x, y, button)
 	if currentLevel == "game_over" then loadLevel(lastLevel) end
 	if paused == false then
 		if currentLevel == 4 and frozenCar == true then return end
+		if currentLevel == 5 and levelTime < 23 then return elseif currentLevel == 5 and levelTime > 23 then black_hole = true end
 		clickedon = ""
 		clickedamount = 0
 		if objects ~= nil then

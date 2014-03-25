@@ -49,6 +49,10 @@ function loadLevelRaw(levelToLoad)
 	riot = false
 	killedRiot = 0
 	fadeOut["swat"] = {}
+	secTick = 0
+	black_hole = false
+	holeAdd = 0
+	swatsRemoved = 0
 	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)
@@ -113,7 +117,7 @@ end
 function removeObject(name, uid)
 		if objects[name] ~= nil and objects[name][uid] ~= nil then else return end
 		if objects[name][uid].body ~= nil then objects[name][uid].body:setActive(false) end
-		if name == "swat" and riot == true then
+		if name == "swat" and riot == true and currentLevel ~= 5 then
 			shieldX = objects["swat"][uid].rightarm.body:getX()
 			shieldY = objects["swat"][uid].rightarm.body:getY()
 			shieldAngle = objects["swat"][uid].rightarm.body:getAngle()

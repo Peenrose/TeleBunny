@@ -15,6 +15,7 @@ bunnyFrames = {
 	love.graphics.newImage("images/Bunny/4.png"),
 	love.graphics.newImage("images/Bunny/5.png"),
 	love.graphics.newImage("images/Bunny/6.png"),
+	love.graphics.newImage("images/Bunny/7.png"),
 }
 
 cageOpen = love.graphics.newImage("images/cage_open.png")

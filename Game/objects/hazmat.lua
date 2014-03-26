@@ -17,8 +17,11 @@ function drawHazmat(uid)
 	love.graphics.draw(hazmatSprites.leftarm,  objects["hazmat"][uid].leftarm.body:getX(),  objects["hazmat"][uid].leftarm.body:getY(),  objects["hazmat"][uid].leftarm.body:getAngle(),  1*0.6, 1*0.6)
 	love.graphics.draw(hazmatSprites.rightarm, objects["hazmat"][uid].rightarm.body:getX(), objects["hazmat"][uid].rightarm.body:getY(), objects["hazmat"][uid].rightarm.body:getAngle(), 1*0.6, 1*0.6)
 	love.graphics.draw(hazmatSprites.torso,    objects["hazmat"][uid].torso.body:getX(),    objects["hazmat"][uid].torso.body:getY(),    objects["hazmat"][uid].torso.body:getAngle(),    1*0.6, 1*0.6)
-	love.graphics.draw(hazmatSprites.head,     objects["hazmat"][uid].head.body:getX(),     objects["hazmat"][uid].head.body:getY(),     objects["hazmat"][uid].head.body:getAngle(),     1*0.6, 1*0.6)
-
+	if not hazmatHelmetBroken[uid] then
+		love.graphics.draw(hazmatSprites.head,     objects["hazmat"][uid].head.body:getX(),     objects["hazmat"][uid].head.body:getY(),     objects["hazmat"][uid].head.body:getAngle(),     1*0.6, 1*0.6)
+	else
+		love.graphics.draw(hazmatSprites.brokenHelm,     objects["hazmat"][uid].head.body:getX(),     objects["hazmat"][uid].head.body:getY(),     objects["hazmat"][uid].head.body:getAngle(),     1*0.6, 1*0.6)
+	end
 	-- love.graphics.setColor(0,0,0)
 	-- love.graphics.polygon("line", hazmat.leftleg.body:getWorldPoints(hazmat.leftleg.shape:getPoints()))
 	-- love.graphics.polygon("line", hazmat.rightleg.body:getWorldPoints(hazmat.rightleg.shape:getPoints()))
@@ -35,6 +38,7 @@ hazmatSprites = {
 	rightarm = love.graphics.newImage("images/Scientist/Hazmat/right_arm.png"),
 	leftleg = love.graphics.newImage("images/Scientist/Hazmat/left_leg.png"),
 	rightleg = 	love.graphics.newImage("images/Scientist/Hazmat/right_leg.png"),
+	brokenHelm = love.graphics.newImage("images/Scientist/Hazmat/headsmash.png")
 }
 hazmat = {}
 hazmat.draw = drawHazmat

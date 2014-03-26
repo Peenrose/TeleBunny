@@ -53,6 +53,7 @@ function loadLevelRaw(levelToLoad)
 	black_hole = false
 	holeAdd = 0
 	swatsRemoved = 0
+	hazmatHelmetBroken = {}
 	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)
@@ -153,11 +154,28 @@ function updateFadeOut(dt)
 	end
 end
 
+function breakBeaker(name, uid)
+	if beakerPieces == nil then beakerPieces = {} end
+	beakerPieces[name] = {}
+	world:update(0)
+	beakerPieces[name].top = love.physics.newFixture(love.physics.newBody(world, objects[name][uid].body:getX(), objects[name][uid].body:getY(), "dynamic"), love.physics.newPolygonShape(2/4,13/4, 85/4,15/4, 85/4,213/4, 2/4,193/4))
+	beakerPieces[name].mid = love.physics.newFixture(love.physics.newBody(world, objects[name][uid].body:getX(), objects[name][uid].body:getY(), "dynamic"), love.physics.newPolygonShape(115/4,19/4, 198/4,20/4, 317/4,285/4, 224/4,331/4, 54/4,330/4, 92/4,80/4))
+	beakerPieces[name].bot = love.physics.newFixture(love.physics.newBody(world, objects[name][uid].body:getX(), objects[name][uid].body:getY(), "dynamic"), love.physics.newPolygonShape(2/4,13/4, 85/4,15/4, 85/4,213/4, 2/4,193/4))
+	removeObject(name, uid)
+end
+
 function fadeOutObject(name, uid, seconds)
 	if fadeOut[name] == nil then fadeOut[name] = {} end
 	if fadeOut[name][uid] == nil then
-		addInfo("Fading Out: "..name.." #"..tostring(uid), seconds*2)
-		fadeOut[name][uid] = {cur=255, aps=255/seconds}
+		if name == "beaker_1" or name == "beaker_2" or name == "beaker_3" or name == "beaker_4" or name == "beaker_5" then
+			breakBeaker(name, uid)
+		else
+			if name == "hazmat" then
+				hazmatHelmetBroken[uid] = true
+			end
+			addInfo("Fading Out: "..name.." #"..tostring(uid), seconds*2)
+			fadeOut[name][uid] = {cur=255, aps=255/seconds}
+		end
 	end
 end
 

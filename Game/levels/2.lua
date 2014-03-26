@@ -7,6 +7,9 @@ transition = 0
 fadeOut["hazmat"] = {}
 --http://bit.ly/1nzScTX
 
+beakerTop = love.graphics.newImage("images/beakerpiece_top.png")
+beakerMid = love.graphics.newImage("images/beakerpiece_mid.png")
+beakerBot = love.graphics.newImage("images/beakerpiece_bot.png")
 function load()
 	love.window.setTitle("Telekinetic Bunny")
 	setFontSize(14)
@@ -107,11 +110,13 @@ function isHazmatFoot(fix)
 end
 
 function beakerContact(beaker, uid)
-	if math.random(1, 12) == 12 and hazmatFlail == true then
+	if hazmatHelmetBroken[uid] == true then
 		fadeOutObject("hazmat", uid, 2)
 		fadeOutObject(beaker, 1, 1.5)
 		thrownObjects = thrownObjects + 1
-		if grabbedV == objects["beaker_1"][1] then love.mousereleased() end
+	end
+	if math.random(1, 30) == 30 and hazmatFlail == true then
+		if not hazmatHelmetBroken[uid] then hazmatHelmetBroken[uid] = true end
 	end
 end
 
@@ -133,22 +138,25 @@ function beginContactTwo(a, b, coll)
 		other = a
 	end
 
-	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["hazmat"][uid] == nil and maxvel > 400 then
+	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["hazmat"][uid] == nil and maxvel > 600 then
 
-		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 2000 then
+		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 1500 then
 			beakerContact("beaker_1", uid)
 		end
-		if objects["beaker_2"] ~= nil and objects["beaker_2"][1] ~= nil and other == objects["beaker_2"][1].fixture and maxvel > 2000 then
+		if objects["beaker_2"] ~= nil and objects["beaker_2"][1] ~= nil and other == objects["beaker_2"][1].fixture and maxvel > 1500 then
 			beakerContact("beaker_2", uid)
 		end
-		if objects["beaker_3"] ~= nil and objects["beaker_3"][1] ~= nil and other == objects["beaker_3"][1].fixture and maxvel > 2000 then
+		if objects["beaker_3"] ~= nil and objects["beaker_3"][1] ~= nil and other == objects["beaker_3"][1].fixture and maxvel > 1500 then
 			beakerContact("beaker_3", uid)
 		end
-		if objects["beaker_4"] ~= nil and objects["beaker_4"][1] ~= nil and other == objects["beaker_4"][1].fixture and maxvel > 2000 then
+		if objects["beaker_4"] ~= nil and objects["beaker_4"][1] ~= nil and other == objects["beaker_4"][1].fixture and maxvel > 1500 then
 			beakerContact("beaker_4", uid)
 		end
-		if objects["beaker_5"] ~= nil and objects["beaker_5"][1] ~= nil and other == objects["beaker_5"][1].fixture and maxvel > 2000 then
+		if objects["beaker_5"] ~= nil and objects["beaker_5"][1] ~= nil and other == objects["beaker_5"][1].fixture and maxvel > 1500 then
 			beakerContact("beaker_5", uid)
+		end
+		if objects["ducky"] ~= nil and objects["ducky"][1] ~= nil and other == objects["ducky"][1].fixture and maxvel > 1000 then
+			fadeOutObject("ducky", 1, 2)
 		end
 		if hazmatFlail == false then hazmatFlailFunction() hazmatFlail = true end
 	end

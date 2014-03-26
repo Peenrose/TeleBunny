@@ -48,7 +48,6 @@ function updateLevelFive(dt)
 	if carrotsSpawned == nil then carrotsSpawned = 0 end
 	if levelTime == nil then levelTime = 0 end
 	levelTime = levelTime + dt
-
 	if levelTime < 2.5 and objects["bunny"] ~= nil then
 		objects["bunny"][1].body:setX(2000-levelTime*75)
 	end
@@ -96,7 +95,7 @@ function updateLevelFive(dt)
 		--ground.body:setActive(false)
 	end
 	if black_hole == true and swatsRemoved < 20 then
-		if math.random(1, 120) == 120 and holeAdd >= 0.075 then
+		if math.random(1, 60) == 60 and holeAdd >= 0.075 then
 			if objects["swat"][swatsRemoved+1].torso.body:getX() > 400 then
 				if swatsRemoved == nil then swatsRemoved = 1 else swatsRemoved = swatsRemoved + 1 end
 				fadeOutObject("swat", swatsRemoved, 1)
@@ -117,11 +116,13 @@ function updateLevelFive(dt)
 		if y < 900 then
 			objects["bunny"][1].body:setY(y+(dt*200))
 		else bunnyFrameSet = 7 end
-		addWalls()
-		addObject("carrot")
-		carrotsSpawned = carrotsSpawned + 1
-		objects["carrot"][carrotsSpawned].body:setPosition(settings.window.width/2, 400)
-		objects["carrot"][carrotsSpawned].body:setLinearVelocity(math.random(-500, 500), math.random(-500, 500))
+		if carrotsSpawned < 500 then
+			addWalls()
+			addObject("carrot")
+			carrotsSpawned = carrotsSpawned + 1
+			objects["carrot"][carrotsSpawned].body:setPosition(settings.window.width/2, 400)
+			objects["carrot"][carrotsSpawned].body:setLinearVelocity(math.random(-500, 500), math.random(-500, 500))
+		end
 	end
 end
 

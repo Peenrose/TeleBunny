@@ -23,7 +23,7 @@ function love.load()
 
 	setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen)
 
-	loadLevel(5)
+	loadLevel(2)
 end
 
 function love.update(dt)
@@ -354,6 +354,13 @@ function drawAll()
 			end
 			if objects["swatcar"] ~= nil then
 				objects["swatcar"][1].draw()
+			end
+		end
+		if currentLevel == 2 and beakerPieces ~= nil then
+			for k, v in pairs(beakerPieces) do
+				love.graphics.draw(beakerTop,  beakerPieces[k].top:getBody():getX(),  beakerPieces[k].top:getBody():getY(),  beakerPieces[k].top:getBody():getAngle(), 1/4, 1/4)
+				love.graphics.draw(beakerMid,  beakerPieces[k].mid:getBody():getX(),  beakerPieces[k].mid:getBody():getY(),  beakerPieces[k].mid:getBody():getAngle(), 1/4, 1/4)
+				love.graphics.draw(beakerBot,  beakerPieces[k].bot:getBody():getX(),  beakerPieces[k].bot:getBody():getY(),  beakerPieces[k].bot:getBody():getAngle(), 1/4, 1/4)
 			end
 		end
 	end

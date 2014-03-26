@@ -28,6 +28,8 @@ function load()
 	addObject("beaker_4")
 	addObject("beaker_5")
 	addObject("ducky")
+	addObject("light_right")
+	addObject("light_left")
 
 end
 

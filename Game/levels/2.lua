@@ -177,11 +177,11 @@ function beginContactTwo(a, b, coll)
 		if objects["ducky"] ~= nil and objects["ducky"][1] ~= nil and other == objects["ducky"][1].fixture and maxvel > 1000 then
 			fadeOutObject("ducky", 1, 2)
 		end
-		if objects["light_left"] ~= nil and objects["light_left"][1] ~= nil and other == objects["light_left"] then
-			if math.random(1, 5) == 5 then hazmatHelmetBroken[uid] = true end
+		if objects["light_left"] ~= nil and objects["light_left"][1] ~= nil and other == objects["light_left"][1].fixture then
+			if math.random(1, 15) == 15 then hazmatHelmetBroken[uid] = true end
 		end
-		if objects["light_right"] ~= nil and objects["light_right"][1] ~= nil and other == objects["light_right"] then
-			if math.random(1, 5) == 5 then hazmatHelmetBroken[uid] = true end
+		if objects["light_right"] ~= nil and objects["light_right"][1] ~= nil and other == objects["light_right"][1].fixture then
+			if math.random(1, 15) == 15 then hazmatHelmetBroken[uid] = true end
 		end
 		if hazmatFlail == false then hazmatFlailFunction() hazmatFlail = true end
 	end

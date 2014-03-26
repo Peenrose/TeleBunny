@@ -59,7 +59,7 @@ settingsItems = {
 levelItems = {
 	title = "Load Level",
 	{title = "Back", action = function() changePauseMenu(pauseItems) end},
-	{title = "Menu", action = function() loadLevel("menu") end},
+	{title = "Intro", action = function() loadLevel("intro") end},
 	{title = "Level One", action = function() loadLevel(1) end},
 	{title = "Level Two", action = function() loadLevel(2) end},
 	{title = "Level Three", action = function() loadLevel(3) end},
@@ -68,6 +68,7 @@ levelItems = {
 }
 
 function togglePause()
+	if currentLevel == "intro" then return end
 	if paused == true then
 		paused = false
 		pausedMenu = false

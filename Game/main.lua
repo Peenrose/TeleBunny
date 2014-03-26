@@ -23,7 +23,7 @@ function love.load()
 
 	setResolution(settings.window.width, settings.window.height, settings.displayFlags.fullscreen)
 
-	loadLevel(2)
+	loadLevel("intro")
 end
 
 function love.update(dt)
@@ -53,7 +53,7 @@ function love.update(dt)
 		end
 		addInfo("FPS: "..love.timer.getFPS(), 0)
 		if world ~= nil then world:update(dt) end
-		--if updateLevel ~= nil then updateLevel(dt) end
+		if currentLevel == "intro" then updateIntro(dt) end
 		if currentLevel == 1 then updateLevelOne(dt) end
 		if currentLevel == 2 then updateLevelTwo(dt) end
 		if currentLevel == 3 then updateLevelThree(dt) end
@@ -306,6 +306,7 @@ function drawAll()
 	love.graphics.setColor(255,255,255)
 	if background ~= nil then love.graphics.draw(background, 0, 0) end
 	if objects ~= nil and objects["bunny"] ~= nil and currentLevel == 1 then uid = 1 love.graphics.draw(cageOpen, 1720-bunnywidth/2-110, objects["bunny"][uid].body:getY()-bunnyheight/2-75, 0, cageosx, cageosy) end
+	if currentLevel == "intro" and drawIntro ~= nil then drawIntro() end
 	if objects ~= nil then
 		for name, amount in pairs(objectList) do
 			love.graphics.setColor(255,255,255)
@@ -371,6 +372,18 @@ function drawAll()
 				love.graphics.draw(beakerMid,  beakerPieces[k].mid:getBody():getX(),  beakerPieces[k].mid:getBody():getY(),  beakerPieces[k].mid:getBody():getAngle(), 1/4, 1/4)
 				love.graphics.draw(beakerBot,  beakerPieces[k].bot:getBody():getX(),  beakerPieces[k].bot:getBody():getY(),  beakerPieces[k].bot:getBody():getAngle(), 1/4, 1/4)
 			end
+		end
+	end
+	if currentLevel == 1 then
+		a = math.max(255-playtime*30, 0)
+		love.graphics.setColor(0,0,0, a)
+		setFontSize(200)
+		love.graphics.printf("Telekinetic Bunny", 0, (1080/2)-font:getHeight("T"), 1920, "center")
+		if a == 0 then
+			a2 = math.max(255-(playtime-8)*30, 0)
+			love.graphics.setColor(0,0,0, a2)
+			setFontSize(150)
+			love.graphics.printf("Click and drag to throw objects", 0, (1080/2)-font:getHeight("T"), 1920, "center")
 		end
 	end
 end

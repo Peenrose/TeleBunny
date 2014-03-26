@@ -1,6 +1,8 @@
 frozenBeaker_3 = true
 frozenBeaker_4 = true
 frozenBeaker_5 = true
+frozenLeftLight = true
+frozenRightLight = true
 
 thrownObjects = 0
 transition = 0
@@ -66,6 +68,21 @@ function updateLevelTwo(dt)
 		objects["beaker_5"][1].body:setLinearVelocity(0,0)
 		objects["beaker_5"][1].body:setAngle(0)
 	end
+
+	if frozenLeftLight and objects["light_left"] ~= nil and objects["light_left"][1] ~= nil then
+		objects["light_left"][1].body:setX(350+300)
+		objects["light_left"][1].body:setY(124+24)
+		objects["light_left"][1].body:setLinearVelocity(0,0)
+		objects["light_left"][1].body:setAngle(0)
+	end
+
+	if frozenRightLight and objects["light_left"] ~= nil and objects["light_left"][1] ~= nil then
+		objects["light_right"][1].body:setX(1219+300)
+		objects["light_right"][1].body:setY(96+24)
+		objects["light_right"][1].body:setLinearVelocity(0,0)
+		objects["light_right"][1].body:setAngle(0)
+	end
+
 	if thrownObjects >= 4 then
 		transition = transition + dt
 		if transition >= 10 then
@@ -140,7 +157,7 @@ function beginContactTwo(a, b, coll)
 		other = a
 	end
 
-	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["hazmat"][uid] == nil and maxvel > 600 then
+	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["hazmat"][uid] == nil then
 
 		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 1500 then
 			beakerContact("beaker_1", uid)
@@ -159,6 +176,12 @@ function beginContactTwo(a, b, coll)
 		end
 		if objects["ducky"] ~= nil and objects["ducky"][1] ~= nil and other == objects["ducky"][1].fixture and maxvel > 1000 then
 			fadeOutObject("ducky", 1, 2)
+		end
+		if objects["light_left"] ~= nil and objects["light_left"][1] ~= nil and other == objects["light_left"] then
+			if math.random(1, 5) == 5 then hazmatHelmetBroken[uid] = true end
+		end
+		if objects["light_right"] ~= nil and objects["light_right"][1] ~= nil and other == objects["light_right"] then
+			if math.random(1, 5) == 5 then hazmatHelmetBroken[uid] = true end
 		end
 		if hazmatFlail == false then hazmatFlailFunction() hazmatFlail = true end
 	end

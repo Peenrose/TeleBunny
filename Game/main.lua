@@ -190,6 +190,14 @@ function love.mousepressed(x, y, button)
 										frozenBeaker_5 = false
 										v.fixture:setMask()
 									end
+									if k == "light_left #1" then
+										frozenLeftLight = false
+										v.fixture:setMask()
+									end
+									if k == "light_right #1" then
+										frozenRightLight = false
+										v.fixture:setMask()
+									end
 								elseif currentLevel == 4 then
 									if k == "tree #1" then
 										frozenTree = false

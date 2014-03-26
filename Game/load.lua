@@ -53,6 +53,8 @@ function loadLevelRaw(levelToLoad)
 	black_hole = false
 	holeAdd = 0
 	swatsRemoved = 0
+	frozenLeftLight = true
+	frozenRightLight = true
 	hazmatHelmetBroken = {}
 	beakerPieces = {}
 	if grabbedV ~= nil then grabbedV = nil end

@@ -162,8 +162,12 @@ function breakBeaker(name, uid)
 	beakerPieces[name] = {}
 	world:update(0)
 	beakerPieces[name].top = love.physics.newFixture(love.physics.newBody(world, objects[name][uid].body:getX(), objects[name][uid].body:getY(), "dynamic"), love.physics.newPolygonShape(2/4,13/4, 85/4,15/4, 85/4,213/4, 2/4,193/4))
-	beakerPieces[name].mid = love.physics.newFixture(love.physics.newBody(world, objects[name][uid].body:getX(), objects[name][uid].body:getY(), "dynamic"), love.physics.newPolygonShape(115/4,19/4, 198/4,20/4, 317/4,285/4, 224/4,331/4, 54/4,330/4, 92/4,80/4))
-	beakerPieces[name].bot = love.physics.newFixture(love.physics.newBody(world, objects[name][uid].body:getX(), objects[name][uid].body:getY(), "dynamic"), love.physics.newPolygonShape(2/4,13/4, 85/4,15/4, 85/4,213/4, 2/4,193/4))
+	beakerPieces[name].mid = love.physics.newFixture(love.physics.newBody(world, objects[name][uid].body:getX(), objects[name][uid].body:getY()+30, "dynamic"), love.physics.newPolygonShape(115/4,19/4, 198/4,20/4, 317/4,285/4, 224/4,331/4, 54/4,330/4, 92/4,80/4))
+	beakerPieces[name].bot = love.physics.newFixture(love.physics.newBody(world, objects[name][uid].body:getX(), objects[name][uid].body:getY()+100, "dynamic"), love.physics.newPolygonShape(2/4,13/4, 85/4,15/4, 85/4,213/4, 2/4,193/4))
+	beakerPieces[name].top:getBody():setAngle(objects[name][uid].body:getAngle())
+	beakerPieces[name].mid:getBody():setAngle(objects[name][uid].body:getAngle())
+	beakerPieces[name].bot:getBody():setAngle(objects[name][uid].body:getAngle())
+	world:update(0)
 	removeObject(name, uid)
 end
 

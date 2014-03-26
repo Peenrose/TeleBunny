@@ -157,7 +157,7 @@ function beginContactTwo(a, b, coll)
 		other = a
 	end
 
-	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["hazmat"][uid] == nil then
+	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["hazmat"][uid] == nil and maxvel > 300 then
 
 		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 1500 then
 			beakerContact("beaker_1", uid)

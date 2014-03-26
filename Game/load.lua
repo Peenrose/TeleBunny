@@ -54,6 +54,7 @@ function loadLevelRaw(levelToLoad)
 	holeAdd = 0
 	swatsRemoved = 0
 	hazmatHelmetBroken = {}
+	beakerPieces = {}
 	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)

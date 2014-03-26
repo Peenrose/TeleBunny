@@ -357,6 +357,7 @@ function drawAll()
 			end
 		end
 		if currentLevel == 2 and beakerPieces ~= nil then
+			love.graphics.setColor(255,255,255,255)
 			for k, v in pairs(beakerPieces) do
 				love.graphics.draw(beakerTop,  beakerPieces[k].top:getBody():getX(),  beakerPieces[k].top:getBody():getY(),  beakerPieces[k].top:getBody():getAngle(), 1/4, 1/4)
 				love.graphics.draw(beakerMid,  beakerPieces[k].mid:getBody():getX(),  beakerPieces[k].mid:getBody():getY(),  beakerPieces[k].mid:getBody():getAngle(), 1/4, 1/4)

@@ -5,6 +5,19 @@ function load()
 	world = love.physics.newWorld(0, 9.81*64, true)
 	objects = {}
 	deathBackground = love.graphics.newImage("images/gameover.png")
+
+	x = math.random(1, 5)
+	if x == 1 then
+		play("scientist/win/alwayswin")
+	elseif x == 2 then
+		play("scientist/win/gotcha")
+	elseif x == 3 then
+		play("scientist/win/igotyou")
+	elseif x == 4 then
+		play("scientist/win/itsover")
+	elseif x == 5 then
+		play("scientist/win/minenow")
+	end
 end
 
 function updateGameOver(dt)

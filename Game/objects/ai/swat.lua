@@ -64,7 +64,7 @@ function isRotating(uid)
 end
 
 function kick(uid)
-	if objects["swat"] ~= nil and objects["swat"][uid] ~= nil and currentLevel ~= 5 then
+	if objects["swat"] ~= nil and objects["swat"][uid] ~= nil and currentLevel ~= 5 and fadeOut["swat"][uid] == nil then
 		swat = objects["swat"][uid]
 		kickReset[uid] = 1
 		swat.rightleg.body:applyAngularImpulse(-10000)

@@ -24,6 +24,24 @@ function load()
 	riot = true
 	addObject("swatcar")
 	fadeOut["swat"] = {}
+		startSong:stop()
+
+	if midSong == nil then
+		midSong = love.audio.newSource("music/mid_song.mp3")
+		midSong:setLooping(true)
+		midSong:play()
+	end
+end
+
+function swatDeath(name)
+	x = math.random(1,3)
+	if x == 1 then
+		play("scientist/pain/swatow")
+	elseif x == 2 then
+		play("scientist/pain/swatsensualouch")
+	elseif x == 3 then
+		play("scientist/pain/swatthathurt")
+	end
 end
 
 function updateLevelFour(dt)
@@ -114,7 +132,14 @@ function beginContactFour(a, b, coll)
 	end
 
 	if uid ~= nil and other ~= nil and forceA+forceB > 10000 and fadeOut["swat"][uid] == nil then
-		if math.random(1, 50) == 50 then fadeOutObject("swat", uid, 3) killedRiot = killedRiot + 1 end
+		if math.random(1, 50) == 50 then
+			fadeOutObject("swat", uid, 3)
+			killedRiot = killedRiot + 1
+			swatDeath()
+			if math.random(1,2) == 2 and objects["tree"] ~= nil and objects["tree"][1] ~= nil and other == objects["tree"][1].fixture then
+				fadeOutObject("tree", 1, 2)
+			end
+		end
 	end
 
 	if isSwatPart(a) and b == objects["bunny"][1].fixture then

@@ -19,8 +19,13 @@ function load()
 	--addObject("swat")
 	addObject("black_hole")
 
-	midSong:stop()
+	if midSong ~= nil then midSong:stop() end
+	if startSong ~= nil then startSong:stop() end
 	endSong = love.audio.newSource("music/end_song.mp3")
+	midSong = love.audio.newSource("music/mid_song.mp3")
+	holeAudio = love.audio.newSource("audio/enviroment/blackhole.mp3")
+	scream = love.audio.newSource("audio/scientist/pain/swatmultiscream.mp3")
+	scream:setVolume(0.35)
 end
 
 function setFrame(min, max, frame) if levelTime > min and levelTime < max then bunnyFrameSet = frame end end
@@ -67,6 +72,16 @@ function updateLevelFive(dt)
 		addObject("swat", 20)
 	end
 
+	if levelTime > 14 and not swatYell then
+		swatYell = true
+		love.audio.newSource("audio/scientist/win/itsover.mp3"):play()
+	end
+	
+	if levelTime > 15 and not swatYell2 then
+		swatYell2 = true
+		love.audio.newSource("audio/scientist/win/triumphant yes.mp3"):play()
+	end
+
 	if objects["swat"] ~= nil then
 		for k, v in pairs(objects["swat"]) do
 			if v.torso.body:getX() < 400 then
@@ -104,6 +119,9 @@ function updateLevelFive(dt)
 			if objects["swat"][swatsRemoved+1].torso.body:getX() > 400 then
 				if swatsRemoved == nil then swatsRemoved = 1 else swatsRemoved = swatsRemoved + 1 end
 				fadeOutObject("swat", swatsRemoved, 1)
+				scream = love.audio.newSource("audio/scientist/pain/swatmultiscream.mp3")
+				scream:setVolume(0.35)
+				scream:play()
 			end
 		end
 	end
@@ -120,14 +138,25 @@ function updateLevelFive(dt)
 		y = objects["bunny"][1].body:getY()
 		if y < 900 then
 			objects["bunny"][1].body:setY(y+(dt*200))
-		else bunnyFrameSet = 7 end
-		if carrotsSpawned < 500 then
+			endSong:stop()
+		else
+			bunnyFrameSet = 7
+			gameOver = true
+			midSong:play()
+		end
+		if carrotsSpawned < 1000 then
 			addWalls()
 			addObject("carrot")
 			carrotsSpawned = carrotsSpawned + 1
 			objects["carrot"][carrotsSpawned].body:setPosition(settings.window.width/2, 400)
-			objects["carrot"][carrotsSpawned].body:setLinearVelocity(math.random(-500, 500), math.random(-500, 500))
+			objects["carrot"][carrotsSpawned].body:setLinearVelocity(math.random(-750, 750), math.random(-1250, 500))
 		end
+	end
+	if holeAdd <= 0 then black_hole = false end
+	if black_hole == true then
+		holeAudio:play()
+	elseif black_hole == false then
+		holeAudio:stop()
 	end
 end
 

@@ -23,7 +23,7 @@ function drawIntro()
 	elseif levelTime < 34 then
 		love.graphics.draw(introImages[3], 0, 0)
 		playNarration("story3")
-	elseif levelTime < 55 then
+	elseif levelTime < 52 then
 		love.graphics.draw(introImages[4], 0, 0)
 		playNarration("story4")
 	else

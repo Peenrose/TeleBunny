@@ -38,6 +38,24 @@ function load()
 	addObject("book_4")
 
 	fadeOut["swat"] = {}
+		startSong:stop()
+
+	if midSong == nil then
+		midSong = love.audio.newSource("music/mid_song.mp3")
+		midSong:setLooping(true)
+		midSong:play()
+	end
+end
+
+function swatDeath(name)
+	x = math.random(1,3)
+	if x == 1 then
+		play("scientist/pain/swatow")
+	elseif x == 2 then
+		play("scientist/pain/swatsensualouch")
+	elseif x == 3 then
+		play("scientist/pain/swatthathurt")
+	end
 end
 
 function updateLevelThree(dt)
@@ -116,7 +134,12 @@ function beginContactThree(a, b, coll)
 	end
 
 	if uid ~= nil and other ~= nil and forceA+forceB > 3000 and isSwatPart(other) == false and fadeOut["swat"][uid] == nil then
-		if math.random(1, 20) == 20 then fadeOutObject("swat", uid, 3) killedHazmat = killedHazmat + 1 end
+		if math.random(1, 20) == 20 then
+			fadeOutObject("swat", uid, 3)
+			swatDeath()
+			killedHazmat = killedHazmat + 1
+			if objects["table"] ~= nil and objects["table"][1] ~= nil and other == objects["table"][1].fixture then if math.random(1,2) == 2 then fadeOutObject("table", 1, 2) end end
+		end
 	end
 
 

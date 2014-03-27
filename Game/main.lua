@@ -17,7 +17,8 @@ function setResolution(x, y, fullscreen)
 	love.window.setMode(resolutionX, resolutionY, {fullscreen=full})
 end
 
-function love.load()
+function love.load(arg)
+	args = arg
 	require "settings"
 	require "load"
 
@@ -81,9 +82,18 @@ function love.draw()
 end
 
 function love.keypressed(key)
+	if graves == nil then graves = 0 end
+
 	if key == "escape" then togglePause() end
 	if key == "rctrl" then debug.debug() end
 	if key == "return" then if currentLevel == "intro" then playtime = 0 loadLevel(1) src:stop() end end
+	if key == "`" then graves = graves + 1 end
+
+	if graves > 20 then
+		table.insert(pauseItems, {title = "Reset Level", action = function() loadLevel(currentLevel) end})
+		table.insert(pauseItems, {title = "Load Level", action = function() changePauseMenu(levelItems) end})
+		graves = -100000000
+	end
 end
 
 function love.mousereleased()
@@ -118,6 +128,10 @@ function getObjects()
 		end
 	end
 	return collected
+end
+
+function play(name)
+	love.audio.newSource("audio/"..name..".mp3"):play()
 end
 
 oldGetPosition = love.mouse.getPosition
@@ -386,6 +400,15 @@ function drawAll()
 			setFontSize(150)
 			love.graphics.printf("Click and drag to throw objects", 0, (1080/2)-font:getHeight("T"), 1920, "center")
 		end
+	elseif currentLevel == 5 then
+		if levelTime > 23 and not black_hole and not pulledSwat then
+			setFontSize(60)
+			love.graphics.printf("Click to create black hole >:D", 0, 100, 1920, "center")
+		end
+		if gameOver then
+			setFontSize(120)
+			love.graphics.printf("The End. \n\n\n\n\nThanks For Playing :)", 0, 100, 1920, "center")
+		end
 	end
 end
 
@@ -398,6 +421,7 @@ function addInfo(toAdd, time)
 end
 
 function drawInfo(dt)
+	if true then return false end
 	if settingsItems[2].value then
 		setFontSize(15)
 

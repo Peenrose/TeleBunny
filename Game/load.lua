@@ -171,6 +171,7 @@ function breakBeaker(name, uid)
 	beakerPieces[name].top:getBody():setAngle(objects[name][uid].body:getAngle())
 	beakerPieces[name].mid:getBody():setAngle(objects[name][uid].body:getAngle())
 	beakerPieces[name].bot:getBody():setAngle(objects[name][uid].body:getAngle())
+	world:update(0)
 	removeObject(name, uid)
 end
 
@@ -178,14 +179,16 @@ function fadeOutObject(name, uid, seconds)
 	if fadeOut[name] == nil then fadeOut[name] = {} end
 	if fadeOut[name][uid] == nil then
 		if name == "beaker_1" or name == "beaker_2" or name == "beaker_3" or name == "beaker_4" or name == "beaker_5" then
-			breakBeaker(name, uid)
-		else
-			if name == "hazmat" then
-				hazmatHelmetBroken[uid] = true
+			if currentLevel == 2 then
+				breakBeaker(name, uid)
+				return
 			end
-			addInfo("Fading Out: "..name.." #"..tostring(uid), seconds*2)
-			fadeOut[name][uid] = {cur=255, aps=255/seconds}
 		end
+		if name == "hazmat" then
+			hazmatHelmetBroken[uid] = true
+		end
+		addInfo("Fading Out: "..name.." #"..tostring(uid), seconds*2)
+		fadeOut[name][uid] = {cur=255, aps=255/seconds}
 	end
 end
 

@@ -34,10 +34,29 @@ function load()
 	addObject("light_left")
 
 	startSong:stop()
+	if midSong == nil then
+		midSong = love.audio.newSource("music/mid_song.mp3")
+		midSong:setLooping(true)
+		midSong:play()
+	end
+end
 
-	midSong = love.audio.newSource("music/mid_song.mp3")
-	midSong:setLooping(true)
-	midSong:play()
+function hazmatDeathNoise()
+	x = math.random(1,6)
+	if x == 1 then
+		play("scientist/pain/scientistmuffledaiee")
+	elseif x == 2 then
+		play("scientist/pain/scientistmuffledaiee")
+	elseif x == 3 then
+		play("scientist/pain/scientistmuffledoh")
+	elseif x == 4 then
+		play("scientist/pain/scientistmuffledooh")
+	elseif x == 5 then
+		play("scientist/pain/scientistmuffledoohooh")
+	elseif x == 6 then
+		play("scientist/pain/scientistmuffleduuh")
+	end
+	
 end
 
 function updateLevelTwo(dt)
@@ -165,28 +184,28 @@ function beginContactTwo(a, b, coll)
 	if uid ~= nil and other ~= nil and objects ~= nil and fadeOut["hazmat"][uid] == nil and maxvel > 300 then
 
 		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 1500 then
-			beakerContact("beaker_1", uid)
+			beakerContact("beaker_1", uid) hazmatDeathNoise()
 		end
 		if objects["beaker_2"] ~= nil and objects["beaker_2"][1] ~= nil and other == objects["beaker_2"][1].fixture and maxvel > 1500 then
-			beakerContact("beaker_2", uid)
+			beakerContact("beaker_2", uid) hazmatDeathNoise()
 		end
 		if objects["beaker_3"] ~= nil and objects["beaker_3"][1] ~= nil and other == objects["beaker_3"][1].fixture and maxvel > 1500 then
-			beakerContact("beaker_3", uid)
+			beakerContact("beaker_3", uid) hazmatDeathNoise()
 		end
 		if objects["beaker_4"] ~= nil and objects["beaker_4"][1] ~= nil and other == objects["beaker_4"][1].fixture and maxvel > 1500 then
-			beakerContact("beaker_4", uid)
+			beakerContact("beaker_4", uid) hazmatDeathNoise()
 		end
 		if objects["beaker_5"] ~= nil and objects["beaker_5"][1] ~= nil and other == objects["beaker_5"][1].fixture and maxvel > 1500 then
-			beakerContact("beaker_5", uid)
+			beakerContact("beaker_5", uid) hazmatDeathNoise()
 		end
 		if objects["ducky"] ~= nil and objects["ducky"][1] ~= nil and other == objects["ducky"][1].fixture and maxvel > 1000 then
 			fadeOutObject("ducky", 1, 2)
 		end
 		if objects["light_left"] ~= nil and objects["light_left"][1] ~= nil and other == objects["light_left"][1].fixture then
-			if math.random(1, 15) == 15 then hazmatHelmetBroken[uid] = true end
+			if math.random(1, 15) == 15 then hazmatHelmetBroken[uid] = true hazmatDeathNoise() end
 		end
 		if objects["light_right"] ~= nil and objects["light_right"][1] ~= nil and other == objects["light_right"][1].fixture then
-			if math.random(1, 15) == 15 then hazmatHelmetBroken[uid] = true end
+			if math.random(1, 15) == 15 then hazmatHelmetBroken[uid] = true hazmatDeathNoise() end
 		end
 		if hazmatFlail == false then hazmatFlailFunction() hazmatFlail = true end
 	end

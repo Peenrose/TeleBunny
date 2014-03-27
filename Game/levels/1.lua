@@ -54,7 +54,9 @@ function load()
 	addObject("window")
 
 	startSong = love.audio.newSource("music/start_song.mp3")
+	startSong:setVolume(0.6)
 	startSong:play()
+	playedLast = 0
 end
 
 function updateLevelOne(dt)
@@ -155,6 +157,18 @@ function getScientistsLeft()
 	end
 end
 
+function scientistDeathNoise()
+	x = math.random(1,3)
+	if x == 1 then
+		play("scientist/pain/immelting")
+	elseif x == 2 then
+		play("scientist/pain/scientistaieee")
+	elseif x == 3 then
+		play("scientist/pain/scientisteeeugh")
+	end
+	playedLast = playtime
+end
+
 function beginContactOne(a, b, coll)
 	avelx, avely = a:getBody():getLinearVelocity()
 	bvelx, bvely = b:getBody():getLinearVelocity()
@@ -212,37 +226,37 @@ function beginContactOne(a, b, coll)
 		if objects["potato"] ~= nil and objects["potato"][1] ~= nil and other == objects["potato"][1].fixture and maxvel > 4000 then
 			fadeOutObject("potato", 1, 1.5)
 			thrownObjects = thrownObjects + 1
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) scientistDeathNoise() end
 			if grabbedV == objects["potato"][1] then love.mousereleased() end
 		end
 		if objects["beaker_1"] ~= nil and objects["beaker_1"][1] ~= nil and other == objects["beaker_1"][1].fixture and maxvel > 1700 then
 			fadeOutObject("beaker_1", 1, 1.5)
 			thrownObjects = thrownObjects + 1
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) scientistDeathNoise() end
 			if grabbedV == objects["beaker_1"][1] then love.mousereleased() end
 		end
 		if objects["carrot"] ~= nil and objects["carrot"][1] ~= nil and other == objects["carrot"][1].fixture and maxvel > 4000 then
 			fadeOutObject("carrot", 1, 1.5)
 			thrownObjects = thrownObjects + 1
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) scientistDeathNoise() end
 			if grabbedV == objects["carrot"][1] then love.mousereleased() end
 		end
 		if objects["syringe"] ~= nil and objects["syringe"][1] ~= nil and other == objects["syringe"][1].fixture and maxvel > 3500 then
 			fadeOutObject("syringe", 1, 1.5)
 			thrownObjects = thrownObjects + 1
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) scientistDeathNoise() end
 			if grabbedV == objects["syringe"][1] then love.mousereleased() end
 		end
 		if objects["microscope"] ~= nil and objects["microscope"][1] ~= nil and other == objects["microscope"][1].fixture and maxvel > 1800 then
 			fadeOutObject("microscope", 1, 1.5)
 			thrownObjects = thrownObjects + 1
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) scientistDeathNoise() end
 			if grabbedV == objects["microscope"][1] then love.mousereleased() end
 		end
 		if objects["bin"] ~= nil and objects["bin"][1] ~= nil and other == objects["bin"][1].fixture and maxvel > 600 then
 			fadeOutObject("bin", 1, 1.5)
 			thrownObjects = thrownObjects + 1
-			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) end
+			if thrownObjects % 2 == 0 then fadeOutObject("scientist", uid, 2) scientistDeathNoise() end
 			if grabbedV == objects["bin"][1] then love.mousereleased() end
 		end
 	end

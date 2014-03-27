@@ -6,7 +6,7 @@ settings = {
 	},
 
 	displayFlags = {
-		fullscreen = false,
+		fullscreen = true,
 		fullscreentype = "desktop",
 		vsync = true,
 		fsaa = 16,
@@ -27,10 +27,8 @@ pauseItems = {
 	title = "",
 	{title = "Resume Game", action = function() togglePause() end},
 	{title = "Quit Game", action = function() love.event.push("quit") end},
-	{title = "Reset Level", action = function() loadLevel(currentLevel) end},
-	{title = "Settings", action = function() changePauseMenu(settingsItems) end},
-	{title = "Load Level", action = function() changePauseMenu(levelItems) end},
 	{title = "Video Settings", action = function() changePauseMenu(videoItems) end},
+	{title = "Stop Music", action = function() if startSong ~= nil then startSong:stop() end if midSong ~= nil then midSong:stop() end if engSong ~= nil then endSong:stop() end end},
 }
 
 videoItems = {
@@ -48,12 +46,6 @@ resolutionItems = {
 	{title = "720p", action = function() setResolution(1280, 720) end},
 	{title = "576p", action = function() setResolution(1024, 576) end},
 	{title = "360p", action = function() setResolution(640, 360) end},
-}
-settingsItems = {
-	title = "Settings",
-	{title = "Back", action = function() changePauseMenu(pauseItems) end},
-	{title = "Debug Log", action = function() settingsItems[2].value = not settingsItems[2].value end, value = true},
-	
 }
 
 levelItems = {

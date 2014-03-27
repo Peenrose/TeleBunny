@@ -56,7 +56,9 @@ function loadLevelRaw(levelToLoad)
 	frozenLeftLight = true
 	frozenRightLight = true
 	hazmatHelmetBroken = {}
+	frozenTree = true
 	beakerPieces = {}
+	deathBackground = love.graphics.newImage("images/gameover.png")
 	if grabbedV ~= nil then grabbedV = nil end
 	frozenPotato, frozenSyringe, frozenMicroscope, frozenPipe, frozenPipe = true, true, true, true, true
 	load = require ("levels/"..levelToLoad)

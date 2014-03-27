@@ -52,6 +52,9 @@ function load()
 	addObject("potato")
 	addObject("pipe")
 	addObject("window")
+
+	startSong = love.audio.newSource("music/start_song.mp3")
+	startSong:play()
 end
 
 function updateLevelOne(dt)

@@ -83,6 +83,7 @@ end
 function love.keypressed(key)
 	if key == "escape" then togglePause() end
 	if key == "rctrl" then debug.debug() end
+	if key == "return" then if currentLevel == "intro" then playtime = 0 loadLevel(1) src:stop() end end
 end
 
 function love.mousereleased()

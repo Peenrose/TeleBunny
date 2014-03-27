@@ -33,6 +33,11 @@ function load()
 	addObject("light_right")
 	addObject("light_left")
 
+	startSong:stop()
+
+	midSong = love.audio.newSource("music/mid_song.mp3")
+	midSong:setLooping(true)
+	midSong:play()
 end
 
 function updateLevelTwo(dt)

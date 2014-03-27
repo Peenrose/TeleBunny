@@ -5,6 +5,7 @@ lastx = {}
 traveledLastSecond = {}
 secondCounter = {}
 fadeOut["swat"] = {}
+
 function load()
 	love.window.setTitle("Telekinetic Bunny")
 	setFontSize(14)
@@ -17,6 +18,9 @@ function load()
 	riot = true
 	--addObject("swat")
 	addObject("black_hole")
+
+	midSong:stop()
+	endSong = love.audio.newSource("music/end_song.mp3")
 end
 
 function setFrame(min, max, frame) if levelTime > min and levelTime < max then bunnyFrameSet = frame end end
@@ -82,6 +86,7 @@ function updateLevelFive(dt)
 		y = objects["bunny"][1].body:getY()
 		if y > 300 then
 			objects["bunny"][1].body:setY(y-(dt*130))
+			if not endSong:isPlaying() then endSong:play() end
 		end
 	end
 	if levelTime > 20 and not pulledSwat and black_hole then

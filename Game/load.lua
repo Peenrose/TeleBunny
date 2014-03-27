@@ -127,7 +127,7 @@ function removeObject(name, uid)
 			shieldAngle = objects["swat"][uid].rightarm.body:getAngle()
 			addObject("shield")
 		end
-		if name == "scientist" or name =="hazmat" or name == "swat" then
+		if name == "scientist" or name == "hazmat" or name == "swat" then
 			objects[name][uid].torso.body:setActive(false)
 			objects[name][uid].head.body:setActive(false)
 			objects[name][uid].leftarm.body:setActive(false)
@@ -143,6 +143,7 @@ function removeObject(name, uid)
 		removedObjects[name][uid] = true
 		grabbed = "none"
 		grabbedV = nil
+		world:update(0)
 end
 
 function updateFadeOut(dt)
@@ -158,6 +159,7 @@ function updateFadeOut(dt)
 end
 
 function breakBeaker(name, uid)
+	addInfo("Breaking Beaker", 1)
 	if beakerPieces == nil then beakerPieces = {} end
 	beakerPieces[name] = {}
 	world:update(0)
@@ -167,7 +169,6 @@ function breakBeaker(name, uid)
 	beakerPieces[name].top:getBody():setAngle(objects[name][uid].body:getAngle())
 	beakerPieces[name].mid:getBody():setAngle(objects[name][uid].body:getAngle())
 	beakerPieces[name].bot:getBody():setAngle(objects[name][uid].body:getAngle())
-	world:update(0)
 	removeObject(name, uid)
 end
 

@@ -2,6 +2,7 @@ TeleBunny
 =========
 
 An interactive game made by Andrew and Simon for TSA video game design 2014.
+(Sorry for extremely messy code; made on a tight deadline)
 
 Controls
 --------

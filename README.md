@@ -1,16 +1,24 @@
 TeleBunny
 =========
 
-An interactive game made by Andrew and Simon for TSA video game design 2014.
-(Sorry for extremely messy code; made on a tight deadline)
+A game about a bunny.
+
+Made by Andrew Visser (Art) and Simon Hoke (Programming) for the TSA video game design competition 2014.
+
+Please excuse the bad code, it's not quite optimized yet.
 
 Controls
 --------
 
 Click and drag to fling stuff.
+Knock out all of the scientists to finish the level.
+
 Press Esc to open the menu.
 
-Compiling
----------
+Running The Game
+----------------
 
-run.bat, or download love2d for other platforms at love2d.org
+Download the Love2D Game Engine from: https://www.love2d.org/
+(Binarys available for Debian, Windows and Mac, Open Source for others)
+
+Download the TeleBunny.love to your desktop and double click it, or via terminal: "love ./TeleBunny.love"
